@@ -2,25 +2,34 @@ document?.addEventListener('DOMContentLoaded', () => {
     // Theme Toggle Logic
     const themeSwitch = document.getElementById('theme-switch');
     const htmlElement = document.documentElement;
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-
-    if (savedTheme === 'light' || (!savedTheme && systemPrefersLight)) {
-        htmlElement.setAttribute('data-theme', 'light');
-        if (themeSwitch) themeSwitch.checked = true;
+    function applyTheme(theme) {
+        htmlElement.setAttribute('data-theme', theme);
+        if (themeSwitch) {
+            themeSwitch.checked = (theme === 'light');
+        }
     }
 
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        applyTheme(savedTheme);
+    } else {
+        applyTheme(systemPrefersDark.matches ? 'dark' : 'light');
+    }
+
+    systemPrefersDark.addEventListener('change', (e) => {
+        if (!localStorage.getItem('theme')) {
+            applyTheme(e.matches ? 'dark' : 'light');
+        }
+    });
+
     if (themeSwitch) {
-        themeSwitch?.addEventListener('change', () => {
-                if (themeSwitch.checked) {
-                    htmlElement.setAttribute('data-theme', 'light');
-                    localStorage.setItem('theme', 'light');
-                } else {
-                    htmlElement.setAttribute('data-theme', 'dark');
-                    localStorage.setItem('theme', 'dark');
-                }
-            });
+        themeSwitch.addEventListener('change', () => {
+            const newTheme = themeSwitch.checked ? 'light' : 'dark';
+            applyTheme(newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
     }
 
     // Sound Toggle Logic
@@ -516,45 +525,157 @@ document?.addEventListener('DOMContentLoaded', () => {
 
     // Accordion Logic for Dashboard Categories removed as per user request to keep them fixed
 
-    // Dashboard Search Functionality
-    const searchInput = document.getElementById('dashboard-search');
-    if (searchInput) {
-        searchInput?.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            const categories = document.querySelectorAll('.category-card');
-            
-            categories.forEach(card => {
-                let hasVisibleLink = false;
-                const links = card.querySelectorAll('.calculator-list li');
-                const categoryTitle = card.querySelector('.category-title').textContent.toLowerCase();
-                
-                // If query matches category title, show all links
-                const categoryMatches = categoryTitle.includes(query);
+    // Dashboard Search Functionality (Omni Style Overlay)
+    const dashboardSearch = document.getElementById('dashboard-search');
+    const searchOverlay = document.getElementById('search-overlay');
+    const closeOverlayBtn = document.getElementById('close-search-overlay');
+    const overlaySearchInput = document.getElementById('overlay-search-input');
+    const searchResultsList = document.getElementById('search-results-list');
+    const clearSearchBtn = document.getElementById('clear-search');
+    const dashboardGrid = document.querySelector('.dashboard-grid');
 
-                links.forEach(li => {
-                    const text = li.textContent.toLowerCase();
-                    if (categoryMatches || text.includes(query)) {
-                        li.style.display = '';
-                        hasVisibleLink = true;
-                    } else {
-                        li.style.display = 'none';
-                    }
+    // Extract all tools from the dashboard grid to make them searchable
+    let allTools = [];
+    if (dashboardGrid) {
+        const categories = document.querySelectorAll('.category-card');
+        categories.forEach(card => {
+            const categoryName = card.querySelector('.category-title').textContent.trim().replace(' Calculators', '');
+            const links = card.querySelectorAll('.calculator-list li a');
+            links.forEach(link => {
+                allTools.push({
+                    name: link.textContent.trim(),
+                    url: link.getAttribute('href'),
+                    category: categoryName
                 });
-
-                if (hasVisibleLink) {
-                    card.style.display = '';
-                    if (query.length > 0) {
-                        card.classList.add('expanded');
-                    } else {
-                        card.classList.remove('expanded');
-                        links.forEach(li => li.style.display = '');
-                    }
-                } else {
-                    card.style.display = 'none';
-                }
             });
         });
     }
+
+    function renderSearchResults(query) {
+        if (!searchResultsList) return;
+        searchResultsList.innerHTML = '';
+        const q = query.toLowerCase().trim();
+        
+        let filtered = allTools;
+        if (q.length > 0) {
+            filtered = allTools.filter(tool => 
+                tool.name.toLowerCase().includes(q) || 
+                tool.category.toLowerCase().includes(q)
+            );
+        }
+
+        filtered.forEach(tool => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="${tool.url}">${tool.name} <span class="dot">•</span> <span class="category">${tool.category}</span></a>`;
+            searchResultsList.appendChild(li);
+        });
+    }
+
+    if (dashboardSearch && searchOverlay) {
+        dashboardSearch.addEventListener('focus', () => {
+            if (!window.history.state || !window.history.state.modalOpen) {
+                window.history.pushState({ modalOpen: true }, '');
+            }
+            searchOverlay.classList.add('active');
+            overlaySearchInput.focus();
+            renderSearchResults(''); // Show all initially
+            if (overlaySearchInput.value.length > 0) {
+                clearSearchBtn.style.display = 'block';
+            } else {
+                clearSearchBtn.style.display = 'none';
+            }
+        });
+    }
+
+    if (closeOverlayBtn) {
+        closeOverlayBtn.addEventListener('click', () => {
+            if (window.history.state && window.history.state.modalOpen) {
+                window.history.back();
+            } else {
+                searchOverlay.classList.remove('active');
+                if(overlaySearchInput) overlaySearchInput.value = '';
+            }
+        });
+    }
+
+    if (overlaySearchInput) {
+        overlaySearchInput.addEventListener('input', (e) => {
+            const val = e.target.value;
+            renderSearchResults(val);
+            if (val.length > 0) {
+                clearSearchBtn.style.display = 'block';
+            } else {
+                clearSearchBtn.style.display = 'none';
+            }
+        });
+    }
+
+    if (clearSearchBtn) {
+        clearSearchBtn.addEventListener('click', () => {
+            overlaySearchInput.value = '';
+            overlaySearchInput.focus();
+            renderSearchResults('');
+            clearSearchBtn.style.display = 'none';
+        });
+    }
+
+    // Category Buttons Click Handler
+    const categoryButtons = document.querySelectorAll('.omni-cat-btn');
+    const categoriesModal = document.getElementById('categories-modal');
+    
+    categoryButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (categoriesModal) categoriesModal.classList.remove('active');
+            if (searchOverlay && overlaySearchInput) {
+                if (!window.history.state || !window.history.state.modalOpen) {
+                    window.history.pushState({ modalOpen: true }, '');
+                }
+                const catText = btn.querySelector('span').textContent;
+                searchOverlay.classList.add('active');
+                overlaySearchInput.value = catText;
+                renderSearchResults(catText);
+                overlaySearchInput.focus();
+                
+                if (clearSearchBtn) {
+                    clearSearchBtn.style.display = 'block';
+                }
+            }
+        });
+    });
+
+    // Categories Modal Open/Close Logic
+    const openCategoriesBtn = document.getElementById('open-categories-btn');
+    const closeCategoriesModal = document.getElementById('close-categories-modal');
+    
+    if (openCategoriesBtn && categoriesModal) {
+        openCategoriesBtn.addEventListener('click', () => {
+            if (!window.history.state || !window.history.state.modalOpen) {
+                window.history.pushState({ modalOpen: true }, '');
+            }
+            categoriesModal.classList.add('active');
+        });
+    }
+
+    if (closeCategoriesModal && categoriesModal) {
+        closeCategoriesModal.addEventListener('click', () => {
+            if (window.history.state && window.history.state.modalOpen) {
+                window.history.back();
+            } else {
+                categoriesModal.classList.remove('active');
+            }
+        });
+    }
+    
+    // Handle hardware back button for modals
+    window.addEventListener('popstate', (e) => {
+        if (categoriesModal && categoriesModal.classList.contains('active')) {
+            categoriesModal.classList.remove('active');
+        }
+        if (searchOverlay && searchOverlay.classList.contains('active')) {
+            searchOverlay.classList.remove('active');
+            if(overlaySearchInput) overlaySearchInput.value = '';
+        }
+    });
 
     updateDisplay();
 });

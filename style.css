@@ -208,9 +208,42 @@ body {
 .theme-switch-label i {
     font-size: 13px;
     z-index: 2;
-    transition: color 0.4s ease, transform 0.4s ease;
+    color: var(--text-primary);
 }
 
+.theme-switch-label .fa-moon {
+    color: #f1c40f;
+}
+
+.theme-switch-label .fa-sun {
+    color: #f39c12;
+}
+
+/* Header Categories Button */
+.header-cat-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid var(--btn-border);
+    color: var(--text-primary);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+    transition: all 0.2s ease;
+}
+
+.header-cat-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.header-cat-btn:active {
+    transform: scale(0.95);
+}
 /* Default (Dark Mode - unchecked) - ball is on left over Moon */
 .fa-moon {
     color: var(--bg-color);
@@ -981,6 +1014,215 @@ select.custom-input option {
 
 .back-btn:active {
     transform: translateY(1px) scale(0.95);
+}
+
+/* Omni Categories List */
+.omni-categories-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 0 15px;
+}
+
+.omni-categories-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.cat-icon-squares {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    width: 18px;
+    height: 18px;
+}
+
+.cat-icon-squares .sq {
+    width: 100%;
+    height: 100%;
+    border-radius: 3px;
+}
+.sq-red { background: #ef4444; }
+.sq-yellow { background: #facc15; }
+.sq-blue { background: #3b82f6; }
+.sq-green { background: #22c55e; }
+
+.omni-categories-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.omni-category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.omni-cat-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 16px 20px;
+    background: var(--calc-bg);
+    border: 1px solid var(--calc-border);
+    border-radius: 12px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.2s ease;
+}
+
+.omni-cat-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.omni-cat-btn:active {
+    transform: scale(0.98);
+}
+
+.omni-cat-btn .cat-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.omni-cat-btn .cat-left i {
+    font-size: 1.2rem;
+    width: 25px;
+    text-align: center;
+}
+
+.omni-cat-btn .cat-count {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* Omni Search Overlay */
+.search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-color);
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    animation: fadeIn 0.2s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.search-overlay.active {
+    display: flex;
+}
+
+.search-overlay-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 15px;
+    background: var(--calc-bg);
+    border-bottom: 1px solid var(--calc-border);
+    backdrop-filter: blur(20px);
+}
+
+.search-logo {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+}
+
+.search-input-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: var(--bg-color);
+    border: 1px solid var(--calc-border);
+    border-radius: 30px;
+    padding: 8px 15px;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.search-input-wrapper input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-size: 1rem;
+    padding: 0 10px;
+}
+
+.search-input-wrapper .clear-search {
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.search-input-wrapper .search-icon {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.close-overlay-btn {
+    background: transparent;
+    border: none;
+    color: #38bdf8;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.omni-search-list {
+    list-style: none;
+    overflow-y: auto;
+    flex: 1;
+    padding: 0;
+    margin: 0;
+}
+
+.omni-search-list li {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--calc-border);
+    display: flex;
+    align-items: center;
+}
+
+.omni-search-list li a {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.omni-search-list li .dot {
+    color: #ef4444; /* Red dot as per user image */
+    margin: 0 8px;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.omni-search-list li .category {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 400;
 }
 
 /* Responsive Dashboard Layout */

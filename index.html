@@ -1,13 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Omni Calculator</title>
+    <title>Nexus Calculator</title>
+    <script>
+        const _savedTheme = localStorage.getItem('theme');
+        if (_savedTheme) {
+            document.documentElement.setAttribute('data-theme', _savedTheme);
+        } else {
+            const _prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.setAttribute('data-theme', _prefersDark ? 'dark' : 'light');
+        }
+    </script>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
@@ -17,7 +26,14 @@
     </div>
 
     <div class="dashboard-wrapper">
-        <div class="top-controls" style="max-width: 1200px; margin: 0 auto; width: 100%; justify-content: flex-end;">
+        <div class="top-controls" style="max-width: 1200px; margin: 0 auto; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px;">
+            <button id="open-categories-btn" class="header-cat-btn">
+                <div class="cat-icon-squares" style="width: 16px; height: 16px;">
+                    <span class="sq sq-red"></span><span class="sq sq-yellow"></span>
+                    <span class="sq sq-blue"></span><span class="sq sq-green"></span>
+                </div>
+                Categories
+            </button>
             <div class="theme-toggle">
                 <input type="checkbox" id="theme-switch" class="theme-switch-input">
                 <label for="theme-switch" class="theme-switch-label">
@@ -29,22 +45,42 @@
         </div>
 
         <div class="dashboard-header">
-            <h1>Omni Calculator</h1>
+            <h1>Nexus Calculator</h1>
             <p>Your all-in-one calculation hub</p>
         </div>
         
-        <nav class="app-bottom-nav">
-            <button class="nav-tab active" data-target="calculator-view">
-                <i class="fas fa-calculator"></i>
-                <span>Calculator</span>
-            </button>
-            <button class="nav-tab" data-target="tools-view">
-                <i class="fas fa-th-large"></i>
-                <span>Tools Hub</span>
-            </button>
+        <nav class="app-bottom-nav" style="padding: 0; background: transparent; border: none; box-shadow: none;">
+            <div class="search-container" style="width: 100%; max-width: 600px; margin: 0 auto;">
+                <div class="input-group" style="position: relative; margin: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                        style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); transition: color 0.3s ease; z-index: 2;">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="dashboard-search" placeholder="Search tools (e.g. BMI, GPA, Loan...)"
+                        style="
+                        width: 100%; 
+                        height: 55px;
+                        padding-left: 20px; 
+                        padding-right: 55px;
+                        border-radius: 28px; 
+                        font-size: 1.1rem; 
+                        background: var(--calc-bg);
+                        border: 1px solid var(--calc-border);
+                        color: var(--text-primary);
+                        box-shadow: var(--calc-shadow);
+                        backdrop-filter: blur(20px);
+                        -webkit-backdrop-filter: blur(20px);
+                        transition: all 0.3s ease;
+                        outline: none;"
+                        onfocus="this.style.boxShadow='0 8px 30px rgba(56, 189, 248, 0.25)'; this.style.borderColor='#38bdf8'; this.previousElementSibling.style.color='#38bdf8'; this.style.transform='translateY(-2px)';"
+                        onblur="this.style.boxShadow='var(--calc-shadow)'; this.style.borderColor='var(--calc-border)'; this.previousElementSibling.style.color='var(--text-secondary)'; this.style.transform='translateY(0)';">
+                </div>
+            </div>
         </nav>
 
-        <div id="calculator-view" class="tab-view active-view">
+        <div id="calculator-view">
             <div class="calculator-wrapper" style="margin-bottom: 30px;">
             <div class="calculator" style="margin: 0 auto;">
                 <div class="display">
@@ -104,37 +140,9 @@
         </div>
         </div>
 
-        <div id="tools-view" class="tab-view">
-            <div class="search-container" style="width: 100%; max-width: 600px; margin: 0 auto 40px auto; padding: 0 20px;">
-                <div class="input-group" style="position: relative; margin: 0;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
-                    style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); transition: color 0.3s ease; z-index: 2;">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <input type="text" id="dashboard-search" placeholder="Search calculators (e.g. BMI, GPA, Loan...)"
-                    style="
-                    width: 100%; 
-                    height: 55px;
-                    padding-left: 20px; 
-                    padding-right: 55px;
-                    border-radius: 28px; 
-                    font-size: 1.1rem; 
-                    background: var(--calc-bg);
-                    border: 1px solid var(--calc-border);
-                    color: var(--text-primary);
-                    box-shadow: var(--calc-shadow);
-                    backdrop-filter: blur(20px);
-                    -webkit-backdrop-filter: blur(20px);
-                    transition: all 0.3s ease;
-                    outline: none;"
-                    onfocus="this.style.boxShadow='0 8px 30px rgba(56, 189, 248, 0.25)'; this.style.borderColor='#38bdf8'; this.previousElementSibling.style.color='#38bdf8'; this.style.transform='translateY(-2px)';"
-                    onblur="this.style.boxShadow='var(--calc-shadow)'; this.style.borderColor='var(--calc-border)'; this.previousElementSibling.style.color='var(--text-secondary)'; this.style.transform='translateY(0)';">
-            </div>
-        </div>
+        <div id="tools-view">
 
-        <div class="dashboard-grid">
+        <div class="dashboard-grid" style="display: none;">
             <!-- Financial Calculators -->
             <div class="category-card expanded">
                 <div class="category-header">
@@ -224,6 +232,73 @@
                 </ul>
             </div>
         </div>
+        </div>
+    </div>
+
+    <div id="search-overlay" class="search-overlay">
+        <div class="search-overlay-header">
+            <div class="search-logo">
+                <span style="color: #38bdf8; font-weight: bold; font-size: 1.2rem;">Nexus</span>
+                <span style="font-weight: 300; font-size: 1rem;">calculator</span>
+            </div>
+            <div class="search-input-wrapper">
+                <i class="fas fa-times clear-search" id="clear-search" style="display: none;"></i>
+                <input type="text" id="overlay-search-input" placeholder="Search...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            <button id="close-search-overlay" class="close-overlay-btn">Cancel</button>
+        </div>
+        <ul id="search-results-list" class="omni-search-list">
+            <!-- Search results injected here -->
+        </ul>
+    </div>
+
+    <div id="categories-modal" class="search-overlay">
+        <div class="search-overlay-header" style="justify-content: space-between;">
+            <div class="search-logo">
+                <span style="color: #38bdf8; font-weight: bold; font-size: 1.2rem;">Nexus Calculator</span>
+            </div>
+            <button id="close-categories-modal" class="close-overlay-btn"><i class="fas fa-times" style="font-size: 1.2rem;"></i></button>
+        </div>
+        <div class="omni-categories-container" style="margin: 20px auto; max-width: 600px;">
+            <div class="omni-categories-header">
+                <div class="cat-icon-squares">
+                    <span class="sq sq-red"></span><span class="sq sq-yellow"></span>
+                    <span class="sq sq-blue"></span><span class="sq sq-green"></span>
+                </div>
+                <h3>All Categories</h3>
+            </div>
+            
+            <div class="omni-category-list">
+                <button class="omni-cat-btn" data-category="financial">
+                    <div class="cat-left">
+                        <i class="fas fa-chart-line" style="color: #3b82f6;"></i>
+                        <span>Financial</span>
+                    </div>
+                    <span class="cat-count">15 calculators</span>
+                </button>
+                <button class="omni-cat-btn" data-category="fitness">
+                    <div class="cat-left">
+                        <i class="fas fa-heartbeat" style="color: #ef4444;"></i>
+                        <span>Fitness & Health</span>
+                    </div>
+                    <span class="cat-count">9 calculators</span>
+                </button>
+                <button class="omni-cat-btn" data-category="math">
+                    <div class="cat-left">
+                        <i class="fas fa-calculator" style="color: #8b5cf6;"></i>
+                        <span>Math</span>
+                    </div>
+                    <span class="cat-count">6 calculators</span>
+                </button>
+                <button class="omni-cat-btn" data-category="other">
+                    <div class="cat-left">
+                        <i class="fas fa-tools" style="color: #f59e0b;"></i>
+                        <span>Other</span>
+                    </div>
+                    <span class="cat-count">10 calculators</span>
+                </button>
+            </div>
         </div>
     </div>
 
