@@ -73,5 +73,47 @@
     </div>
     <script src="../js/script.js"></script>
     <script src="../js/conversion.js"></script>
+
+    <script>
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.matches && e.target.matches('.action-btn:not(.clear-btn)')) {
+                const formBox = e.target.closest('.form-box');
+                if (formBox) {
+                    const inputs = formBox.querySelectorAll('input[type="number"], input[type="text"]');
+                    let isEmpty = false;
+                    inputs.forEach(input => {
+                        if (input.value.trim() === '') isEmpty = true;
+                    });
+                    
+                    if (isEmpty) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        
+                        let errorMsg = formBox.querySelector('.global-error-msg');
+                        if (!errorMsg) {
+                            errorMsg = document.createElement('div');
+                            errorMsg.className = 'global-error-msg';
+                            errorMsg.style.color = '#ef4444';
+                            errorMsg.style.fontSize = '0.9rem';
+                            errorMsg.style.marginTop = '15px';
+                            errorMsg.style.textAlign = 'center';
+                            errorMsg.style.fontWeight = '500';
+                            errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill out all required fields.';
+                            
+                            // Insert at the end of form-box
+                            formBox.appendChild(errorMsg);
+                        }
+                        
+                        // Hide results if they are shown
+                        const resultContainer = document.querySelector('.result-container');
+                        if (resultContainer) resultContainer.style.display = 'none';
+                    } else {
+                        const errorMsg = formBox.querySelector('.global-error-msg');
+                        if (errorMsg) errorMsg.remove();
+                    }
+                }
+            }
+        }, true); // Use capture phase to intercept before the button's own listener
+    </script>
 </body>
 </html>

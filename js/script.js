@@ -128,6 +128,32 @@ document?.addEventListener('DOMContentLoaded', () => {
     let memory = 0;
     let lastAns = 0;
     let shouldResetScreen = false;
+    let calcHistory = JSON.parse(localStorage.getItem('calcHistory')) || [];
+
+    function saveToHistory(equation, result) {
+        calcHistory.unshift({ eq: equation, res: result });
+        if (calcHistory.length > 50) calcHistory.pop();
+        localStorage.setItem('calcHistory', JSON.stringify(calcHistory));
+        renderHistory();
+    }
+
+    function renderHistory() {
+        const historyList = document.getElementById('history-list');
+        if (!historyList) return;
+        historyList.innerHTML = '';
+        calcHistory.forEach(item => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span class="hist-equation">${item.eq} =</span><span class="hist-result">${item.res}</span>`;
+            li.addEventListener('click', () => {
+                displayStr = item.res;
+                shouldResetScreen = true;
+                updateDisplay();
+                const panel = document.getElementById('mobile-history-panel');
+                if(panel) panel.classList.remove('active');
+            });
+            historyList.appendChild(li);
+        });
+    }
 
     function updateDisplay() {
         if (currentOperandTextElement) {
@@ -252,13 +278,34 @@ document?.addEventListener('DOMContentLoaded', () => {
                 result = Math.round(result * 1e12) / 1e12;
                 displayStr = result.toString();
                 lastAns = result;
+                saveToHistory(previousStr.replace(' =', ''), displayStr);
             }
         } catch (e) {
-            displayStr = e.message;
+            displayStr = 'Error';
         }
         
         shouldResetScreen = true;
         updateDisplay();
+    }
+
+    // Setup History UI Events
+    const historyToggleBtn = document.getElementById('history-toggle-btn');
+    const mobileHistoryPanel = document.getElementById('mobile-history-panel');
+    const clearHistoryBtn = document.getElementById('clear-history-btn');
+
+    if (historyToggleBtn && mobileHistoryPanel) {
+        historyToggleBtn.addEventListener('click', () => {
+            mobileHistoryPanel.classList.toggle('active');
+            renderHistory();
+        });
+    }
+
+    if (clearHistoryBtn) {
+        clearHistoryBtn.addEventListener('click', () => {
+            calcHistory = [];
+            localStorage.removeItem('calcHistory');
+            renderHistory();
+        });
     }
 
     // Button event listeners
