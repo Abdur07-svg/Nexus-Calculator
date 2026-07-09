@@ -11,6 +11,7 @@ document?.addEventListener('DOMContentLoaded', () => {
         const principal = parseFloat(prinIn.value) || 0;
         const rate = parseFloat(rateIn.value) || 0;
         const time = parseFloat(timeIn.value) || 0;
+        const currency = document.getElementById('currency-selector') ? document.getElementById('currency-selector').value : '$';
 
         if (principal <= 0 || time <= 0) {
             intOut.textContent = 'Error';
@@ -22,10 +23,10 @@ document?.addEventListener('DOMContentLoaded', () => {
         const interest = principal * (rate / 100) * time;
         const totalAmount = principal + interest;
 
-        intOut.textContent = '$' + interest.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        intOut.textContent = currency + interest.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         details.innerHTML = `
-            <p style="border-bottom: 1px solid var(--calc-border); padding-bottom: 5px;">Principal: <span>$${principal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></p>
-            <p style="padding-top: 5px;">Total Amount: <span>$${totalAmount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></p>
+            <p style="border-bottom: 1px solid var(--calc-border); padding-bottom: 5px;">Principal: <span>${currency}${principal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></p>
+            <p style="padding-top: 5px;">Total Amount: <span>${currency}${totalAmount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></p>
         `;
         resContainer.style.display = 'block';
     });

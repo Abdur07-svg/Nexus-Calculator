@@ -384,6 +384,8 @@ document?.addEventListener('DOMContentLoaded', () => {
     const btnCalcBmi = document.getElementById('calc-bmi-btn');
     const inputBmiHeight = document.getElementById('bmi-height');
     const inputBmiWeight = document.getElementById('bmi-weight');
+    const inputBmiAge = document.getElementById('bmi-age');
+    const inputBmiGender = document.getElementById('bmi-gender');
     const bmiResultContainer = document.getElementById('bmi-result-container');
     const bmiScoreDisplay = document.getElementById('bmi-score');
     const bmiCategoryDisplay = document.getElementById('bmi-category');
@@ -394,6 +396,8 @@ document?.addEventListener('DOMContentLoaded', () => {
                 playClickSound();
                 const heightCm = parseFloat(inputBmiHeight.value);
                 const weightKg = parseFloat(inputBmiWeight.value);
+                const age = inputBmiAge ? (parseFloat(inputBmiAge.value) || 0) : 25;
+                const gender = inputBmiGender ? inputBmiGender.value : 'male';
                 
                 if (!heightCm || !weightKg || heightCm <= 0 || weightKg <= 0) return;
                 
@@ -408,19 +412,23 @@ document?.addEventListener('DOMContentLoaded', () => {
                 let percent = 0;
                 
                 if (bmi < 18.5) {
-                    category = 'Underweight';
+                    let p = (bmi / 18.5) * 5;
+                    category = `${Math.round(p)}%, Underweight`;
                     color = '#3b82f6';
                     percent = (bmi / 18.5) * 25;
                 } else if (bmi < 25) {
-                    category = 'Normal Weight';
+                    let p = 5 + ((bmi - 18.5) / 6.5) * 80;
+                    category = `${Math.round(p)}%, Healthy weight`;
                     color = '#22c55e';
                     percent = 25 + ((bmi - 18.5) / 6.5) * 25;
                 } else if (bmi < 30) {
-                    category = 'Overweight';
+                    let p = 85 + ((bmi - 25) / 5) * 10;
+                    category = `${Math.round(p)}%, At risk of overweight`;
                     color = '#eab308';
                     percent = 50 + ((bmi - 25) / 5) * 25;
                 } else {
-                    category = 'Obese';
+                    let p = 95 + Math.min(((bmi - 30) / 10) * 4.9, 4.9);
+                    category = `${Math.round(p)}%, Overweight`;
                     color = '#ef4444';
                     percent = 75 + Math.min(((bmi - 30) / 10) * 25, 25);
                 }

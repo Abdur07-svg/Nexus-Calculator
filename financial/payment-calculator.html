@@ -15,6 +15,13 @@
     </div>
 
     <div class="calculator-wrapper">
+
+        <div class="top-nav-bar">
+            <a href="../index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back</span>
+            </a>
+        </div>
         <div class="calculator" style="width: 100%; max-width: 420px;">
             <div class="calc-view active">
                 <div class="calc-header">
@@ -24,7 +31,16 @@
                 
                 <div class="form-box">
                     <div class="input-group">
-                        <label>Loan Amount ($)</label>
+                        <label>Currency</label>
+                        <select id="currency-selector" class="custom-input">
+                            <option value="$">$ (USD)</option>
+                            <option value="₹">₹ (INR)</option>
+                            <option value="€">€ (EUR)</option>
+                            <option value="£">£ (GBP)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Loan Amount</label>
                         <input type="number" id="pay-amount" class="custom-input" placeholder="10000">
                     </div>
                     <div style="display: flex; gap: 10px;">

@@ -62,6 +62,8 @@ document?.addEventListener('DOMContentLoaded', () => {
         const downPayment = parseFloat(downPaymentInput.value) || 0;
         const loanTermYears = parseFloat(loanTermInput.value) || 0;
         const annualRate = parseFloat(interestRateInput.value) || 0;
+        const currency = document.getElementById('currency-selector') ? document.getElementById('currency-selector').value : '$';
+
 
         if (homePrice <= 0 || loanTermYears <= 0) {
             alert("Please enter a valid home price and loan term.");
@@ -89,10 +91,10 @@ document?.addEventListener('DOMContentLoaded', () => {
             totalInterest = totalCost - principal;
         }
 
-        monthlyPaymentEl.textContent = formatCurrency(monthlyPayment);
-        totalPrincipalEl.textContent = "$" + formatCurrency(principal);
-        totalInterestEl.textContent = "$" + formatCurrency(totalInterest);
-        totalCostEl.textContent = "$" + formatCurrency(totalCost);
+        monthlyPaymentEl.textContent = currency + formatCurrency(monthlyPayment);
+        totalPrincipalEl.textContent = currency + formatCurrency(principal);
+        totalInterestEl.textContent = currency + formatCurrency(totalInterest);
+        totalCostEl.textContent = currency + formatCurrency(totalCost);
 
         resultContainer.style.display = 'block';
     });

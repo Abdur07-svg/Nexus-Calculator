@@ -369,6 +369,39 @@ document?.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Main Dashboard Tab Navigation Logic
+    const mainNavTabs = document.querySelectorAll('.nav-tab');
+    const mainTabViews = document.querySelectorAll('.tab-view');
+
+    // Restore active tab from sessionStorage if available
+    const savedTab = sessionStorage.getItem('activeDashboardTab');
+    if (savedTab && mainNavTabs.length > 0) {
+        mainNavTabs.forEach(t => t.classList.remove('active'));
+        mainTabViews.forEach(v => v.classList.remove('active-view'));
+        
+        const targetTab = document.querySelector(`.nav-tab[data-target="${savedTab}"]`);
+        const targetView = document.getElementById(savedTab);
+        
+        if (targetTab) targetTab.classList.add('active');
+        if (targetView) targetView.classList.add('active-view');
+    }
+
+    mainNavTabs.forEach(tab => {
+        tab?.addEventListener('click', () => {
+            playClickSound();
+            mainNavTabs.forEach(t => t.classList.remove('active'));
+            mainTabViews.forEach(v => v.classList.remove('active-view'));
+            
+            tab.classList.add('active');
+            const targetId = tab.dataset.target;
+            const targetView = document.getElementById(targetId);
+            if (targetView) targetView.classList.add('active-view');
+
+            // Save to sessionStorage
+            sessionStorage.setItem('activeDashboardTab', targetId);
+        });
+    });
+
     // BMI Calculator Logic
     const btnCalcBmi = document.getElementById('calc-bmi-btn');
     const inputBmiHeight = document.getElementById('bmi-height');
@@ -481,21 +514,7 @@ document?.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Accordion Logic for Dashboard Categories
-    const categoryHeaders = document.querySelectorAll('.category-header');
-    categoryHeaders.forEach(header => {
-        header?.addEventListener('click', () => {
-            playClickSound();
-            const card = header.closest('.category-card');
-            
-            // Close others
-            document.querySelectorAll('.category-card').forEach(c => {
-                if (c !== card) c.classList.remove('expanded');
-            });
-
-            card.classList.toggle('expanded');
-        });
-    });
+    // Accordion Logic for Dashboard Categories removed as per user request to keep them fixed
 
     // Dashboard Search Functionality
     const searchInput = document.getElementById('dashboard-search');

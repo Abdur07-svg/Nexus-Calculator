@@ -50,6 +50,8 @@ document?.addEventListener('DOMContentLoaded', () => {
         const principal = parseFloat(loanAmountInput.value) || 0;
         const totalPayments = parseFloat(loanTermInput.value) || 0; // in months
         const annualRate = parseFloat(interestRateInput.value) || 0;
+        const currency = document.getElementById('currency-selector') ? document.getElementById('currency-selector').value : '$';
+
 
         if (principal <= 0 || totalPayments <= 0) {
             alert("Please enter a valid loan amount and loan term.");
@@ -73,9 +75,9 @@ document?.addEventListener('DOMContentLoaded', () => {
             totalInterest = totalCost - principal;
         }
 
-        monthlyPaymentEl.textContent = formatCurrency(monthlyPayment);
-        totalInterestEl.textContent = "$" + formatCurrency(totalInterest);
-        totalCostEl.textContent = "$" + formatCurrency(totalCost);
+        monthlyPaymentEl.textContent = currency + formatCurrency(monthlyPayment);
+        totalInterestEl.textContent = currency + formatCurrency(totalInterest);
+        totalCostEl.textContent = currency + formatCurrency(totalCost);
 
         resultContainer.style.display = 'block';
     });

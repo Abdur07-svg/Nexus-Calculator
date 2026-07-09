@@ -15,6 +15,13 @@
     </div>
 
     <div class="calculator-wrapper">
+
+        <div class="top-nav-bar">
+            <a href="../index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back</span>
+            </a>
+        </div>
         
         
         <div class="calculator">
@@ -22,17 +29,78 @@
             <div class="calc-view active">
                 <div class="calc-header">
                     <h2>Calorie Calculator</h2>
-                    <p>Coming Soon</p>
+                    <p>Calculate your daily calorie needs</p>
                 </div>
                 
-                <div class="form-box" style="text-align: center; padding: 40px 20px;">
-                    <i class="fas fa-tools" style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 20px;"></i>
-                    <h3 style="color: var(--text-primary); margin-bottom: 10px;">Under Construction</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">We are working on the formulas and logic for this calculator. Check back later!</p>
+                <div class="form-box">
+                    <div style="display: flex; gap: 10px;">
+                        <div class="input-group" style="flex: 1;">
+                            <label>Age</label>
+                            <input type="number" id="cal-age" placeholder="e.g. 25" class="custom-input">
+                        </div>
+                        <div class="input-group" style="flex: 1;">
+                            <label>Gender</label>
+                            <select id="cal-gender" class="custom-input">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <div class="input-group" style="flex: 1;">
+                            <label>Height (cm)</label>
+                            <input type="number" id="cal-height" placeholder="e.g. 175" class="custom-input">
+                        </div>
+                        <div class="input-group" style="flex: 1;">
+                            <label>Weight (kg)</label>
+                            <input type="number" id="cal-weight" placeholder="e.g. 70" class="custom-input">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Activity Level</label>
+                        <select id="cal-activity" class="custom-input">
+                            <option value="1.2">Sedentary: little or no exercise</option>
+                            <option value="1.375">Light: exercise 1-3 times/week</option>
+                            <option value="1.55">Moderate: exercise 4-5 times/week</option>
+                            <option value="1.725">Active: daily exercise or intense exercise 3-4 times/week</option>
+                            <option value="1.9">Very Active: intense exercise 6-7 times/week</option>
+                        </select>
+                    </div>
+                    
+                    <button id="calc-calorie-btn" class="action-btn">Calculate Calories</button>
+                </div>
+                
+                <div class="result-container" id="cal-result-container" style="display: none; padding: 20px;">
+                    <div class="age-main" style="text-align: center; margin-bottom: 20px;">
+                        <p style="color: var(--text-secondary); margin-bottom: 5px;">Maintain Weight (TDEE)</p>
+                        <span id="cal-maintain" style="font-size: 2.5rem; color: var(--calc-accent); font-weight: 600;">0</span> 
+                        <span style="font-size: 1rem; color: var(--text-secondary); font-weight: normal;">Calories/day</span>
+                    </div>
+                    <div class="age-details" style="text-align: left; font-size: 0.95rem;">
+                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--calc-border); padding: 8px 0;">
+                            <span>Mild Weight Loss <span style="font-size:0.8rem; color:var(--text-secondary);">(0.25 kg/wk)</span></span>
+                            <span id="cal-mild-loss" style="font-weight: 600; color: #3b82f6;">0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--calc-border); padding: 8px 0;">
+                            <span>Weight Loss <span style="font-size:0.8rem; color:var(--text-secondary);">(0.5 kg/wk)</span></span>
+                            <span id="cal-loss" style="font-weight: 600; color: #22c55e;">0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--calc-border); padding: 8px 0;">
+                            <span>Extreme Weight Loss <span style="font-size:0.8rem; color:var(--text-secondary);">(1 kg/wk)</span></span>
+                            <span id="cal-extreme-loss" style="font-weight: 600; color: #eab308;">0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                            <span>Weight Gain <span style="font-size:0.8rem; color:var(--text-secondary);">(0.5 kg/wk)</span></span>
+                            <span id="cal-gain" style="font-weight: 600; color: #ef4444;">0</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <script src="../js/script.js"></script>
+    <script src="../js/calorie.js"></script>
 </body>
 </html>

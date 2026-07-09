@@ -11,6 +11,7 @@ document?.addEventListener('DOMContentLoaded', () => {
         const principal = parseFloat(amtIn.value) || 0;
         const years = parseFloat(yearsIn.value) || 0;
         const rate = parseFloat(rateIn.value) || 0;
+        const currency = document.getElementById('currency-selector') ? document.getElementById('currency-selector').value : '$';
 
         if (principal <= 0 || years <= 0) {
             monthlyOut.textContent = 'Error';
@@ -34,11 +35,11 @@ document?.addEventListener('DOMContentLoaded', () => {
 
         const totalPaid = principal + totalInterest;
 
-        monthlyOut.textContent = '$' + monthlyPayment.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        monthlyOut.textContent = currency + monthlyPayment.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         details.innerHTML = `
-            <p style="border-bottom: 1px solid var(--calc-border); padding-bottom: 5px;">Total Principal: <span>$${principal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></p>
-            <p style="border-bottom: 1px solid var(--calc-border); padding-bottom: 5px;">Total Interest: <span>$${totalInterest.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></p>
-            <p style="padding-top: 5px;">Total Cost: <span>$${totalPaid.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></p>
+            <p style="border-bottom: 1px solid var(--calc-border); padding-bottom: 5px;">Total Principal: <span>${currency}${principal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></p>
+            <p style="border-bottom: 1px solid var(--calc-border); padding-bottom: 5px;">Total Interest: <span>${currency}${totalInterest.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></p>
+            <p style="padding-top: 5px;">Total Cost: <span>${currency}${totalPaid.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></p>
         `;
         resContainer.style.display = 'block';
     });

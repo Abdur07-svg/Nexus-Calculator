@@ -53,6 +53,7 @@ document?.addEventListener('DOMContentLoaded', () => {
         const monthlyContribution = parseFloat(monthlyContributionInput.value) || 0;
         const years = parseFloat(yearsGrowInput.value) || 0;
         const annualRate = parseFloat(interestRateInput.value) || 0;
+        const currency = document.getElementById('currency-selector') ? document.getElementById('currency-selector').value : '$';
 
         if (years <= 0) {
             alert("Please enter a valid number of years.");
@@ -79,10 +80,10 @@ document?.addEventListener('DOMContentLoaded', () => {
         const totalInvested = principal + totalContributions;
         const totalInterest = futureValue - totalInvested;
 
-        futureValueEl.textContent = formatCurrency(futureValue);
-        totalPrincipalEl.textContent = "$" + formatCurrency(principal);
-        totalContributionsEl.textContent = "$" + formatCurrency(totalContributions);
-        totalInterestEl.textContent = "$" + formatCurrency(totalInterest > 0 ? totalInterest : 0);
+        futureValueEl.textContent = currency + formatCurrency(futureValue);
+        totalPrincipalEl.textContent = currency + formatCurrency(principal);
+        totalContributionsEl.textContent = currency + formatCurrency(totalContributions);
+        totalInterestEl.textContent = currency + formatCurrency(totalInterest > 0 ? totalInterest : 0);
 
         resultContainer.style.display = 'block';
     });

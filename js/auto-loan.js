@@ -13,6 +13,8 @@ document?.addEventListener('DOMContentLoaded', () => {
         const down = parseFloat(downIn.value) || 0;
         const term = parseFloat(termIn.value) || 0;
         const rate = parseFloat(rateIn.value) || 0;
+        const currency = document.getElementById('currency-selector') ? document.getElementById('currency-selector').value : '$';
+
 
         if (price <= 0 || term <= 0) {
             monthlyOut.textContent = 'Error';
@@ -23,7 +25,7 @@ document?.addEventListener('DOMContentLoaded', () => {
 
         const principal = price - down;
         if (principal <= 0) {
-            monthlyOut.textContent = '$0.00';
+            monthlyOut.textContent = currency + '0.00';
             details.innerHTML = '<p style="color:#ef4444; border:none; justify-content:center;">Down payment covers the full price.</p>';
             resContainer.style.display = 'block';
             return;
@@ -43,11 +45,11 @@ document?.addEventListener('DOMContentLoaded', () => {
 
         const totalPaid = principal + totalInterest + down;
 
-        monthlyOut.textContent = '$' + monthlyPayment.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        monthlyOut.textContent = currency + monthlyPayment.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         details.innerHTML = `
-            <p style="border-bottom: 1px solid var(--calc-border); padding-bottom: 5px;">Total Principal: <span>$${principal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></p>
-            <p style="border-bottom: 1px solid var(--calc-border); padding-bottom: 5px;">Total Interest: <span>$${totalInterest.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></p>
-            <p style="padding-top: 5px;">Total Cost (with down): <span>$${totalPaid.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></p>
+            <p style="border-bottom: 1px solid var(--calc-border); padding-bottom: 5px;">Total Principal: <span>${currency}${principal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></p>
+            <p style="border-bottom: 1px solid var(--calc-border); padding-bottom: 5px;">Total Interest: <span>${currency}${totalInterest.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></p>
+            <p style="padding-top: 5px;">Total Cost (with down): <span>${currency}${totalPaid.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></p>
         `;
         resContainer.style.display = 'block';
     });

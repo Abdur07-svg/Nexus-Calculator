@@ -15,6 +15,13 @@
     </div>
 
     <div class="calculator-wrapper">
+
+        <div class="top-nav-bar">
+            <a href="../index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back</span>
+            </a>
+        </div>
         
         
         <div class="calculator">
@@ -22,17 +29,49 @@
             <div class="calc-view active">
                 <div class="calc-header">
                     <h2>BMR Calculator</h2>
-                    <p>Coming Soon</p>
+                    <p>Calculate your Basal Metabolic Rate</p>
                 </div>
                 
-                <div class="form-box" style="text-align: center; padding: 40px 20px;">
-                    <i class="fas fa-tools" style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 20px;"></i>
-                    <h3 style="color: var(--text-primary); margin-bottom: 10px;">Under Construction</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">We are working on the formulas and logic for this calculator. Check back later!</p>
+                <div class="form-box">
+                    <div style="display: flex; gap: 10px;">
+                        <div class="input-group" style="flex: 1;">
+                            <label>Age</label>
+                            <input type="number" id="bmr-age" placeholder="e.g. 25" class="custom-input">
+                        </div>
+                        <div class="input-group" style="flex: 1;">
+                            <label>Gender</label>
+                            <select id="bmr-gender" class="custom-input">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <div class="input-group" style="flex: 1;">
+                            <label>Height (cm)</label>
+                            <input type="number" id="bmr-height" placeholder="e.g. 175" class="custom-input">
+                        </div>
+                        <div class="input-group" style="flex: 1;">
+                            <label>Weight (kg)</label>
+                            <input type="number" id="bmr-weight" placeholder="e.g. 70" class="custom-input">
+                        </div>
+                    </div>
+                    
+                    <button id="calc-bmr-btn" class="action-btn">Calculate BMR</button>
+                </div>
+                
+                <div class="result-container" id="bmr-result-container" style="display: none; text-align: center; padding: 20px;">
+                    <p style="color: var(--text-secondary); margin-bottom: 5px;">Your Basal Metabolic Rate is</p>
+                    <div class="bmi-score" style="margin-bottom: 10px;">
+                        <span id="bmr-score" style="font-size: 2.5rem; color: var(--calc-accent); font-weight: 600;">0</span> 
+                        <span style="font-size: 1rem; color: var(--text-secondary); font-weight: normal;">Calories/day</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <script src="../js/script.js"></script>
+    <script src="../js/bmr.js"></script>
 </body>
 </html>
