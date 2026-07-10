@@ -740,7 +740,73 @@ document?.addEventListener('DOMContentLoaded', () => {
             searchOverlay.classList.remove('active');
             if(overlaySearchInput) overlaySearchInput.value = '';
         }
+        const sideDrawer = document.getElementById('side-drawer');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        if (sideDrawer && sideDrawer.classList.contains('active')) {
+            sideDrawer.classList.remove('active');
+            if(sidebarOverlay) sidebarOverlay.classList.remove('active');
+        }
     });
+
+    // Side Navigation Drawer Logic
+    const hamburgerBtn = document.getElementById('hamburger-menu-btn');
+    const sideDrawer = document.getElementById('side-drawer');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const closeDrawerBtn = document.getElementById('close-drawer-btn');
+    const drawerCategoriesBtn = document.getElementById('drawer-categories-btn');
+
+    function openDrawer() {
+        if (!window.history.state || !window.history.state.drawerOpen) {
+            window.history.pushState({ drawerOpen: true }, '');
+        }
+        if(sideDrawer) sideDrawer.classList.add('active');
+        if(sidebarOverlay) sidebarOverlay.classList.add('active');
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+        if(sideDrawer) sideDrawer.classList.remove('active');
+        if(sidebarOverlay) sidebarOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openDrawer);
+    }
+
+    if (closeDrawerBtn) {
+        closeDrawerBtn.addEventListener('click', () => {
+            if (window.history.state && window.history.state.drawerOpen) {
+                window.history.back();
+            } else {
+                closeDrawer();
+            }
+        });
+    }
+
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', () => {
+            if (window.history.state && window.history.state.drawerOpen) {
+                window.history.back();
+            } else {
+                closeDrawer();
+            }
+        });
+    }
+
+    if (drawerCategoriesBtn && categoriesModal) {
+        drawerCategoriesBtn.addEventListener('click', () => {
+            closeDrawer();
+            // Wait for drawer to close before opening modal
+            setTimeout(() => {
+                if (!window.history.state || !window.history.state.modalOpen) {
+                    window.history.pushState({ modalOpen: true }, '');
+                }
+                categoriesModal.classList.add('active');
+            }, 300);
+        });
+    }
 
     updateDisplay();
 });

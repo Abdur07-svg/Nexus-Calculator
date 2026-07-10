@@ -25,31 +25,82 @@
         <div class="blob blob-2"></div>
     </div>
 
-    <div class="dashboard-wrapper">
-        <div class="top-controls" style="max-width: 1200px; margin: 0 auto; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px;">
-            <button id="open-categories-btn" class="header-cat-btn">
-                <div class="cat-icon-squares" style="width: 16px; height: 16px;">
-                    <span class="sq sq-red"></span><span class="sq sq-yellow"></span>
-                    <span class="sq sq-blue"></span><span class="sq sq-green"></span>
-                </div>
-                Categories
-            </button>
-            <div class="theme-toggle">
-                <input type="checkbox" id="theme-switch" class="theme-switch-input">
-                <label for="theme-switch" class="theme-switch-label">
-                    <i class="fas fa-moon"></i>
-                    <i class="fas fa-sun"></i>
-                    <span class="toggle-ball"></span>
-                </label>
-            </div>
-        </div>
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-        <div class="dashboard-header">
-            <h1>Nexus Calculator</h1>
-            <p>Your all-in-one calculation hub</p>
+    <!-- Side Navigation Drawer -->
+    <aside class="side-drawer" id="side-drawer">
+        <div class="drawer-header">
+            <h2>Nexus Calculator</h2>
+            <button class="close-drawer-btn" id="close-drawer-btn"><i class="fas fa-times"></i></button>
         </div>
         
-        <nav class="app-bottom-nav" style="padding: 0; background: transparent; border: none; box-shadow: none;">
+        <div class="drawer-content">
+            <!-- Theme Toggle moved here -->
+            <div class="drawer-item theme-toggle-container">
+                <div class="drawer-item-left">
+                    <i class="fas fa-palette"></i>
+                    <span>Theme</span>
+                </div>
+                <div class="theme-toggle">
+                    <input type="checkbox" id="theme-switch" class="theme-switch-input">
+                    <label for="theme-switch" class="theme-switch-label">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                        <span class="toggle-ball"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="drawer-divider"></div>
+
+            <button class="drawer-item" id="drawer-categories-btn">
+                <div class="drawer-item-left">
+                    <div class="cat-icon-squares" style="width: 16px; height: 16px; margin-right: 15px;">
+                        <span class="sq sq-red"></span><span class="sq sq-yellow"></span>
+                        <span class="sq sq-blue"></span><span class="sq sq-green"></span>
+                    </div>
+                    <span>All Categories</span>
+                </div>
+                <i class="fas fa-chevron-right" style="font-size: 0.8rem; color: var(--text-secondary);"></i>
+            </button>
+
+            <div class="drawer-divider"></div>
+
+            <a href="pages/privacy.html" class="drawer-item">
+                <div class="drawer-item-left">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Privacy Policy</span>
+                </div>
+            </a>
+
+            <a href="pages/terms.html" class="drawer-item">
+                <div class="drawer-item-left">
+                    <i class="fas fa-file-contract"></i>
+                    <span>Terms & Conditions</span>
+                </div>
+            </a>
+
+            <a href="pages/about.html" class="drawer-item">
+                <div class="drawer-item-left">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About</span>
+                </div>
+            </a>
+        </div>
+    </aside>
+
+    <div class="dashboard-wrapper">
+        <div class="top-controls" style="max-width: 1200px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: center; padding: 15px 20px; position: relative;">
+            <button id="hamburger-menu-btn" class="hamburger-btn" style="position: absolute; left: 20px; background: transparent; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; padding: 5px;">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="dashboard-header" style="margin: 0; padding: 0; text-align: center;">
+                <h1 style="font-size: 1.6rem; margin-bottom: 2px;">Nexus Calculator</h1>
+                <p style="font-size: 0.85rem; margin: 0;">Your all-in-one calculation hub</p>
+            </div>
+        </div>
+        <nav class="app-bottom-nav" style="padding: 0; background: transparent; border: none; box-shadow: none; margin-bottom: 10px;">
             <div class="search-container" style="width: 100%; max-width: 600px; margin: 0 auto;">
                 <div class="input-group" style="position: relative; margin: 0;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
