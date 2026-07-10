@@ -14,10 +14,10 @@
     --btn-border: rgba(255, 255, 255, 0.05);
 
     --btn-action-text: #38bdf8;
-    --btn-operator-bg: rgba(56, 189, 248, 0.15);
+    --btn-operator-bg: rgba(56, 189, 248, 0.2);
     --btn-operator-text: #38bdf8;
-    --btn-equal-bg: #38bdf8;
-    --btn-equal-text: #0f172a;
+    --btn-equal-bg: linear-gradient(135deg, #38bdf8, #8b5cf6);
+    --btn-equal-text: #ffffff;
 
     --blob-1: #3b82f6;
     --blob-2: #8b5cf6;
@@ -486,8 +486,23 @@ body {
 .btn-operator {
     background: var(--btn-operator-bg);
     color: var(--btn-operator-text);
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+.btn-number {
+    background: rgba(255, 255, 255, 0.08);
     font-weight: 500;
+}
+
+.btn-danger {
+    color: #ef4444 !important;
+    background: rgba(239, 68, 68, 0.15) !important;
+    font-weight: 600;
+}
+
+.btn-danger:hover {
+    background: rgba(239, 68, 68, 0.25) !important;
 }
 
 .btn-sci {
@@ -1113,7 +1128,8 @@ select.custom-input option {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--bg-color);
+    background: var(--calc-bg);
+    backdrop-filter: blur(20px);
     z-index: 1000;
     display: none;
     flex-direction: column;
@@ -1468,8 +1484,14 @@ select.custom-input option {
     
     .dashboard-body .calculator-wrapper {
         margin-bottom: 0 !important;
-        transform: scale(0.95);
         transform-origin: top center;
     }
+}
+
+/* Student Calculator Result Formatting */
+#student-solution-steps b {
+    color: var(--calc-accent);
+    font-size: 1.15rem;
+    font-weight: 600;
 }
 }

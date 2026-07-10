@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GST Calculator</title>
+    <link rel="stylesheet" href="../style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-elements">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="calculator-wrapper">
+
+        <div class="top-nav-bar">
+            <a href="../index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back</span>
+            </a>
+        </div>
+        
+        <div class="calculator">
+            <div class="calc-view active">
+                <div class="calc-header">
+                    <h2>GST Calculator</h2>
+                    <p>India Specific</p>
+                </div>
+                
+                <div class="form-box">
+                    <div class="input-group">
+                        <label>Amount (₹)</label>
+                        <input type="number" id="gst-amount" placeholder="e.g. 1000" step="any" class="custom-input">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>GST Rate (%)</label>
+                        <select id="gst-rate" class="custom-input">
+                            <option value="3">3%</option>
+                            <option value="5">5%</option>
+                            <option value="12">12%</option>
+                            <option value="18" selected>18%</option>
+                            <option value="28">28%</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Calculation Type</label>
+                        <select id="gst-type" class="custom-input">
+                            <option value="add">Add GST (+)</option>
+                            <option value="remove">Remove GST (-)</option>
+                        </select>
+                    </div>
+
+                    <button class="action-btn" id="calc-gst-btn">Calculate</button>
+                    <button type="button" class="action-btn clear-btn" id="clear-gst-btn" style="background: transparent; border: 1px solid #ef4444; color: #ef4444; margin-top: 10px;">Clear Data</button>
+                </div>
+
+                <div class="result-container" id="gst-result" style="display: none;">
+                    <h3 style="color: var(--text-primary); margin-bottom: 15px; font-size: 1.1rem;">Calculation Details</h3>
+                    
+                    <div class="result-row" style="display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--text-secondary);">
+                        <span>Net Amount (Before GST):</span>
+                        <span id="res-net" style="color: var(--text-primary); font-weight: 500;">₹0.00</span>
+                    </div>
+
+                    <div class="result-row" style="display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--text-secondary);">
+                        <span>CGST (<span id="res-cgst-rate">9</span>%):</span>
+                        <span id="res-cgst" style="color: var(--text-primary); font-weight: 500;">₹0.00</span>
+                    </div>
+
+                    <div class="result-row" style="display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--text-secondary);">
+                        <span>SGST (<span id="res-sgst-rate">9</span>%):</span>
+                        <span id="res-sgst" style="color: var(--text-primary); font-weight: 500;">₹0.00</span>
+                    </div>
+
+                    <div class="result-row" style="display: flex; justify-content: space-between; margin-bottom: 15px; color: var(--text-secondary); border-bottom: 1px solid var(--calc-border); padding-bottom: 10px;">
+                        <span>Total GST Amount:</span>
+                        <span id="res-total-gst" style="color: var(--text-primary); font-weight: 500;">₹0.00</span>
+                    </div>
+
+                    <div class="result-row" style="display: flex; justify-content: space-between; color: var(--calc-accent); font-size: 1.2rem; font-weight: 600;">
+                        <span>Gross Amount (With GST):</span>
+                        <span id="res-gross">₹0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/script.js"></script>
+    <script src="../js/gst.js"></script>
+
+    <script>
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.matches && e.target.matches('.action-btn:not(.clear-btn)')) {
+                const formBox = e.target.closest('.form-box');
+                if (formBox) {
+                    const inputs = formBox.querySelectorAll('input[type="number"], input[type="text"]');
+                    let isEmpty = false;
+                    inputs.forEach(input => {
+                        if (input.value.trim() === '') isEmpty = true;
+                    });
+                    
+                    if (isEmpty) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        
+                        let errorMsg = formBox.querySelector('.global-error-msg');
+                        if (!errorMsg) {
+                            errorMsg = document.createElement('div');
+                            errorMsg.className = 'global-error-msg';
+                            errorMsg.style.color = '#ef4444';
+                            errorMsg.style.fontSize = '0.9rem';
+                            errorMsg.style.marginTop = '15px';
+                            errorMsg.style.textAlign = 'center';
+                            errorMsg.style.fontWeight = '500';
+                            errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill out all required fields.';
+                            
+                            // Insert at the end of form-box
+                            formBox.appendChild(errorMsg);
+                        }
+                        
+                        // Hide results if they are shown
+                        const resultContainer = document.querySelector('.result-container');
+                        if (resultContainer) resultContainer.style.display = 'none';
+                    } else {
+                        const errorMsg = formBox.querySelector('.global-error-msg');
+                        if (errorMsg) errorMsg.remove();
+                    }
+                }
+            }
+        }, true);
+    </script>
+</body>
+</html>

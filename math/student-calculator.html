@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Calculator</title>
+    <link rel="stylesheet" href="../style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-elements">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="calculator-wrapper">
+
+        <div class="top-nav-bar">
+            <a href="../index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back</span>
+            </a>
+        </div>
+        
+        <div class="calculator">
+            <div class="calc-view active">
+                <div class="calc-header">
+                    <h2>Student Calculator</h2>
+                    <p>Formula & Step-by-step Solver</p>
+                </div>
+                
+                <div class="form-box">
+                    <div class="input-group">
+                        <label>Math Category</label>
+                        <select id="student-category" class="custom-input">
+                            <option value="" disabled selected>Select Category</option>
+                            <option value="arithmetic">Arithmetic</option>
+                            <option value="algebra">Algebra</option>
+                            <option value="geometry">Geometry</option>
+                            <option value="trigonometry">Trigonometry</option>
+                            <option value="statistics">Statistics</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group" id="formula-group" style="display: none;">
+                        <label>Select Formula</label>
+                        <select id="student-formula" class="custom-input">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+
+                    <!-- Dynamic Input Fields will be injected here -->
+                    <div id="dynamic-inputs-container" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;"></div>
+
+                    <button class="action-btn" id="calc-student-btn" disabled>Solve</button>
+                    <button type="button" class="action-btn clear-btn" id="clear-student-btn" style="background: transparent; border: 1px solid #ef4444; color: #ef4444; margin-top: 10px;">Clear Data</button>
+                </div>
+
+                <div class="result-container" id="student-result" style="display: none;">
+                    <h3 style="color: var(--calc-accent); margin-bottom: 10px; font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Solution</span>
+                    </h3>
+                    
+                    <div id="student-solution-steps" style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; border: 1px solid var(--calc-border);">
+                        <!-- Steps will be generated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/script.js"></script>
+    <script src="../js/student.js"></script>
+</body>
+</html>
