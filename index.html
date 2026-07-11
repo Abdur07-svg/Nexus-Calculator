@@ -3,16 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nexus Calculator</title>
     <script>
-        const _savedTheme = localStorage.getItem('theme');
-        if (_savedTheme) {
-            document.documentElement.setAttribute('data-theme', _savedTheme);
-        } else {
-            const _prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            document.documentElement.setAttribute('data-theme', _prefersDark ? 'dark' : 'light');
-        }
+        const _prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', _prefersDark ? 'dark' : 'light');
     </script>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -36,24 +31,6 @@
         </div>
         
         <div class="drawer-content">
-            <!-- Theme Toggle moved here -->
-            <div class="drawer-item theme-toggle-container">
-                <div class="drawer-item-left">
-                    <i class="fas fa-palette"></i>
-                    <span>Theme</span>
-                </div>
-                <div class="theme-toggle">
-                    <input type="checkbox" id="theme-switch" class="theme-switch-input">
-                    <label for="theme-switch" class="theme-switch-label">
-                        <i class="fas fa-moon"></i>
-                        <i class="fas fa-sun"></i>
-                        <span class="toggle-ball"></span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="drawer-divider"></div>
-
             <button class="drawer-item" id="drawer-categories-btn">
                 <div class="drawer-item-left">
                     <div class="cat-icon-squares" style="width: 16px; height: 16px; margin-right: 15px;">

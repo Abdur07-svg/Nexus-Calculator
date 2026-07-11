@@ -1,36 +1,19 @@
 document?.addEventListener('DOMContentLoaded', () => {
-    // Theme Toggle Logic
-    const themeSwitch = document.getElementById('theme-switch');
+    // Theme Logic (System Preference)
     const htmlElement = document.documentElement;
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 
-    function applyTheme(theme) {
-        htmlElement.setAttribute('data-theme', theme);
-        if (themeSwitch) {
-            themeSwitch.checked = (theme === 'light');
-        }
+    function applyTheme(isDark) {
+        htmlElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
     }
 
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-        applyTheme(savedTheme);
-    } else {
-        applyTheme(systemPrefersDark.matches ? 'dark' : 'light');
-    }
+    // Initial apply
+    applyTheme(systemPrefersDark.matches);
 
+    // Listen for system changes (e.g., user toggles phone's dark mode)
     systemPrefersDark.addEventListener('change', (e) => {
-        if (!localStorage.getItem('theme')) {
-            applyTheme(e.matches ? 'dark' : 'light');
-        }
+        applyTheme(e.matches);
     });
-
-    if (themeSwitch) {
-        themeSwitch.addEventListener('change', () => {
-            const newTheme = themeSwitch.checked ? 'light' : 'dark';
-            applyTheme(newTheme);
-            localStorage.setItem('theme', newTheme);
-        });
-    }
 
     // Sound Toggle Logic
     const soundToggleBtn = document.getElementById('sound-toggle-btn');
@@ -681,6 +664,7 @@ document?.addEventListener('DOMContentLoaded', () => {
             if(targetDetails) {
                 categoriesContainer.style.display = 'none';
                 targetDetails.style.display = 'flex';
+                localStorage.setItem('openCategory', catId);
             }
         });
     });
@@ -692,6 +676,7 @@ document?.addEventListener('DOMContentLoaded', () => {
                 el.style.display = 'none';
             });
             categoriesContainer.style.display = 'block';
+            localStorage.removeItem('openCategory');
         });
     });
 
@@ -710,6 +695,7 @@ document?.addEventListener('DOMContentLoaded', () => {
 
     if (closeCategoriesModal && categoriesModal) {
         closeCategoriesModal.addEventListener('click', () => {
+            localStorage.removeItem('openCategory');
             if (window.history.state && window.history.state.modalOpen) {
                 window.history.back();
             } else {
@@ -728,6 +714,7 @@ document?.addEventListener('DOMContentLoaded', () => {
     // Handle hardware back button for modals
     window.addEventListener('popstate', (e) => {
         if (categoriesModal && categoriesModal.classList.contains('active')) {
+            localStorage.removeItem('openCategory');
             categoriesModal.classList.remove('active');
             if(categoriesContainer) {
                 document.querySelectorAll('.omni-category-details').forEach(el => {
@@ -890,4 +877,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+    
+    // Auto-open category if returning from a specific calculator
+    const savedCategory = localStorage.getItem('openCategory');
+    if (savedCategory) {
+        const catModal = document.getElementById('categories-modal');
+        const catContainer = document.querySelector('.omni-categories-container');
+        const targetDetails = document.getElementById('cat-details-' + savedCategory);
+        if (targetDetails && catModal && catContainer) {
+            catContainer.style.display = 'none';
+            targetDetails.style.display = 'flex';
+            if (!window.history.state || !window.history.state.modalOpen) {
+                window.history.pushState({ modalOpen: true }, '');
+            }
+            catModal.classList.add('active');
+        }
+    }
 });
