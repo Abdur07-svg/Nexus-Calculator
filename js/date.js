@@ -7,16 +7,28 @@ document?.addEventListener('DOMContentLoaded', () => {
     const mainResult = document.getElementById('date-main-result');
     const detailsResult = document.getElementById('date-details');
 
-    // Set today as default (MM/DD/YYYY)
+    // Helper to safely parse DD/MM/YYYY
+    function parseDateStr(str) {
+        if (!str) return new Date("");
+        const parts = str.split('/');
+        if (parts.length === 3) {
+            return new Date(parts[2], parts[1] - 1, parts[0]);
+        }
+        return new Date(str);
+    }
+
+    // Set today as default (DD/MM/YYYY)
     const todayObj = new Date();
-    const todayStr = `${todayObj.getMonth() + 1}/${todayObj.getDate()}/${todayObj.getFullYear()}`;
+    const dd = String(todayObj.getDate()).padStart(2, '0');
+    const mm = String(todayObj.getMonth() + 1).padStart(2, '0');
+    const todayStr = `${dd}/${mm}/${todayObj.getFullYear()}`;
     document.getElementById('date-start').value = todayStr;
     document.getElementById('date-end').value = todayStr;
     document.getElementById('date-base').value = todayStr;
 
     if (typeof flatpickr !== 'undefined') {
         flatpickr(".date-input", {
-            dateFormat: "m/d/Y",
+            dateFormat: "d/m/Y",
             allowInput: true,
             disableMobile: "true"
         });
@@ -42,8 +54,8 @@ document?.addEventListener('DOMContentLoaded', () => {
     });
 
     function calculateDifference() {
-        const start = new Date(document.getElementById('date-start').value);
-        const end = new Date(document.getElementById('date-end').value);
+        const start = parseDateStr(document.getElementById('date-start').value);
+        const end = parseDateStr(document.getElementById('date-end').value);
 
         if (isNaN(start.getTime()) || isNaN(end.getTime())) {
             showError("Please enter valid dates.");
@@ -76,7 +88,7 @@ document?.addEventListener('DOMContentLoaded', () => {
     }
 
     function calculateAddSub() {
-        const base = new Date(document.getElementById('date-base').value);
+        const base = parseDateStr(document.getElementById('date-base').value);
         const op = document.getElementById('date-op').value;
         const years = parseInt(document.getElementById('date-years').value) || 0;
         const months = parseInt(document.getElementById('date-months').value) || 0;

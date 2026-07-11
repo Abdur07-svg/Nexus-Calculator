@@ -31,11 +31,11 @@ document?.addEventListener('DOMContentLoaded', () => {
     function playClickSound() {
         if (!soundEnabled) return;
         initAudio();
-        
+
         if (audioCtx.state === 'suspended') {
             audioCtx.resume();
         }
-        
+
         const oscillator = audioCtx.createOscillator();
         const gainNode = audioCtx.createGain();
 
@@ -105,7 +105,7 @@ document?.addEventListener('DOMContentLoaded', () => {
     // Calculator Logic
     const previousOperandTextElement = document.getElementById('previous-operand');
     const currentOperandTextElement = document.getElementById('current-operand');
-    
+
     let displayStr = '0';
     let previousStr = '';
     let memory = 0;
@@ -132,7 +132,7 @@ document?.addEventListener('DOMContentLoaded', () => {
                 shouldResetScreen = true;
                 updateDisplay();
                 const panel = document.getElementById('mobile-history-panel');
-                if(panel) panel.classList.remove('active');
+                if (panel) panel.classList.remove('active');
             });
             historyList.appendChild(li);
         });
@@ -191,9 +191,9 @@ document?.addEventListener('DOMContentLoaded', () => {
 
     function calculate() {
         if (displayStr === 'Error') return;
-        
+
         previousStr = displayStr + ' =';
-        
+
         let expr = displayStr;
         // Basic replacements
         expr = expr.replace(/×/g, '*').replace(/÷/g, '/').replace(/π/g, 'Math.PI').replace(/e/g, 'Math.E');
@@ -203,14 +203,14 @@ document?.addEventListener('DOMContentLoaded', () => {
         expr = expr.replace(/(\d+(?:\.\d+)?)%/g, '($1/100)');
         // Factorials (simple regex for integers)
         expr = expr.replace(/(\d+)!/g, 'factorial($1)');
-        
+
         // Implicit multiplication
         expr = expr.replace(/(\d+)\s*\(/g, '$1*('); // 4( -> 4*(
         expr = expr.replace(/\)\s*(\d+)/g, ')*$1'); // )4 -> )*4
         expr = expr.replace(/\)\s*\(/g, ')*(');     // )( -> )*(
         expr = expr.replace(/(\d+)\s*(sin|cos|tan|asin|acos|atan|log|ln|sqrt|cbrt|π|Math\.E)/g, '$1*$2'); // 4sin -> 4*sin
         expr = expr.replace(/\)\s*(sin|cos|tan|asin|acos|atan|log|ln|sqrt|cbrt|π|Math\.E)/g, ')*$1'); // )sin -> )*sin
-        
+
         // Fix JS Unary Minus before exponentiation (e.g., -4**2 throws error)
         expr = expr.replace(/(^|[×÷+\-*\/^(])-\s*(\d+(?:\.\d+)?|\([^)]+\))/g, '$1(0-1)*$2');
 
@@ -250,10 +250,10 @@ document?.addEventListener('DOMContentLoaded', () => {
                 ${mathHelpers}
                 return ${expr};
             `;
-            
+
             const func = new Function('isDeg', toEval);
             let result = func(isDeg);
-            
+
             if (!isFinite(result) || isNaN(result)) {
                 displayStr = 'Error';
             } else {
@@ -266,7 +266,7 @@ document?.addEventListener('DOMContentLoaded', () => {
         } catch (e) {
             displayStr = 'Error';
         }
-        
+
         shouldResetScreen = true;
         updateDisplay();
     }
@@ -295,10 +295,10 @@ document?.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.btn-number, .btn-operator, .btn-sci, .btn-action, .btn-equal').forEach(btn => {
         btn?.addEventListener('click', () => {
             playClickSound();
-            
+
             if (btn.classList.contains('btn-number')) {
                 appendStr(btn.dataset.number);
-            } 
+            }
             else if (btn.classList.contains('btn-operator')) {
                 appendStr(btn.dataset.operator);
             }
@@ -334,14 +334,14 @@ document?.addEventListener('DOMContentLoaded', () => {
                 }
                 else if (action === 'm-plus') {
                     if (displayStr !== 'Error') {
-                        try { calculate(); } catch(e){}
+                        try { calculate(); } catch (e) { }
                         memory += parseFloat(displayStr) || 0;
                         shouldResetScreen = true;
                     }
                 }
                 else if (action === 'm-minus') {
                     if (displayStr !== 'Error') {
-                        try { calculate(); } catch(e){}
+                        try { calculate(); } catch (e) { }
                         memory -= parseFloat(displayStr) || 0;
                         shouldResetScreen = true;
                     }
@@ -363,7 +363,7 @@ document?.addEventListener('DOMContentLoaded', () => {
         const allowedKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '=', 'Enter', 'Backspace', 'Escape', 'Delete', '+', '-', '*', '/', '%', '(', ')', '^'];
         if (allowedKeys.includes(e.key)) {
             playClickSound();
-            
+
             if (e.key >= '0' && e.key <= '9' || e.key === '.' || e.key === '(' || e.key === ')' || e.key === '^' || e.key === '%') {
                 appendStr(e.key);
             }
@@ -400,7 +400,7 @@ document?.addEventListener('DOMContentLoaded', () => {
             // Remove active from all nav buttons and views
             navBtns.forEach(b => b.classList.remove('active'));
             calcViews.forEach(v => v.classList.remove('active'));
-            
+
             // Add active to clicked nav button and corresponding view
             btn.classList.add('active');
             const viewId = btn.dataset.view;
@@ -417,10 +417,10 @@ document?.addEventListener('DOMContentLoaded', () => {
     if (savedTab && mainNavTabs.length > 0) {
         mainNavTabs.forEach(t => t.classList.remove('active'));
         mainTabViews.forEach(v => v.classList.remove('active-view'));
-        
+
         const targetTab = document.querySelector(`.nav-tab[data-target="${savedTab}"]`);
         const targetView = document.getElementById(savedTab);
-        
+
         if (targetTab) targetTab.classList.add('active');
         if (targetView) targetView.classList.add('active-view');
     }
@@ -430,7 +430,7 @@ document?.addEventListener('DOMContentLoaded', () => {
             playClickSound();
             mainNavTabs.forEach(t => t.classList.remove('active'));
             mainTabViews.forEach(v => v.classList.remove('active-view'));
-            
+
             tab.classList.add('active');
             const targetId = tab.dataset.target;
             const targetView = document.getElementById(targetId);
@@ -455,19 +455,19 @@ document?.addEventListener('DOMContentLoaded', () => {
             playClickSound();
             const heightCm = parseFloat(inputBmiHeight.value);
             const weightKg = parseFloat(inputBmiWeight.value);
-            
+
             if (!heightCm || !weightKg || heightCm <= 0 || weightKg <= 0) return;
-            
+
             const heightM = heightCm / 100;
             const bmi = weightKg / (heightM * heightM);
             const bmiRounded = bmi.toFixed(1);
-            
+
             bmiScoreDisplay.textContent = bmiRounded;
-            
+
             let category = '';
             let color = '';
             let percent = 0;
-            
+
             if (bmi < 18.5) {
                 category = 'Underweight';
                 color = '#3b82f6';
@@ -485,11 +485,11 @@ document?.addEventListener('DOMContentLoaded', () => {
                 color = '#ef4444';
                 percent = 75 + Math.min(((bmi - 30) / 10) * 25, 25);
             }
-            
+
             bmiCategoryDisplay.textContent = category;
             bmiScoreDisplay.style.color = color;
             bmiMarker.style.left = `${Math.min(Math.max(percent, 0), 100)}%`;
-            
+
             bmiResultContainer.style.display = 'block';
         });
     }
@@ -499,56 +499,56 @@ document?.addEventListener('DOMContentLoaded', () => {
     const inputAgeDob = document.getElementById('age-dob');
     const inputAgeTarget = document.getElementById('age-target');
     const ageResultContainer = document.getElementById('age-result-container');
-    
+
     if (inputAgeTarget) {
         // Set default target date to today
         const today = new Date();
-    if (inputAgeTarget) inputAgeTarget.value = today.toISOString().split('T')[0];
+        if (inputAgeTarget) inputAgeTarget.value = today.toISOString().split('T')[0];
     }
-    
+
     if (btnCalcAge) {
         btnCalcAge?.addEventListener('click', () => {
             playClickSound();
             if (!inputAgeDob.value || !inputAgeTarget.value) return;
-            
+
             const dob = new Date(inputAgeDob.value);
             const target = new Date(inputAgeTarget.value);
-            
+
             if (dob > target) {
                 alert("Date of birth cannot be after the target date!");
                 return;
             }
-            
+
             let years = target.getFullYear() - dob.getFullYear();
             let months = target.getMonth() - dob.getMonth();
             let days = target.getDate() - dob.getDate();
-            
+
             if (days < 0) {
                 months--;
                 // Get days in previous month
                 const prevMonth = new Date(target.getFullYear(), target.getMonth(), 0);
                 days += prevMonth.getDate();
             }
-            
+
             if (months < 0) {
                 years--;
                 months += 12;
             }
-            
+
             document.getElementById('age-years').textContent = years;
             document.getElementById('age-months').textContent = months;
             document.getElementById('age-days').textContent = days;
-            
+
             // Calculate totals
             const diffTime = Math.abs(target - dob);
             const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
             const totalWeeks = (totalDays / 7).toFixed(1);
             const totalMonths = (years * 12) + months;
-            
+
             document.getElementById('age-total-months').textContent = totalMonths;
             document.getElementById('age-total-weeks').textContent = totalWeeks;
             document.getElementById('age-total-days').textContent = totalDays;
-            
+
             ageResultContainer.style.display = 'block';
         });
     }
@@ -585,11 +585,11 @@ document?.addEventListener('DOMContentLoaded', () => {
         if (!searchResultsList) return;
         searchResultsList.innerHTML = '';
         const q = query.toLowerCase().trim();
-        
+
         let filtered = [];
         if (q.length > 0) {
-            filtered = allTools.filter(tool => 
-                tool.name.toLowerCase().includes(q) || 
+            filtered = allTools.filter(tool =>
+                tool.name.toLowerCase().includes(q) ||
                 tool.category.toLowerCase().includes(q)
             );
         }
@@ -623,7 +623,7 @@ document?.addEventListener('DOMContentLoaded', () => {
                 window.history.back();
             } else {
                 searchOverlay.classList.remove('active');
-                if(overlaySearchInput) overlaySearchInput.value = '';
+                if (overlaySearchInput) overlaySearchInput.value = '';
             }
         });
     }
@@ -654,14 +654,14 @@ document?.addEventListener('DOMContentLoaded', () => {
     const categoriesModal = document.getElementById('categories-modal');
     const categoriesContainer = document.querySelector('.omni-categories-container');
     const backToCategoriesBtns = document.querySelectorAll('.back-to-categories');
-    
+
     categoryButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             const catId = btn.getAttribute('data-category');
-            if(!catId) return;
-            
+            if (!catId) return;
+
             const targetDetails = document.getElementById('cat-details-' + catId);
-            if(targetDetails) {
+            if (targetDetails) {
                 categoriesContainer.style.display = 'none';
                 targetDetails.style.display = 'flex';
                 localStorage.setItem('openCategory', catId);
@@ -683,7 +683,7 @@ document?.addEventListener('DOMContentLoaded', () => {
     // Categories Modal Open/Close Logic
     const openCategoriesBtn = document.getElementById('open-categories-btn');
     const closeCategoriesModal = document.getElementById('close-categories-modal');
-    
+
     if (openCategoriesBtn && categoriesModal) {
         openCategoriesBtn.addEventListener('click', () => {
             if (!window.history.state || !window.history.state.modalOpen) {
@@ -701,7 +701,7 @@ document?.addEventListener('DOMContentLoaded', () => {
             } else {
                 categoriesModal.classList.remove('active');
                 // Reset view for next time
-                if(categoriesContainer) {
+                if (categoriesContainer) {
                     document.querySelectorAll('.omni-category-details').forEach(el => {
                         el.style.display = 'none';
                     });
@@ -710,13 +710,13 @@ document?.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
+
     // Handle hardware back button for modals
     window.addEventListener('popstate', (e) => {
         if (categoriesModal && categoriesModal.classList.contains('active')) {
             localStorage.removeItem('openCategory');
             categoriesModal.classList.remove('active');
-            if(categoriesContainer) {
+            if (categoriesContainer) {
                 document.querySelectorAll('.omni-category-details').forEach(el => {
                     el.style.display = 'none';
                 });
@@ -725,13 +725,13 @@ document?.addEventListener('DOMContentLoaded', () => {
         }
         if (searchOverlay && searchOverlay.classList.contains('active')) {
             searchOverlay.classList.remove('active');
-            if(overlaySearchInput) overlaySearchInput.value = '';
+            if (overlaySearchInput) overlaySearchInput.value = '';
         }
         const sideDrawer = document.getElementById('side-drawer');
         const sidebarOverlay = document.getElementById('sidebar-overlay');
         if (sideDrawer && sideDrawer.classList.contains('active')) {
             sideDrawer.classList.remove('active');
-            if(sidebarOverlay) sidebarOverlay.classList.remove('active');
+            if (sidebarOverlay) sidebarOverlay.classList.remove('active');
         }
     });
 
@@ -746,15 +746,15 @@ document?.addEventListener('DOMContentLoaded', () => {
         if (!window.history.state || !window.history.state.drawerOpen) {
             window.history.pushState({ drawerOpen: true }, '');
         }
-        if(sideDrawer) sideDrawer.classList.add('active');
-        if(sidebarOverlay) sidebarOverlay.classList.add('active');
+        if (sideDrawer) sideDrawer.classList.add('active');
+        if (sidebarOverlay) sidebarOverlay.classList.add('active');
         // Prevent body scroll
         document.body.style.overflow = 'hidden';
     }
 
     function closeDrawer() {
-        if(sideDrawer) sideDrawer.classList.remove('active');
-        if(sidebarOverlay) sidebarOverlay.classList.remove('active');
+        if (sideDrawer) sideDrawer.classList.remove('active');
+        if (sidebarOverlay) sidebarOverlay.classList.remove('active');
         document.body.style.overflow = '';
     }
 
@@ -802,16 +802,11 @@ document?.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('a[href]').forEach(link => {
         if (link.hostname === window.location.hostname && link.getAttribute('href') !== '#' && !link.getAttribute('href').startsWith('javascript:')) {
             link?.addEventListener('click', (e) => {
-                e.preventDefault();
                 const wrapper = document.querySelector('.calculator-wrapper') || document.querySelector('.dashboard-wrapper');
                 if (wrapper) {
                     wrapper.classList.add('page-exit');
-                    setTimeout(() => {
-                        window.location.href = link.href;
-                    }, 150);
-                } else {
-                    window.location.href = link.href;
                 }
+                // Removed setTimeout to navigate instantly
             });
         }
     });
@@ -840,7 +835,7 @@ document?.addEventListener('keydown', (e) => {
                     const text = btn.innerText ? btn.innerText.toLowerCase() : '';
                     return (id.includes('calc') && id.includes('btn')) || text.includes('calculate') || text.includes('solve');
                 });
-                
+
                 if (calcBtn) {
                     // Slight delay to allow plugins to update input values
                     setTimeout(() => {
@@ -858,7 +853,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
         if (input.type === 'checkbox' || input.type === 'radio') return;
-        
+
         input.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 const calculatorDiv = input.closest('.calculator');
@@ -866,18 +861,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (calculatorDiv) {
                     calcBtn = calculatorDiv.querySelector('button.action-btn, button[id^="calc-"]');
                 }
-                
+
                 if (!calcBtn) {
                     calcBtn = document.querySelector('button.action-btn, button[id^="calc-"]');
                 }
-                
+
                 if (calcBtn) {
                     calcBtn.click();
                 }
             }
         });
     });
-    
+
+    // Auto-format date inputs as DD/MM/YYYY
+    const dateInputs = document.querySelectorAll('.date-input');
+    dateInputs.forEach(input => {
+        input.addEventListener('input', (e) => {
+            if (e.inputType === 'deleteContentBackward') return;
+
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length > 8) v = v.slice(0, 8);
+
+            if (v.length >= 5) {
+                e.target.value = `${v.slice(0, 2)}/${v.slice(2, 4)}/${v.slice(4)}`;
+            } else if (v.length >= 3) {
+                e.target.value = `${v.slice(0, 2)}/${v.slice(2)}`;
+            } else {
+                e.target.value = v;
+            }
+        });
+    });
     // Auto-open category if returning from a specific calculator
     const savedCategory = localStorage.getItem('openCategory');
     if (savedCategory) {
@@ -892,5 +905,77 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             catModal.classList.add('active');
         }
+    }
+}
+);
+
+// Native Back Button Handling for Capacitor Android
+document?.addEventListener('DOMContentLoaded', () => {
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+        const { App, Dialog } = window.Capacitor.Plugins;
+
+        App.addListener('backButton', async ({ canGoBack }) => {
+            const categoriesModal = document.getElementById('categories-modal');
+            const searchOverlay = document.getElementById('search-overlay');
+            const sideDrawer = document.getElementById('side-drawer');
+
+            // Close categories modal
+            if (categoriesModal && categoriesModal.classList.contains('active')) {
+                localStorage.removeItem('openCategory');
+                categoriesModal.classList.remove('active');
+                const categoriesContainer = document.querySelector('.omni-categories-container');
+                if (categoriesContainer) {
+                    document.querySelectorAll('.omni-category-details').forEach(el => {
+                        el.style.display = 'none';
+                    });
+                    categoriesContainer.style.display = 'block';
+                }
+                return;
+            }
+
+            // Close search overlay
+            if (searchOverlay && searchOverlay.classList.contains('active')) {
+                searchOverlay.classList.remove('active');
+                const overlaySearchInput = document.getElementById('overlay-search-input');
+                if (overlaySearchInput) overlaySearchInput.value = '';
+                return;
+            }
+
+            // Close side drawer
+            if (sideDrawer && sideDrawer.classList.contains('open')) {
+                sideDrawer.classList.remove('open');
+                const overlay = document.querySelector('.drawer-overlay');
+                if (overlay) overlay.classList.remove('active');
+                return;
+            }
+
+            // Check if we are on the Home screen
+            const path = window.location.pathname;
+            const isHome = path.endsWith('index.html') || path.endsWith('www/') || path.endsWith('android_asset/public/');
+
+            if (isHome) {
+                if (Dialog) {
+                    const { value } = await Dialog.confirm({
+                        title: 'Exit App',
+                        message: 'Are you sure you want to exit Nexus Calculator?',
+                        okButtonTitle: 'Exit',
+                        cancelButtonTitle: 'Cancel'
+                    });
+                    if (value) {
+                        App.exitApp();
+                    }
+                } else {
+                    if (window.confirm("Are you sure you want to exit?")) {
+                        App.exitApp();
+                    }
+                }
+            } else {
+                if (canGoBack) {
+                    window.history.back();
+                } else {
+                    window.location.href = '../index.html';
+                }
+            }
+        });
     }
 });

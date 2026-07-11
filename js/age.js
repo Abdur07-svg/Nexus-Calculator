@@ -439,13 +439,25 @@ document?.addEventListener('DOMContentLoaded', () => {
     const inputAgeTarget = document.getElementById('age-target');
     const ageResultContainer = document.getElementById('age-result-container');
     
-    // Set default target date to today (MM/DD/YYYY)
+    // Helper to safely parse DD/MM/YYYY
+    function parseDateStr(str) {
+        if (!str) return new Date("");
+        const parts = str.split('/');
+        if (parts.length === 3) {
+            return new Date(parts[2], parts[1] - 1, parts[0]);
+        }
+        return new Date(str);
+    }
+    
+    // Set default target date to today (DD/MM/YYYY)
     const today = new Date();
-    if (inputAgeTarget) inputAgeTarget.value = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    if (inputAgeTarget) inputAgeTarget.value = `${dd}/${mm}/${today.getFullYear()}`;
     
     if (typeof flatpickr !== 'undefined') {
         flatpickr(".date-input", {
-            dateFormat: "m/d/Y",
+            dateFormat: "d/m/Y",
             allowInput: true,
             disableMobile: "true"
         });
@@ -456,8 +468,8 @@ document?.addEventListener('DOMContentLoaded', () => {
                 playClickSound();
                 if (!inputAgeDob.value || !inputAgeTarget.value) return;
                 
-                const dob = new Date(inputAgeDob.value);
-                const target = new Date(inputAgeTarget.value);
+                const dob = parseDateStr(inputAgeDob.value);
+                const target = parseDateStr(inputAgeTarget.value);
                 
                 if (dob > target) {
                     alert("Date of birth cannot be after the target date!");

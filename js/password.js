@@ -17,7 +17,22 @@ document?.addEventListener('DOMContentLoaded', () => {
     };
 
     lengthSlider?.addEventListener('input', () => {
-        lengthVal.textContent = lengthSlider.value;
+        if (lengthVal) lengthVal.value = lengthSlider.value;
+    });
+
+    lengthVal?.addEventListener('input', () => {
+        let val = parseInt(lengthVal.value);
+        if (!isNaN(val) && val >= 4 && val <= 64) {
+            if (lengthSlider) lengthSlider.value = val;
+        }
+    });
+
+    lengthVal?.addEventListener('change', () => {
+        let val = parseInt(lengthVal.value);
+        if (isNaN(val) || val < 4) val = 4;
+        if (val > 64) val = 64;
+        if (lengthVal) lengthVal.value = val;
+        if (lengthSlider) lengthSlider.value = val;
     });
 
     function generatePassword() {
@@ -30,6 +45,9 @@ document?.addEventListener('DOMContentLoaded', () => {
         if (charset === '') {
             passwordDisplay.textContent = 'Select at least one option';
             passwordDisplay.style.color = '#ef4444';
+            passwordDisplay.style.wordBreak = 'normal';
+            passwordDisplay.style.fontSize = '1.1rem';
+            passwordDisplay.style.fontFamily = "'Outfit', sans-serif";
             return;
         }
 
@@ -44,6 +62,9 @@ document?.addEventListener('DOMContentLoaded', () => {
 
         passwordDisplay.textContent = password;
         passwordDisplay.style.color = 'var(--calc-accent)';
+        passwordDisplay.style.wordBreak = 'break-all';
+        passwordDisplay.style.fontSize = '1.4rem';
+        passwordDisplay.style.fontFamily = 'monospace';
     }
 
     generateBtn?.addEventListener('click', generatePassword);

@@ -29,7 +29,7 @@
             <h2>Nexus Calculator</h2>
             <button class="close-drawer-btn" id="close-drawer-btn"><i class="fas fa-times"></i></button>
         </div>
-        
+
         <div class="drawer-content">
             <button class="drawer-item" id="drawer-categories-btn">
                 <div class="drawer-item-left">
@@ -68,8 +68,10 @@
     </aside>
 
     <div class="dashboard-wrapper">
-        <div class="top-controls" style="max-width: 1200px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: center; padding: 15px 20px; position: relative;">
-            <button id="hamburger-menu-btn" class="hamburger-btn" style="position: absolute; left: 20px; background: transparent; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; padding: 5px;">
+        <div class="top-controls"
+            style="max-width: 1200px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: center; padding: 15px 20px; position: relative;">
+            <button id="hamburger-menu-btn" class="hamburger-btn"
+                style="position: absolute; left: 20px; background: transparent; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; padding: 5px;">
                 <i class="fas fa-bars"></i>
             </button>
             <div class="dashboard-header" style="margin: 0; padding: 0; text-align: center;">
@@ -77,7 +79,8 @@
                 <p style="font-size: 0.85rem; margin: 0;">Your all-in-one calculation hub</p>
             </div>
         </div>
-        <nav class="app-bottom-nav" style="padding: 0; background: transparent; border: none; box-shadow: none; margin-bottom: 10px;">
+        <nav class="app-bottom-nav"
+            style="padding: 0; background: transparent; border: none; box-shadow: none; margin-bottom: 10px;">
             <div class="search-container" style="width: 100%; max-width: 600px; margin: 0 auto;">
                 <div class="input-group" style="position: relative; margin: 0;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -86,8 +89,7 @@
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-                    <input type="text" id="dashboard-search" placeholder="Search tools (e.g. BMI, GPA,..)"
-                        style="
+                    <input type="text" id="dashboard-search" placeholder="Search tools (e.g. BMI, GPA,..)" style="
                         width: 100%; 
                         height: 55px;
                         padding-left: 20px; 
@@ -110,168 +112,175 @@
 
         <div id="calculator-view">
             <div class="calculator-wrapper" style="margin-bottom: 30px;">
-            <div class="calculator" style="margin: 0 auto;">
-                <div class="display" style="position: relative;">
-                    <button id="history-toggle-btn" class="mobile-history-icon" style="position: absolute; bottom: -5px; left: 5px; background: transparent; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; z-index: 10; padding: 10px;">
-                        <i class="fas fa-history"></i>
-                    </button>
-                    <div class="previous-operand" id="previous-operand"></div>
-                    <div class="current-operand" id="current-operand">0</div>
-                </div>
-                
-                <div id="mobile-history-panel" class="mobile-history-panel">
-                    <div class="history-header">
-                        <span>History</span>
-                        <button id="clear-history-btn"><i class="fas fa-trash"></i></button>
-                    </div>
-                    <ul id="history-list"></ul>
-                </div>
-                <div class="keypad-wrapper">
-                    <div class="keypad basic-keypad" id="basic-keypad"
-                        style="width: 100%; grid-template-columns: repeat(4, 1fr);">
-                        <!-- Row 1 -->
-                        <button class="btn btn-action" data-action="mc">mc</button>
-                        <button class="btn btn-action" data-action="m-plus">m+</button>
-                        <button class="btn btn-action" data-action="m-minus">m-</button>
-                        <button class="btn btn-action" data-action="mr">mr</button>
-
-                        <!-- Row 2 -->
-                        <button class="btn btn-action btn-danger" data-action="clear">AC</button>
-                        <button class="btn btn-action btn-danger" data-action="delete"
-                            style="display: flex; align-items: center; justify-content: center;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
-                                <line x1="18" y1="9" x2="12" y2="15"></line>
-                                <line x1="12" y1="9" x2="18" y2="15"></line>
-                            </svg>
+                <div class="calculator" style="margin: 0 auto;">
+                    <div class="display" style="position: relative;">
+                        <button id="history-toggle-btn" class="mobile-history-icon"
+                            style="position: absolute; bottom: -5px; left: 5px; background: transparent; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; z-index: 10; padding: 10px;">
+                            <i class="fas fa-history"></i>
                         </button>
-                        <button class="btn btn-action" data-action="sign">+/-</button>
-                        <button class="btn btn-operator" data-operator="÷" data-action="append">÷</button>
+                        <div class="previous-operand" id="previous-operand"></div>
+                        <div class="current-operand" id="current-operand">0</div>
+                    </div>
 
-                        <!-- Row 3 -->
-                        <button class="btn btn-number" data-number="7">7</button>
-                        <button class="btn btn-number" data-number="8">8</button>
-                        <button class="btn btn-number" data-number="9">9</button>
-                        <button class="btn btn-operator" data-operator="×" data-action="append">×</button>
+                    <div id="mobile-history-panel" class="mobile-history-panel">
+                        <div class="history-header">
+                            <span>History</span>
+                            <button id="clear-history-btn"><i class="fas fa-trash"></i></button>
+                        </div>
+                        <ul id="history-list"></ul>
+                    </div>
+                    <div class="keypad-wrapper">
+                        <div class="keypad basic-keypad" id="basic-keypad"
+                            style="width: 100%; grid-template-columns: repeat(4, 1fr);">
+                            <!-- Row 1 -->
+                            <button class="btn btn-action" data-action="mc">mc</button>
+                            <button class="btn btn-action" data-action="m-plus">m+</button>
+                            <button class="btn btn-action" data-action="m-minus">m-</button>
+                            <button class="btn btn-action" data-action="mr">mr</button>
 
-                        <!-- Row 4 -->
-                        <button class="btn btn-number" data-number="4">4</button>
-                        <button class="btn btn-number" data-number="5">5</button>
-                        <button class="btn btn-number" data-number="6">6</button>
-                        <button class="btn btn-operator" data-operator="-" data-action="append">-</button>
+                            <!-- Row 2 -->
+                            <button class="btn btn-action btn-danger" data-action="clear">AC</button>
+                            <button class="btn btn-action btn-danger" data-action="delete"
+                                style="display: flex; align-items: center; justify-content: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
+                                    <line x1="18" y1="9" x2="12" y2="15"></line>
+                                    <line x1="12" y1="9" x2="18" y2="15"></line>
+                                </svg>
+                            </button>
+                            <button class="btn btn-action" data-action="sign">+/-</button>
+                            <button class="btn btn-operator" data-operator="÷" data-action="append">÷</button>
 
-                        <!-- Row 5 -->
-                        <button class="btn btn-number" data-number="1">1</button>
-                        <button class="btn btn-number" data-number="2">2</button>
-                        <button class="btn btn-number" data-number="3">3</button>
-                        <button class="btn btn-operator" data-operator="+" data-action="append">+</button>
+                            <!-- Row 3 -->
+                            <button class="btn btn-number" data-number="7">7</button>
+                            <button class="btn btn-number" data-number="8">8</button>
+                            <button class="btn btn-number" data-number="9">9</button>
+                            <button class="btn btn-operator" data-operator="×" data-action="append">×</button>
 
-                        <!-- Row 6 -->
-                        <button class="btn btn-action" data-action="percent">%</button>
-                        <button class="btn btn-number" data-number="0">0</button>
-                        <button class="btn btn-number" data-number=".">.</button>
-                        <button class="btn btn-equal" data-action="calculate">=</button>
+                            <!-- Row 4 -->
+                            <button class="btn btn-number" data-number="4">4</button>
+                            <button class="btn btn-number" data-number="5">5</button>
+                            <button class="btn btn-number" data-number="6">6</button>
+                            <button class="btn btn-operator" data-operator="-" data-action="append">-</button>
+
+                            <!-- Row 5 -->
+                            <button class="btn btn-number" data-number="1">1</button>
+                            <button class="btn btn-number" data-number="2">2</button>
+                            <button class="btn btn-number" data-number="3">3</button>
+                            <button class="btn btn-operator" data-operator="+" data-action="append">+</button>
+
+                            <!-- Row 6 -->
+                            <button class="btn btn-action" data-action="percent">%</button>
+                            <button class="btn btn-number" data-number="0">0</button>
+                            <button class="btn btn-number" data-number=".">.</button>
+                            <button class="btn btn-equal" data-action="calculate">=</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
 
         <div id="tools-view">
 
-        <div class="dashboard-grid" style="display: none;">
-            <!-- Financial Calculators -->
-            <div class="category-card expanded">
-                <div class="category-header">
-                    <div class="category-icon" style="color: #22c55e;">
-                        <i class="fas fa-chart-line"></i>
+            <div class="dashboard-grid" style="display: none;">
+                <!-- Financial Calculators -->
+                <div class="category-card expanded">
+                    <div class="category-header">
+                        <div class="category-icon" style="color: #22c55e;">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h2 class="category-title" style="color: #22c55e;">Financial Calculators</h2>
                     </div>
-                    <h2 class="category-title" style="color: #22c55e;">Financial Calculators</h2>
+                    <ul class="calculator-list">
+                        <li><a href="financial/mortgage-calculator.html" class="active-link">Mortgage Calculator</a>
+                        </li>
+                        <li><a href="financial/loan-calculator.html" class="active-link">Loan Calculator</a></li>
+                        <li><a href="financial/auto-loan-calculator.html" class="active-link">Auto Loan Calculator</a>
+                        </li>
+                        <li><a href="financial/interest-calculator.html" class="active-link">Interest Calculator</a>
+                        </li>
+                        <li><a href="financial/payment-calculator.html" class="active-link">Payment Calculator</a></li>
+                        <li><a href="financial/retirement-calculator.html">Retirement Calculator</a></li>
+                        <li><a href="financial/amortization-calculator.html">Amortization Calculator</a></li>
+                        <li><a href="financial/investment-calculator.html">Investment Calculator</a></li>
+                        <li><a href="financial/inflation-calculator.html">Inflation Calculator</a></li>
+                        <li><a href="financial/finance-calculator.html">Finance Calculator</a></li>
+                        <li><a href="financial/income-tax-calculator.html">Income Tax Calculator</a></li>
+                        <li><a href="financial/gst-calculator.html" class="active-link">GST Calculator</a></li>
+                        <li><a href="financial/compound-interest-calculator.html" class="active-link">Compound Interest
+                                Calculator</a></li>
+                        <li><a href="financial/salary-calculator.html">Salary Calculator</a></li>
+                        <li><a href="financial/interest-rate-calculator.html">Interest Rate Calculator</a></li>
+                        <li><a href="financial/sales-tax-calculator.html">Sales Tax Calculator</a></li>
+                    </ul>
                 </div>
-                <ul class="calculator-list">
-                    <li><a href="financial/mortgage-calculator.html" class="active-link">Mortgage Calculator</a></li>
-                    <li><a href="financial/loan-calculator.html" class="active-link">Loan Calculator</a></li>
-                    <li><a href="financial/auto-loan-calculator.html" class="active-link">Auto Loan Calculator</a></li>
-                    <li><a href="financial/interest-calculator.html" class="active-link">Interest Calculator</a></li>
-                    <li><a href="financial/payment-calculator.html" class="active-link">Payment Calculator</a></li>
-                    <li><a href="financial/retirement-calculator.html">Retirement Calculator</a></li>
-                    <li><a href="financial/amortization-calculator.html">Amortization Calculator</a></li>
-                    <li><a href="financial/investment-calculator.html">Investment Calculator</a></li>
-                    <li><a href="financial/inflation-calculator.html">Inflation Calculator</a></li>
-                    <li><a href="financial/finance-calculator.html">Finance Calculator</a></li>
-                    <li><a href="financial/income-tax-calculator.html">Income Tax Calculator</a></li>
-                    <li><a href="financial/gst-calculator.html" class="active-link">GST Calculator</a></li>
-                    <li><a href="financial/compound-interest-calculator.html" class="active-link">Compound Interest Calculator</a></li>
-                    <li><a href="financial/salary-calculator.html">Salary Calculator</a></li>
-                    <li><a href="financial/interest-rate-calculator.html">Interest Rate Calculator</a></li>
-                    <li><a href="financial/sales-tax-calculator.html">Sales Tax Calculator</a></li>
-                </ul>
-            </div>
 
-            <!-- Fitness & Health -->
-            <div class="category-card expanded">
-                <div class="category-header">
-                    <div class="category-icon" style="color: #22c55e;">
-                        <i class="fas fa-heartbeat"></i>
+                <!-- Fitness & Health -->
+                <div class="category-card expanded">
+                    <div class="category-header">
+                        <div class="category-icon" style="color: #22c55e;">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h2 class="category-title" style="color: #22c55e;">Fitness & Health Calculators</h2>
                     </div>
-                    <h2 class="category-title" style="color: #22c55e;">Fitness & Health Calculators</h2>
+                    <ul class="calculator-list">
+                        <li><a href="fitness/bmi.html" class="active-link">BMI Calculator</a></li>
+                        <li><a href="fitness/calorie-calculator.html" class="active-link">Calorie Calculator</a></li>
+                        <li><a href="fitness/body-fat-calculator.html" class="active-link">Body Fat Calculator</a></li>
+                        <li><a href="fitness/bmr-calculator.html" class="active-link">BMR Calculator</a></li>
+                        <li><a href="fitness/ideal-weight-calculator.html">Ideal Weight Calculator</a></li>
+                        <li><a href="fitness/pace-calculator.html">Pace Calculator</a></li>
+                        <li><a href="fitness/pregnancy-calculator.html">Pregnancy Calculator</a></li>
+                        <li><a href="fitness/pregnancy-conception.html">Pregnancy Conception</a></li>
+                        <li><a href="fitness/due-date-calculator.html">Due Date Calculator</a></li>
+                    </ul>
                 </div>
-                <ul class="calculator-list">
-                    <li><a href="fitness/bmi.html" class="active-link">BMI Calculator</a></li>
-                    <li><a href="fitness/calorie-calculator.html" class="active-link">Calorie Calculator</a></li>
-                    <li><a href="fitness/body-fat-calculator.html" class="active-link">Body Fat Calculator</a></li>
-                    <li><a href="fitness/bmr-calculator.html" class="active-link">BMR Calculator</a></li>
-                    <li><a href="fitness/ideal-weight-calculator.html">Ideal Weight Calculator</a></li>
-                    <li><a href="fitness/pace-calculator.html">Pace Calculator</a></li>
-                    <li><a href="fitness/pregnancy-calculator.html">Pregnancy Calculator</a></li>
-                    <li><a href="fitness/pregnancy-conception.html">Pregnancy Conception</a></li>
-                    <li><a href="fitness/due-date-calculator.html">Due Date Calculator</a></li>
-                </ul>
-            </div>
 
-            <!-- Math Calculators -->
-            <div class="category-card expanded">
-                <div class="category-header">
-                    <div class="category-icon" style="color: #22c55e;">
-                        <i class="fas fa-calculator"></i>
+                <!-- Math Calculators -->
+                <div class="category-card expanded">
+                    <div class="category-header">
+                        <div class="category-icon" style="color: #22c55e;">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h2 class="category-title" style="color: #22c55e;">Math Calculators</h2>
                     </div>
-                    <h2 class="category-title" style="color: #22c55e;">Math Calculators</h2>
+                    <ul class="calculator-list">
+                        <li><a href="math/math.html" class="active-link">Scientific Calculator</a></li>
+                        <li><a href="math/student-calculator.html" class="active-link">Student Calculator</a></li>
+                        <li><a href="math/fraction-calculator.html" class="active-link">Fraction Calculator</a></li>
+                        <li><a href="math/percentage-calculator.html" class="active-link">Percentage Calculator</a></li>
+                        <li><a href="math/random-number-generator.html" class="active-link">Random Number Generator</a>
+                        </li>
+                        <li><a href="math/triangle-calculator.html" class="active-link">Triangle Calculator</a></li>
+                        <li><a href="math/standard-deviation.html" class="active-link">Standard Deviation</a></li>
+                    </ul>
                 </div>
-                <ul class="calculator-list">
-                    <li><a href="math/math.html" class="active-link">Scientific Calculator</a></li>
-                    <li><a href="math/student-calculator.html" class="active-link">Student Calculator</a></li>
-                    <li><a href="math/fraction-calculator.html" class="active-link">Fraction Calculator</a></li>
-                    <li><a href="math/percentage-calculator.html" class="active-link">Percentage Calculator</a></li>
-                    <li><a href="math/random-number-generator.html" class="active-link">Random Number Generator</a></li>
-                    <li><a href="math/triangle-calculator.html" class="active-link">Triangle Calculator</a></li>
-                    <li><a href="math/standard-deviation.html" class="active-link">Standard Deviation</a></li>
-                </ul>
-            </div>
 
-            <!-- Other Calculators -->
-            <div class="category-card expanded">
-                <div class="category-header">
-                    <div class="category-icon" style="color: #22c55e;">
-                        <i class="fas fa-tools"></i>
+                <!-- Other Calculators -->
+                <div class="category-card expanded">
+                    <div class="category-header">
+                        <div class="category-icon" style="color: #22c55e;">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h2 class="category-title" style="color: #22c55e;">Other Calculators</h2>
                     </div>
-                    <h2 class="category-title" style="color: #22c55e;">Other Calculators</h2>
+                    <ul class="calculator-list">
+                        <li><a href="other/age.html" class="active-link">Age Calculator</a></li>
+                        <li><a href="other/date-calculator.html" class="active-link">Date Calculator</a></li>
+                        <li><a href="other/time-calculator.html" class="active-link">Time Calculator</a></li>
+                        <li><a href="other/hours-calculator.html" class="active-link">Hours Calculator</a></li>
+                        <li><a href="other/gpa-calculator.html" class="active-link">GPA Calculator</a></li>
+                        <li><a href="other/grade-calculator.html" class="active-link">Grade Calculator</a></li>
+                        <li><a href="other/concrete-calculator.html" class="active-link">Concrete Calculator</a></li>
+                        <li><a href="other/subnet-calculator.html" class="active-link">Subnet Calculator</a></li>
+                        <li><a href="other/password-generator.html" class="active-link">Password Generator</a></li>
+                        <li><a href="other/conversion-calculator.html" class="active-link">Conversion Calculator</a>
+                        </li>
+                    </ul>
                 </div>
-                <ul class="calculator-list">
-                    <li><a href="other/age.html" class="active-link">Age Calculator</a></li>
-                    <li><a href="other/date-calculator.html" class="active-link">Date Calculator</a></li>
-                    <li><a href="other/time-calculator.html" class="active-link">Time Calculator</a></li>
-                    <li><a href="other/hours-calculator.html" class="active-link">Hours Calculator</a></li>
-                    <li><a href="other/gpa-calculator.html" class="active-link">GPA Calculator</a></li>
-                    <li><a href="other/grade-calculator.html" class="active-link">Grade Calculator</a></li>
-                    <li><a href="other/concrete-calculator.html" class="active-link">Concrete Calculator</a></li>
-                    <li><a href="other/subnet-calculator.html" class="active-link">Subnet Calculator</a></li>
-                    <li><a href="other/password-generator.html" class="active-link">Password Generator</a></li>
-                    <li><a href="other/conversion-calculator.html" class="active-link">Conversion Calculator</a></li>
-                </ul>
             </div>
-        </div>
         </div>
     </div>
 
@@ -298,7 +307,8 @@
             <div class="search-logo">
                 <span style="color: #38bdf8; font-weight: bold; font-size: 1.2rem;">Nexus Calculator</span>
             </div>
-            <button id="close-categories-modal" class="close-overlay-btn"><i class="fas fa-times" style="font-size: 1.2rem;"></i></button>
+            <button id="close-categories-modal" class="close-overlay-btn"><i class="fas fa-times"
+                    style="font-size: 1.2rem;"></i></button>
         </div>
         <div class="omni-categories-container" style="margin: 20px auto; max-width: 600px;">
             <div class="omni-categories-header">
@@ -308,7 +318,7 @@
                 </div>
                 <h3>All Categories</h3>
             </div>
-            
+
             <div class="omni-category-list">
                 <button class="omni-cat-btn" data-category="financial">
                     <div class="cat-left">
@@ -340,11 +350,15 @@
                 </button>
             </div>
         </div>
-        
+
         <!-- Financial Details -->
-        <div class="omni-category-details" id="cat-details-financial" style="display: none; flex: 1; min-height: 0; flex-direction: column; margin: 20px auto; max-width: 600px; width: 100%; padding: 0 20px;">
-            <div class="omni-categories-header" style="margin-bottom: 15px; flex-shrink: 0; display: flex; align-items: center; gap: 15px;">
-                <button class="back-to-categories" style="background: transparent; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; padding: 5px;"><i class="fas fa-arrow-left"></i></button>
+        <div class="omni-category-details" id="cat-details-financial"
+            style="display: none; flex: 1; min-height: 0; flex-direction: column; margin: 20px auto; max-width: 600px; width: 100%; padding: 0 20px;">
+            <div class="omni-categories-header"
+                style="margin-bottom: 15px; flex-shrink: 0; display: flex; align-items: center; gap: 15px;">
+                <button class="back-to-categories"
+                    style="background: transparent; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; padding: 5px;"><i
+                        class="fas fa-arrow-left"></i></button>
                 <h3 style="margin: 0;">Financial Calculators</h3>
             </div>
             <ul class="omni-search-list">
@@ -368,9 +382,13 @@
         </div>
 
         <!-- Fitness Details -->
-        <div class="omni-category-details" id="cat-details-fitness" style="display: none; flex: 1; min-height: 0; flex-direction: column; margin: 20px auto; max-width: 600px; width: 100%; padding: 0 20px;">
-            <div class="omni-categories-header" style="margin-bottom: 15px; flex-shrink: 0; display: flex; align-items: center; gap: 15px;">
-                <button class="back-to-categories" style="background: transparent; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; padding: 5px;"><i class="fas fa-arrow-left"></i></button>
+        <div class="omni-category-details" id="cat-details-fitness"
+            style="display: none; flex: 1; min-height: 0; flex-direction: column; margin: 20px auto; max-width: 600px; width: 100%; padding: 0 20px;">
+            <div class="omni-categories-header"
+                style="margin-bottom: 15px; flex-shrink: 0; display: flex; align-items: center; gap: 15px;">
+                <button class="back-to-categories"
+                    style="background: transparent; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; padding: 5px;"><i
+                        class="fas fa-arrow-left"></i></button>
                 <h3 style="margin: 0;">Fitness & Health Calculators</h3>
             </div>
             <ul class="omni-search-list">
@@ -387,9 +405,13 @@
         </div>
 
         <!-- Math Details -->
-        <div class="omni-category-details" id="cat-details-math" style="display: none; flex: 1; min-height: 0; flex-direction: column; margin: 20px auto; max-width: 600px; width: 100%; padding: 0 20px;">
-            <div class="omni-categories-header" style="margin-bottom: 15px; flex-shrink: 0; display: flex; align-items: center; gap: 15px;">
-                <button class="back-to-categories" style="background: transparent; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; padding: 5px;"><i class="fas fa-arrow-left"></i></button>
+        <div class="omni-category-details" id="cat-details-math"
+            style="display: none; flex: 1; min-height: 0; flex-direction: column; margin: 20px auto; max-width: 600px; width: 100%; padding: 0 20px;">
+            <div class="omni-categories-header"
+                style="margin-bottom: 15px; flex-shrink: 0; display: flex; align-items: center; gap: 15px;">
+                <button class="back-to-categories"
+                    style="background: transparent; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; padding: 5px;"><i
+                        class="fas fa-arrow-left"></i></button>
                 <h3 style="margin: 0;">Math Calculators</h3>
             </div>
             <ul class="omni-search-list">
@@ -404,9 +426,13 @@
         </div>
 
         <!-- Other Details -->
-        <div class="omni-category-details" id="cat-details-other" style="display: none; flex: 1; min-height: 0; flex-direction: column; margin: 20px auto; max-width: 600px; width: 100%; padding: 0 20px;">
-            <div class="omni-categories-header" style="margin-bottom: 15px; flex-shrink: 0; display: flex; align-items: center; gap: 15px;">
-                <button class="back-to-categories" style="background: transparent; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; padding: 5px;"><i class="fas fa-arrow-left"></i></button>
+        <div class="omni-category-details" id="cat-details-other"
+            style="display: none; flex: 1; min-height: 0; flex-direction: column; margin: 20px auto; max-width: 600px; width: 100%; padding: 0 20px;">
+            <div class="omni-categories-header"
+                style="margin-bottom: 15px; flex-shrink: 0; display: flex; align-items: center; gap: 15px;">
+                <button class="back-to-categories"
+                    style="background: transparent; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; padding: 5px;"><i
+                        class="fas fa-arrow-left"></i></button>
                 <h3 style="margin: 0;">Other Calculators</h3>
             </div>
             <ul class="omni-search-list">

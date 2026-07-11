@@ -21,7 +21,9 @@
   "homepage": "https://github.com/Abdur07-svg/Omni-Calculator#readme",
   "dependencies": {
     "@capacitor/android": "^8.4.1",
+    "@capacitor/app": "^8.1.0",
     "@capacitor/cli": "^8.4.1",
-    "@capacitor/core": "^8.4.1"
+    "@capacitor/core": "^8.4.1",
+    "@capacitor/dialog": "^8.0.1"
   }
 }
