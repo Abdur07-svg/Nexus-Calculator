@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Generator - Nexus</title>
+    <title>Age Calculator - Nexus</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,7 +27,7 @@
             font-size: 14px;
             font-weight: 500;
         }
-        .input-group input[type="number"], .input-group input[type="range"] {
+        .input-group input {
             padding: 16px;
             border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -38,26 +38,8 @@
             outline: none;
             transition: border-color 0.3s;
         }
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background-color: var(--btn-bg);
-            padding: 16px;
-            border-radius: 15px;
-            cursor: pointer;
-        }
-        .checkbox-group input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            accent-color: var(--btn-operator-color);
-            cursor: pointer;
-        }
-        .checkbox-group label {
-            color: var(--text-primary);
-            font-size: 15px;
-            cursor: pointer;
-            flex-grow: 1;
+        .input-group input:focus {
+            border-color: var(--btn-operator-color);
         }
         .btn-row {
             display: flex;
@@ -74,7 +56,7 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.1s;
+            transition: transform 0.1s, opacity 0.2s;
         }
         .btn-clear {
             flex: 1;
@@ -86,7 +68,7 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.1s;
+            transition: transform 0.1s, opacity 0.2s;
         }
         .btn-primary:active, .btn-clear:active {
             transform: scale(0.95);
@@ -97,25 +79,21 @@
             padding: 24px;
             text-align: center;
             margin-top: 20px;
-            position: relative;
+            display: none;
+        }
+        .result-box.active {
+            display: block;
         }
         .result-value {
-            font-size: 24px;
+            font-size: 32px;
             font-weight: 700;
             color: var(--btn-operator-color);
             margin-bottom: 8px;
-            word-break: break-all;
         }
-        .copy-btn {
-            background: none;
-            border: none;
+        .result-details {
             color: var(--text-secondary);
-            font-size: 20px;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        .copy-btn:hover {
-            color: var(--text-primary);
+            font-size: 14px;
+            line-height: 1.6;
         }
         .back-btn {
             background: none;
@@ -132,49 +110,34 @@
             <button class="back-btn" onclick="window.location.href='../index.html'" style="position: absolute; left: 16px;">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
-            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Password Generator</h2>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Age Calculator</h2>
             <i class="fa-solid fa-magnifying-glass" title="Search" style="position: absolute; right: 16px; font-size: 20px; color: var(--text-secondary); cursor: pointer;"></i>
         </div>
 
         <div class="tool-content">
-            <div class="result-box">
-                <div class="result-value" id="password-display">Click Generate</div>
-                <button class="copy-btn" id="copy-btn" title="Copy to clipboard"><i class="fa-regular fa-copy"></i></button>
-            </div>
-
             <div class="input-group">
-                <label for="length">Password Length</label>
-                <div style="display: flex; gap: 12px; align-items: center;">
-                    <input type="range" id="length-slider" min="4" max="32" value="12" style="flex-grow: 1;">
-                    <input type="number" id="length" min="4" max="32" value="12" style="width: 80px; text-align: center; padding: 12px;">
-                </div>
+                <label for="dob">Date of Birth (DD/MM/YYYY)</label>
+                <input type="text" id="dob" placeholder="DD/MM/YYYY" required>
             </div>
-
-            <label class="checkbox-group">
-                <input type="checkbox" id="uppercase" checked>
-                <span>Include Uppercase Letters (A-Z)</span>
-            </label>
-            <label class="checkbox-group">
-                <input type="checkbox" id="lowercase" checked>
-                <span>Include Lowercase Letters (a-z)</span>
-            </label>
-            <label class="checkbox-group">
-                <input type="checkbox" id="numbers" checked>
-                <span>Include Numbers (0-9)</span>
-            </label>
-            <label class="checkbox-group">
-                <input type="checkbox" id="symbols" checked>
-                <span>Include Symbols (!@#$)</span>
-            </label>
+            
+            <div class="input-group">
+                <label for="target-date">Today's Date (DD/MM/YYYY)</label>
+                <input type="text" id="target-date" placeholder="DD/MM/YYYY" required>
+            </div>
 
             <div class="error-msg" id="error-msg"></div>
             <div class="btn-row">
                 <button class="btn-clear" id="clear-btn">Clear Data</button>
-                <button class="btn-primary" id="generate-btn">Generate</button>
+                <button class="btn-primary" id="calc-btn">Calculate Age</button>
+            </div>
+
+            <div class="result-box" id="result-box">
+                <div class="result-value" id="main-age">-</div>
+                <div class="result-details" id="detailed-age">-</div>
             </div>
         </div>
     </div>
-    <script src="../js/password-generator.js"></script>
+    <script src="../js/age-calculator.js"></script>
     <script src="../js/search.js"></script>
 </body>
 </html>

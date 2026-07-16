@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conversion Calculator - Nexus</title>
+    <title>Voltage Drop Calculator - Nexus</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -80,18 +80,34 @@
             padding: 0;
             display: none;
         }
-        .result-value {
-            font-size: 32px;
-            word-break: break-word;
-            font-weight: 600;
-            color: var(--btn-operator-color);
-            margin-bottom: 8px;
-            word-wrap: break-word;
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
         }
-        .result-details {
+        .result-item {
+            background-color: var(--btn-bg);
+            border: 1px solid rgba(0,0,0,0.04);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .result-label {
+            font-size: 13px;
             color: var(--text-secondary);
-            font-size: 14px;
-            line-height: 1.6;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .result-value {
+            font-size: 24px;
+            word-break: break-word;
+            color: var(--btn-operator-color);
+            font-weight: 600;
+        }
+        .result-value.normal {
+            color: #4caf50;
         }
         .back-btn {
             background: none;
@@ -115,36 +131,62 @@
             <button class="back-btn" onclick="window.location.href='../index.html'" style="position: absolute; left: 16px;">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
-            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Conversion Calculator</h2>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Voltage Drop</h2>
             <i class="fa-solid fa-magnifying-glass" title="Search" style="position: absolute; right: 16px; font-size: 20px; color: var(--text-secondary); cursor: pointer;" id="search-btn"></i>
         </div>
 
         <div class="tool-content">
+            
+            <div class="row-group">
+                <div class="input-group">
+                    <label>Material</label>
+                    <select id="vd-material">
+                        <option value="copper">Copper</option>
+                        <option value="aluminum">Aluminum</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Phase</label>
+                    <select id="vd-phase">
+                        <option value="1">Single Phase (1ø)</option>
+                        <option value="3">Three Phase (3ø)</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="input-group">
-                <label>Category</label>
-                <select id="category-select">
-                    <option value="length">Length</option>
-                    <option value="weight">Weight / Mass</option>
-                    <option value="temperature">Temperature</option>
-                    <option value="area">Area</option>
-                    <option value="volume">Volume</option>
+                <label>Wire Size (AWG/kcmil)</label>
+                <select id="vd-awg">
+                    <option value="14">14 AWG</option>
+                    <option value="12" selected>12 AWG</option>
+                    <option value="10">10 AWG</option>
+                    <option value="8">8 AWG</option>
+                    <option value="6">6 AWG</option>
+                    <option value="4">4 AWG</option>
+                    <option value="3">3 AWG</option>
+                    <option value="2">2 AWG</option>
+                    <option value="1">1 AWG</option>
+                    <option value="1/0">1/0 AWG</option>
+                    <option value="2/0">2/0 AWG</option>
+                    <option value="3/0">3/0 AWG</option>
+                    <option value="4/0">4/0 AWG</option>
                 </select>
             </div>
             
-            <div class="input-group">
-                <label>Value</label>
-                <input type="number" id="input-value" placeholder="e.g. 10">
-            </div>
-
             <div class="row-group">
                 <div class="input-group">
-                    <label>From</label>
-                    <select id="from-unit"></select>
+                    <label>Voltage (V)</label>
+                    <input type="number" id="vd-voltage" placeholder="e.g. 120">
                 </div>
                 <div class="input-group">
-                    <label>To</label>
-                    <select id="to-unit"></select>
+                    <label>Current (Amps)</label>
+                    <input type="number" id="vd-amps" placeholder="e.g. 15">
                 </div>
+            </div>
+
+            <div class="input-group">
+                <label>Distance (one-way, ft)</label>
+                <input type="number" id="vd-dist" placeholder="e.g. 100">
             </div>
 
             <div class="error-msg" id="error-msg"></div>
@@ -154,13 +196,25 @@
             </div>
 
             <div class="result-box" id="result-box">
-                <div class="result-value" id="main-result">-</div>
-                <div class="result-details" id="detailed-result">-</div>
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="result-label">Voltage Drop</div>
+                        <div class="result-value" id="res-drop">-</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Voltage Drop Percentage</div>
+                        <div class="result-value normal" id="res-percent">-</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Voltage at End of Circuit</div>
+                        <div class="result-value" id="res-end">-</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     
-    <script src="../js/conversion-calculator.js"></script>
+    <script src="../js/voltage-drop-calculator.js"></script>
     <script src="../js/search.js"></script>
 </body>
 </html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Subnet Calculator - Nexus</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .tool-content {
+            background-color: var(--calc-bg);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+        .input-group {
+            margin-bottom: 24px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 16px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background-color: var(--btn-bg);
+            color: var(--text-primary);
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .input-group input:focus, .input-group select:focus {
+            border-color: var(--btn-operator-color);
+        }
+        .btn-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 30px;
+        }
+        .btn-primary, .btn-clear {
+            flex: 1;
+            padding: 16px;
+            border-radius: 15px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s ease, transform 0.1s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #ff5252 0%, #ff0000 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 82, 82, 0.3);
+        }
+        .btn-clear {
+            background-color: var(--btn-bg);
+            color: var(--text-primary);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-primary:active, .btn-clear:active {
+            transform: scale(0.98);
+        }
+                .result-box {
+            margin-top: 30px;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            display: none;
+        }
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .result-item {
+            background-color: var(--btn-bg);
+            border: 1px solid rgba(0,0,0,0.04);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            padding: 12px;
+            border-radius: 12px;
+        }
+        .result-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .result-value {
+            font-size: 16px;
+            word-break: break-word;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .error-msg {
+            color: #ff5252;
+            font-size: 14px;
+            margin-bottom: 16px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="top-bar" style="position: sticky; top: -16px; background-color: var(--calc-bg); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px 0 10px 0;">
+            <button class="back-btn" onclick="window.location.href='../index.html'" style="position: absolute; left: 16px;">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">IP Subnet Calculator</h2>
+            <i class="fa-solid fa-magnifying-glass" title="Search" style="position: absolute; right: 16px; font-size: 20px; color: var(--text-secondary); cursor: pointer;" id="search-btn"></i>
+        </div>
+
+        <div class="tool-content">
+            <div class="input-group">
+                <label>IP Address</label>
+                <input type="text" id="ip-address" placeholder="e.g. 192.168.1.10">
+            </div>
+            
+            <div class="input-group">
+                <label>Subnet Mask / CIDR</label>
+                <select id="subnet-mask">
+                    <option value="32">255.255.255.255 /32 (1 Host)</option>
+                    <option value="31">255.255.255.254 /31 (2 Hosts)</option>
+                    <option value="30">255.255.255.252 /30 (4 Hosts)</option>
+                    <option value="29">255.255.255.248 /29 (8 Hosts)</option>
+                    <option value="28">255.255.255.240 /28 (16 Hosts)</option>
+                    <option value="27">255.255.255.224 /27 (32 Hosts)</option>
+                    <option value="26">255.255.255.192 /26 (64 Hosts)</option>
+                    <option value="25">255.255.255.128 /25 (128 Hosts)</option>
+                    <option value="24" selected>255.255.255.0 /24 (256 Hosts)</option>
+                    <option value="23">255.255.254.0 /23 (512 Hosts)</option>
+                    <option value="22">255.255.252.0 /22 (1024 Hosts)</option>
+                    <option value="21">255.255.248.0 /21 (2048 Hosts)</option>
+                    <option value="20">255.255.240.0 /20 (4096 Hosts)</option>
+                    <option value="19">255.255.224.0 /19 (8192 Hosts)</option>
+                    <option value="18">255.255.192.0 /18 (16384 Hosts)</option>
+                    <option value="17">255.255.128.0 /17 (32768 Hosts)</option>
+                    <option value="16">255.255.0.0 /16 (65536 Hosts)</option>
+                    <option value="15">255.254.0.0 /15 (131072 Hosts)</option>
+                    <option value="14">255.252.0.0 /14 (262144 Hosts)</option>
+                    <option value="13">255.248.0.0 /13 (524288 Hosts)</option>
+                    <option value="12">255.240.0.0 /12 (1048576 Hosts)</option>
+                    <option value="11">255.224.0.0 /11 (2097152 Hosts)</option>
+                    <option value="10">255.192.0.0 /10 (4194304 Hosts)</option>
+                    <option value="9">255.128.0.0 /9 (8388608 Hosts)</option>
+                    <option value="8">255.0.0.0 /8 (16777216 Hosts)</option>
+                </select>
+            </div>
+
+            <div class="error-msg" id="error-msg"></div>
+            <div class="btn-row">
+                <button class="btn-clear" id="clear-btn">Clear Data</button>
+                <button class="btn-primary" id="calc-btn">Calculate</button>
+            </div>
+
+            <div class="result-box" id="result-box" style="display: none;">
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="result-label">Network Address</div>
+                        <div class="result-value" id="res-network">-</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Broadcast Address</div>
+                        <div class="result-value" id="res-broadcast">-</div>
+                    </div>
+                    <div class="result-item" style="grid-column: span 2;">
+                        <div class="result-label">Usable Host Range</div>
+                        <div class="result-value" id="res-range">-</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Total Hosts</div>
+                        <div class="result-value" id="res-total">-</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Usable Hosts</div>
+                        <div class="result-value" id="res-usable">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Converter Section -->
+            <hr style="border: none; border-top: 1px solid rgba(0,0,0,0.05); margin: 40px 0;">
+            <h3 style="margin-bottom: 24px; color: var(--text-primary); font-weight: 600; text-align: center;">IP Format Converter</h3>
+
+            <div class="row-group">
+                <div class="input-group" style="flex: 1;">
+                    <label>Input Format</label>
+                    <select id="conv-format">
+                        <option value="auto">Autodetect</option>
+                        <option value="ipv4">IPv4 Standard</option>
+                        <option value="binary">Binary</option>
+                        <option value="hex">Hexadecimal</option>
+                        <option value="decimal">Decimal</option>
+                        <option value="octal">Octal</option>
+                    </select>
+                </div>
+                <div class="input-group" style="flex: 2;">
+                    <label>IP to Convert</label>
+                    <input type="text" id="conv-ip" placeholder="e.g. 192.168.1.10 or 11000000...">
+                </div>
+            </div>
+
+            <div class="error-msg" id="conv-error-msg"></div>
+            <div class="btn-row">
+                <button class="btn-clear" id="conv-clear-btn">Clear</button>
+                <button class="btn-primary" id="conv-btn">Convert IP</button>
+            </div>
+
+            <div class="result-box" id="conv-result-box" style="display: none;">
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="result-label">Standard (IPv4)</div>
+                        <div class="result-value" id="conv-std" style="font-size: 18px;">-</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Decimal</div>
+                        <div class="result-value" id="conv-dec" style="font-size: 18px;">-</div>
+                    </div>
+                    <div class="result-item" style="grid-column: span 2;">
+                        <div class="result-label">Binary</div>
+                        <div class="result-value" id="conv-bin" style="font-size: 16px; word-break: break-all;">-</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Hexadecimal</div>
+                        <div class="result-value" id="conv-hex" style="font-size: 18px;">-</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Octal</div>
+                        <div class="result-value" id="conv-oct" style="font-size: 18px;">-</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <script src="../js/ip-subnet-calculator.js"></script>
+    <script src="../js/search.js"></script>
+</body>
+</html>

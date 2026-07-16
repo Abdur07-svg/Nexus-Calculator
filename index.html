@@ -1,457 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nexus Calculator</title>
-    <script>
-        const _prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.setAttribute('data-theme', _prefersDark ? 'dark' : 'light');
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Calculator</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
-<body class="dashboard-body">
-    <div class="background-elements">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-    </div>
-
-    <!-- Sidebar Overlay -->
-    <div class="sidebar-overlay" id="sidebar-overlay"></div>
-
-    <!-- Side Navigation Drawer -->
-    <aside class="side-drawer" id="side-drawer">
-        <div class="drawer-header">
-            <h2>Nexus Calculator</h2>
-            <button class="close-drawer-btn" id="close-drawer-btn"><i class="fas fa-times"></i></button>
-        </div>
-
-        <div class="drawer-content">
-            <button class="drawer-item" id="drawer-categories-btn">
-                <div class="drawer-item-left">
-                    <div class="cat-icon-squares" style="width: 16px; height: 16px; margin-right: 15px;">
-                        <span class="sq sq-red"></span><span class="sq sq-yellow"></span>
-                        <span class="sq sq-blue"></span><span class="sq sq-green"></span>
-                    </div>
-                    <span>All Categories</span>
-                </div>
-                <i class="fas fa-chevron-right" style="font-size: 0.8rem; color: var(--text-secondary);"></i>
-            </button>
-
-            <div class="drawer-divider"></div>
-
-            <a href="pages/privacy.html" class="drawer-item">
-                <div class="drawer-item-left">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>Privacy Policy</span>
-                </div>
-            </a>
-
-            <a href="pages/terms.html" class="drawer-item">
-                <div class="drawer-item-left">
-                    <i class="fas fa-file-contract"></i>
-                    <span>Terms & Conditions</span>
-                </div>
-            </a>
-
-            <a href="pages/about.html" class="drawer-item">
-                <div class="drawer-item-left">
-                    <i class="fas fa-info-circle"></i>
-                    <span>About</span>
-                </div>
-            </a>
-        </div>
-    </aside>
-
-    <div class="dashboard-wrapper">
-        <div class="top-controls"
-            style="max-width: 1200px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: center; padding: 15px 20px; position: relative;">
-            <button id="hamburger-menu-btn" class="hamburger-btn"
-                style="position: absolute; left: 20px; background: transparent; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; padding: 5px;">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="dashboard-header" style="margin: 0; padding: 0; text-align: center;">
-                <h1 style="font-size: 1.6rem; margin-bottom: 2px;">Nexus Calculator</h1>
-                <p style="font-size: 0.85rem; margin: 0;">Your all-in-one calculation hub</p>
+<body>
+    <div class="calculator-container">
+        <!-- Top Navigation Bar -->
+        <div class="top-bar">
+            <div class="menu-icon" id="menu-icon-btn">
+                <i class="fa-solid fa-bars"></i>
             </div>
-        </div>
-        <nav class="app-bottom-nav"
-            style="padding: 0; background: transparent; border: none; box-shadow: none; margin-bottom: 10px;">
-            <div class="search-container" style="width: 100%; max-width: 600px; margin: 0 auto;">
-                <div class="input-group" style="position: relative; margin: 0;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
-                        style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); transition: color 0.3s ease; z-index: 2;">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                    <input type="text" id="dashboard-search" placeholder="Search tools (e.g. BMI, GPA,..)" style="
-                        width: 100%; 
-                        height: 55px;
-                        padding-left: 20px; 
-                        padding-right: 55px;
-                        border-radius: 28px; 
-                        font-size: 1.1rem; 
-                        background: var(--calc-bg);
-                        border: 1px solid var(--calc-border);
-                        color: var(--text-primary);
-                        box-shadow: var(--calc-shadow);
-                        backdrop-filter: blur(20px);
-                        -webkit-backdrop-filter: blur(20px);
-                        transition: all 0.3s ease;
-                        outline: none;"
-                        onfocus="this.style.boxShadow='0 8px 30px rgba(56, 189, 248, 0.25)'; this.style.borderColor='#38bdf8'; this.previousElementSibling.style.color='#38bdf8'; this.style.transform='translateY(-2px)';"
-                        onblur="this.style.boxShadow='var(--calc-shadow)'; this.style.borderColor='var(--calc-border)'; this.previousElementSibling.style.color='var(--text-secondary)'; this.style.transform='translateY(0)';">
-                </div>
-            </div>
-        </nav>
-
-        <div id="calculator-view">
-            <div class="calculator-wrapper" style="margin-bottom: 30px;">
-                <div class="calculator" style="margin: 0 auto;">
-                    <div class="display" style="position: relative;">
-                        <button id="history-toggle-btn" class="mobile-history-icon"
-                            style="position: absolute; bottom: -5px; left: 5px; background: transparent; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; z-index: 10; padding: 10px;">
-                            <i class="fas fa-history"></i>
-                        </button>
-                        <div class="previous-operand" id="previous-operand"></div>
-                        <div class="current-operand" id="current-operand">0</div>
-                    </div>
-
-                    <div id="mobile-history-panel" class="mobile-history-panel">
-                        <div class="history-header">
-                            <span>History</span>
-                            <button id="clear-history-btn"><i class="fas fa-trash"></i></button>
-                        </div>
-                        <ul id="history-list"></ul>
-                    </div>
-                    <div class="keypad-wrapper">
-                        <div class="keypad basic-keypad" id="basic-keypad"
-                            style="width: 100%; grid-template-columns: repeat(4, 1fr);">
-                            <!-- Row 1 -->
-                            <button class="btn btn-action" data-action="mc">mc</button>
-                            <button class="btn btn-action" data-action="m-plus">m+</button>
-                            <button class="btn btn-action" data-action="m-minus">m-</button>
-                            <button class="btn btn-action" data-action="mr">mr</button>
-
-                            <!-- Row 2 -->
-                            <button class="btn btn-action btn-danger" data-action="clear">AC</button>
-                            <button class="btn btn-action btn-danger" data-action="delete"
-                                style="display: flex; align-items: center; justify-content: center;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
-                                    <line x1="18" y1="9" x2="12" y2="15"></line>
-                                    <line x1="12" y1="9" x2="18" y2="15"></line>
-                                </svg>
-                            </button>
-                            <button class="btn btn-action" data-action="sign">+/-</button>
-                            <button class="btn btn-operator" data-operator="÷" data-action="append">÷</button>
-
-                            <!-- Row 3 -->
-                            <button class="btn btn-number" data-number="7">7</button>
-                            <button class="btn btn-number" data-number="8">8</button>
-                            <button class="btn btn-number" data-number="9">9</button>
-                            <button class="btn btn-operator" data-operator="×" data-action="append">×</button>
-
-                            <!-- Row 4 -->
-                            <button class="btn btn-number" data-number="4">4</button>
-                            <button class="btn btn-number" data-number="5">5</button>
-                            <button class="btn btn-number" data-number="6">6</button>
-                            <button class="btn btn-operator" data-operator="-" data-action="append">-</button>
-
-                            <!-- Row 5 -->
-                            <button class="btn btn-number" data-number="1">1</button>
-                            <button class="btn btn-number" data-number="2">2</button>
-                            <button class="btn btn-number" data-number="3">3</button>
-                            <button class="btn btn-operator" data-operator="+" data-action="append">+</button>
-
-                            <!-- Row 6 -->
-                            <button class="btn btn-action" data-action="percent">%</button>
-                            <button class="btn btn-number" data-number="0">0</button>
-                            <button class="btn btn-number" data-number=".">.</button>
-                            <button class="btn btn-equal" data-action="calculate">=</button>
-                        </div>
-                    </div>
-                </div>
+            <div></div> <!-- Empty column 2 -->
+            <div></div> <!-- Empty column 3 -->
+            <div class="math-icon-wrapper">
+                <i class="fa-solid fa-magnifying-glass" id="search-btn" style="font-size: 24px; color: #555; cursor: pointer; justify-self: center;" title="Search"></i>
             </div>
         </div>
 
-        <div id="tools-view">
+        <!-- Display Area -->
+        <div class="display">
+            <div class="expression" id="expression"></div>
+            <div class="result" id="result">0</div>
+        </div>
 
-            <div class="dashboard-grid" style="display: none;">
-                <!-- Financial Calculators -->
-                <div class="category-card expanded">
-                    <div class="category-header">
-                        <div class="category-icon" style="color: #22c55e;">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <h2 class="category-title" style="color: #22c55e;">Financial Calculators</h2>
-                    </div>
-                    <ul class="calculator-list">
-                        <li><a href="financial/mortgage-calculator.html" class="active-link">Mortgage Calculator</a>
-                        </li>
-                        <li><a href="financial/loan-calculator.html" class="active-link">Loan Calculator</a></li>
-                        <li><a href="financial/auto-loan-calculator.html" class="active-link">Auto Loan Calculator</a>
-                        </li>
-                        <li><a href="financial/interest-calculator.html" class="active-link">Interest Calculator</a>
-                        </li>
-                        <li><a href="financial/payment-calculator.html" class="active-link">Payment Calculator</a></li>
-                        <li><a href="financial/retirement-calculator.html">Retirement Calculator</a></li>
-                        <li><a href="financial/amortization-calculator.html">Amortization Calculator</a></li>
-                        <li><a href="financial/investment-calculator.html">Investment Calculator</a></li>
-                        <li><a href="financial/inflation-calculator.html">Inflation Calculator</a></li>
-                        <li><a href="financial/finance-calculator.html">Finance Calculator</a></li>
-                        <li><a href="financial/income-tax-calculator.html">Income Tax Calculator</a></li>
-                        <li><a href="financial/gst-calculator.html" class="active-link">GST Calculator</a></li>
-                        <li><a href="financial/compound-interest-calculator.html" class="active-link">Compound Interest
-                                Calculator</a></li>
-                        <li><a href="financial/salary-calculator.html">Salary Calculator</a></li>
-                        <li><a href="financial/interest-rate-calculator.html">Interest Rate Calculator</a></li>
-                        <li><a href="financial/sales-tax-calculator.html">Sales Tax Calculator</a></li>
-                    </ul>
+        <div class="history-icon-wrapper">
+            <div style="position: relative; justify-self: center; display: flex; align-items: center;">
+                <i class="fa-solid fa-clock-rotate-left" id="history-btn" style="margin: 0; padding: 0; font-size: 20px;"></i>
+                <div class="scientific-icon" id="scientific-icon-btn" style="position: absolute; left: calc(100% + 20px);">
+                    <span style="transform: scale(0.9);">√</span>
+                    <span style="font-style: italic;">π</span>
+                    <span style="font-style: italic;">e</span>
+                    <span>=</span>
                 </div>
+            </div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
 
-                <!-- Fitness & Health -->
-                <div class="category-card expanded">
-                    <div class="category-header">
-                        <div class="category-icon" style="color: #22c55e;">
-                            <i class="fas fa-heartbeat"></i>
-                        </div>
-                        <h2 class="category-title" style="color: #22c55e;">Fitness & Health Calculators</h2>
-                    </div>
-                    <ul class="calculator-list">
-                        <li><a href="fitness/bmi.html" class="active-link">BMI Calculator</a></li>
-                        <li><a href="fitness/calorie-calculator.html" class="active-link">Calorie Calculator</a></li>
-                        <li><a href="fitness/body-fat-calculator.html" class="active-link">Body Fat Calculator</a></li>
-                        <li><a href="fitness/bmr-calculator.html" class="active-link">BMR Calculator</a></li>
-                        <li><a href="fitness/ideal-weight-calculator.html">Ideal Weight Calculator</a></li>
-                        <li><a href="fitness/pace-calculator.html">Pace Calculator</a></li>
-                        <li><a href="fitness/pregnancy-calculator.html">Pregnancy Calculator</a></li>
-                        <li><a href="fitness/pregnancy-conception.html">Pregnancy Conception</a></li>
-                        <li><a href="fitness/due-date-calculator.html">Due Date Calculator</a></li>
-                    </ul>
+        <div class="keypads-wrapper">
+            <!-- Scientific Keypad (Hidden by default in portrait) -->
+            <div class="scientific-keypad" id="scientific-keypad">
+                <!-- Row 1 -->
+                <button class="btn btn-sci" data-action="sci" data-value="sin(">sin</button>
+                <button class="btn btn-sci" data-action="sci" data-value="cos(">cos</button>
+                <button class="btn btn-sci" data-action="sci" data-value="tan(">tan</button>
+                <div class="deg-rad-toggle" id="angle-mode-toggle">
+                    <label><input type="radio" name="angle" value="deg" checked> Deg</label>
+                    <label><input type="radio" name="angle" value="rad"> Rad</label>
                 </div>
+                
+                <!-- Row 2 -->
+                <button class="btn btn-sci" data-action="sci" data-value="asin(">sin<sup>-1</sup></button>
+                <button class="btn btn-sci" data-action="sci" data-value="acos(">cos<sup>-1</sup></button>
+                <button class="btn btn-sci" data-action="sci" data-value="atan(">tan<sup>-1</sup></button>
+                <button class="btn btn-sci" data-action="sci" data-value="π">π</button>
+                <button class="btn btn-sci" data-action="sci" data-value="e">e</button>
+                
+                <!-- Row 3 -->
+                <button class="btn btn-sci" data-action="sci" data-value="^">x<sup>y</sup></button>
+                <button class="btn btn-sci" data-action="sci" data-value="^3">x<sup>3</sup></button>
+                <button class="btn btn-sci" data-action="sci" data-value="^2">x<sup>2</sup></button>
+                <button class="btn btn-sci" data-action="sci" data-value="e^">e<sup>x</sup></button>
+                <button class="btn btn-sci" data-action="sci" data-value="10^">10<sup>x</sup></button>
+                
+                <!-- Row 4 -->
+                <button class="btn btn-sci" data-action="sci" data-value="y√">y√x</button>
+                <button class="btn btn-sci" data-action="sci" data-value="³√(">³√x</button>
+                <button class="btn btn-sci" data-action="sci" data-value="√(">√x</button>
+                <button class="btn btn-sci" data-action="sci" data-value="ln(">ln</button>
+                <button class="btn btn-sci" data-action="sci" data-value="log(">log</button>
+                
+                <!-- Row 5 -->
+                <button class="btn btn-sci" data-action="sci" data-value="(">(</button>
+                <button class="btn btn-sci" data-action="sci" data-value=")">)</button>
+                <button class="btn btn-sci" data-action="sci" data-value="1/">1/x</button>
+                <button class="btn btn-sci" data-action="percent">%</button>
+                <button class="btn btn-sci" data-action="sci" data-value="!">n!</button>
+            </div>
 
-                <!-- Math Calculators -->
-                <div class="category-card expanded">
-                    <div class="category-header">
-                        <div class="category-icon" style="color: #22c55e;">
-                            <i class="fas fa-calculator"></i>
-                        </div>
-                        <h2 class="category-title" style="color: #22c55e;">Math Calculators</h2>
-                    </div>
-                    <ul class="calculator-list">
-                        <li><a href="math/math.html" class="active-link">Scientific Calculator</a></li>
-                        <li><a href="math/student-calculator.html" class="active-link">Student Calculator</a></li>
-                        <li><a href="math/fraction-calculator.html" class="active-link">Fraction Calculator</a></li>
-                        <li><a href="math/percentage-calculator.html" class="active-link">Percentage Calculator</a></li>
-                        <li><a href="math/random-number-generator.html" class="active-link">Random Number Generator</a>
-                        </li>
-                        <li><a href="math/triangle-calculator.html" class="active-link">Triangle Calculator</a></li>
-                        <li><a href="math/standard-deviation.html" class="active-link">Standard Deviation</a></li>
-                    </ul>
-                </div>
+            <!-- Standard Keypad -->
+            <div class="keypad">
+            <button class="btn btn-action" data-action="clear">C</button>
+            <button class="btn btn-action" data-action="delete"><i class="fa-solid fa-delete-left"></i></button>
+            <button class="btn btn-action" data-action="percent">%</button>
+            <button class="btn btn-operator" data-action="divide">÷</button>
 
-                <!-- Other Calculators -->
-                <div class="category-card expanded">
-                    <div class="category-header">
-                        <div class="category-icon" style="color: #22c55e;">
-                            <i class="fas fa-tools"></i>
-                        </div>
-                        <h2 class="category-title" style="color: #22c55e;">Other Calculators</h2>
+            <button class="btn btn-number" data-value="7">7</button>
+            <button class="btn btn-number" data-value="8">8</button>
+            <button class="btn btn-number" data-value="9">9</button>
+            <button class="btn btn-operator" data-action="multiply">×</button>
+
+            <button class="btn btn-number" data-value="4">4</button>
+            <button class="btn btn-number" data-value="5">5</button>
+            <button class="btn btn-number" data-value="6">6</button>
+            <button class="btn btn-operator" data-action="subtract">−</button>
+
+            <button class="btn btn-number" data-value="1">1</button>
+            <button class="btn btn-number" data-value="2">2</button>
+            <button class="btn btn-number" data-value="3">3</button>
+            <button class="btn btn-operator" data-action="add">+</button>
+
+            <button class="btn btn-number" data-value="00">00</button>
+            <button class="btn btn-number" data-value="0">0</button>
+            <button class="btn btn-number" data-value=".">.</button>
+            <button class="btn btn-equal" data-action="calculate">=</button>
+        </div>
+        </div>
+
+        <!-- History Modal -->
+        <div class="history-modal" id="history-modal">
+            <div class="history-header">
+                <h3>History</h3>
+                <i class="fa-solid fa-xmark" id="close-history"></i>
+            </div>
+            <div class="history-list" id="history-list">
+                <!-- History items will be injected here -->
+            </div>
+            <button class="clear-history-btn" id="clear-history">Clear History</button>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>Nexus Calculator</h2>
+                <i class="fa-solid fa-xmark" id="close-sidebar"></i>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="has-submenu">
+                    <div class="submenu-toggle" id="categories-toggle">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span>All Categories</span>
+                        <i class="fa-solid fa-chevron-down arrow"></i>
                     </div>
-                    <ul class="calculator-list">
-                        <li><a href="other/age.html" class="active-link">Age Calculator</a></li>
-                        <li><a href="other/date-calculator.html" class="active-link">Date Calculator</a></li>
-                        <li><a href="other/time-calculator.html" class="active-link">Time Calculator</a></li>
-                        <li><a href="other/hours-calculator.html" class="active-link">Hours Calculator</a></li>
-                        <li><a href="other/gpa-calculator.html" class="active-link">GPA Calculator</a></li>
-                        <li><a href="other/grade-calculator.html" class="active-link">Grade Calculator</a></li>
-                        <li><a href="other/concrete-calculator.html" class="active-link">Concrete Calculator</a></li>
-                        <li><a href="other/subnet-calculator.html" class="active-link">Subnet Calculator</a></li>
-                        <li><a href="other/password-generator.html" class="active-link">Password Generator</a></li>
-                        <li><a href="other/conversion-calculator.html" class="active-link">Conversion Calculator</a>
+                    <ul class="submenu" id="categories-submenu">
+                        <li><i class="fa-solid fa-coins"></i> Financial</li>
+                        <li><i class="fa-solid fa-heart-pulse"></i> Fitness & Health</li>
+                        <li><i class="fa-solid fa-square-root-variable"></i> Math</li>
+                        <li class="has-nested-submenu">
+                            <div class="nested-submenu-toggle" id="other-toggle">
+                                <i class="fa-solid fa-ellipsis"></i>
+                                <span>Other</span>
+                                <i class="fa-solid fa-chevron-down nested-arrow"></i>
+                            </div>
+                            <ul class="nested-submenu" id="other-submenu">
+                                <li onclick="window.location.href='other/age-calculator.html'"><i class="fa-solid fa-calendar-days"></i> Age Calculator</li>
+                                <li onclick="window.location.href='other/password-generator.html'"><i class="fa-solid fa-key"></i> Password Generator</li>
+                                <li onclick="window.location.href='other/tip-calculator.html'"><i class="fa-solid fa-coins"></i> Tip Calculator</li>
+                                <li onclick="window.location.href='other/time-calculator.html'"><i class="fa-solid fa-clock"></i> Time Calculator</li>
+                                <li onclick="window.location.href='other/gpa-calculator.html'"><i class="fa-solid fa-graduation-cap"></i> GPA Calculator</li>
+                                <li onclick="window.location.href='other/height-calculator.html'"><i class="fa-solid fa-ruler-vertical"></i> Height Calculator</li>
+                                <li onclick="window.location.href='other/ip-subnet-calculator.html'"><i class="fa-solid fa-network-wired"></i> IP Subnet Calculator</li>
+                                <li onclick="window.location.href='other/conversion-calculator.html'"><i class="fa-solid fa-right-left"></i> Conversion Calculator</li>
+                                <li onclick="window.location.href='other/voltage-drop-calculator.html'"><i class="fa-solid fa-bolt"></i> Voltage Drop Calculator</li>
+                                <li onclick="window.location.href='other/square-footage-calculator.html'"><i class="fa-solid fa-vector-square"></i> Square Footage Calculator</li>
+                                <li onclick="window.location.href='other/time-zone-calculator.html'"><i class="fa-solid fa-globe"></i> Time Zone Calculator</li>
+                                <li onclick="window.location.href='other/gdp-calculator.html'"><i class="fa-solid fa-chart-line"></i> GDP Calculator</li>
+                                <li onclick="alert('Horsepower Calculator will be added soon!')"><i class="fa-solid fa-horse-head"></i> Horsepower Calculator</li>
+                                <li onclick="alert('Stair Calculator will be added soon!')"><i class="fa-solid fa-stairs"></i> Stair Calculator</li>
+                                <li onclick="alert('Ohms Law Calculator will be added soon!')"><i class="fa-solid fa-bolt"></i> Ohms Law Calculator</li>
+                                <li onclick="alert('Shoe Size Conversion will be added soon!')"><i class="fa-solid fa-shoe-prints"></i> Shoe Size Conversion</li>
+                                <li onclick="alert('Mileage Calculator will be added soon!')"><i class="fa-solid fa-car"></i> Mileage Calculator</li>
+                                <li onclick="alert('Mass Calculator will be added soon!')"><i class="fa-solid fa-weight-hanging"></i> Mass Calculator</li>
+                                <li onclick="alert('Speed Calculator will be added soon!')"><i class="fa-solid fa-gauge-high"></i> Speed Calculator</li>
+                                <li onclick="alert('Molecular Weight Calculator will be added soon!')"><i class="fa-solid fa-atom"></i> Molecular Weight Calculator</li>
+                                <li onclick="alert('Golf Handicap Calculator will be added soon!')"><i class="fa-solid fa-golf-ball-tee"></i> Golf Handicap Calculator</li>
+                                <li onclick="alert('Tire Size Calculator will be added soon!')"><i class="fa-solid fa-truck-monster"></i> Tire Size Calculator</li>
+                                <li onclick="alert('Tile Calculator will be added soon!')"><i class="fa-solid fa-table-cells"></i> Tile Calculator</li>
+                                <li onclick="alert('Gravel Calculator will be added soon!')"><i class="fa-solid fa-mound"></i> Gravel Calculator</li>
+                                <li onclick="alert('Heat Index Calculator will be added soon!')"><i class="fa-solid fa-temperature-high"></i> Heat Index Calculator</li>
+                                <li onclick="alert('Bandwidth Calculator will be added soon!')"><i class="fa-solid fa-wifi"></i> Bandwidth Calculator</li>
+                                <li onclick="alert('URL Encode / Decode will be added soon!')"><i class="fa-solid fa-link"></i> URL Encode / Decode</li>
+                                <li onclick="alert('Day Counter will be added soon!')"><i class="fa-solid fa-calendar-check"></i> Day Counter</li>
+                                <li onclick="alert('Date Calculator will be added soon!')"><i class="fa-solid fa-calendar-alt"></i> Date Calculator</li>
+                                <li onclick="alert('Hours Calculator will be added soon!')"><i class="fa-solid fa-hourglass"></i> Hours Calculator</li>
+                                <li onclick="alert('Grade Calculator will be added soon!')"><i class="fa-solid fa-check-double"></i> Grade Calculator</li>
+                                <li onclick="alert('Concrete Calculator will be added soon!')"><i class="fa-solid fa-trowel-bricks"></i> Concrete Calculator</li>
+                                <li onclick="alert('Bra Size Calculator will be added soon!')"><i class="fa-solid fa-person-dress"></i> Bra Size Calculator</li>
+                                <li onclick="alert('Dice Roller will be added soon!')"><i class="fa-solid fa-dice"></i> Dice Roller</li>
+                                <li onclick="alert('Fuel Cost Calculator will be added soon!')"><i class="fa-solid fa-gas-pump"></i> Fuel Cost Calculator</li>
+                                <li onclick="alert('BTU Calculator will be added soon!')"><i class="fa-solid fa-fire"></i> BTU Calculator</li>
+                                <li onclick="alert('Time Card Calculator will be added soon!')"><i class="fa-solid fa-id-card"></i> Time Card Calculator</li>
+                                <li onclick="alert('Love Calculator will be added soon!')"><i class="fa-solid fa-heart"></i> Love Calculator</li>
+                                <li onclick="alert('Gas Mileage Calculator will be added soon!')"><i class="fa-solid fa-car-side"></i> Gas Mileage Calculator</li>
+                                <li onclick="alert('Engine Horsepower Calculator will be added soon!')"><i class="fa-solid fa-car-battery"></i> Engine Horsepower Calculator</li>
+                                <li onclick="alert('Resistor Calculator will be added soon!')"><i class="fa-solid fa-microchip"></i> Resistor Calculator</li>
+                                <li onclick="alert('Electricity Calculator will be added soon!')"><i class="fa-solid fa-plug"></i> Electricity Calculator</li>
+                                <li onclick="alert('Density Calculator will be added soon!')"><i class="fa-solid fa-cube"></i> Density Calculator</li>
+                                <li onclick="alert('Weight Calculator will be added soon!')"><i class="fa-solid fa-weight-scale"></i> Weight Calculator</li>
+                                <li onclick="alert('Molarity Calculator will be added soon!')"><i class="fa-solid fa-vial"></i> Molarity Calculator</li>
+                                <li onclick="alert('Roman Numeral Converter will be added soon!')"><i class="fa-solid fa-font"></i> Roman Numeral Converter</li>
+                                <li onclick="alert('Sleep Calculator will be added soon!')"><i class="fa-solid fa-bed"></i> Sleep Calculator</li>
+                                <li onclick="alert('Roofing Calculator will be added soon!')"><i class="fa-solid fa-house"></i> Roofing Calculator</li>
+                                <li onclick="alert('Mulch Calculator will be added soon!')"><i class="fa-solid fa-leaf"></i> Mulch Calculator</li>
+                                <li onclick="alert('Wind Chill Calculator will be added soon!')"><i class="fa-solid fa-wind"></i> Wind Chill Calculator</li>
+                                <li onclick="alert('Dew Point Calculator will be added soon!')"><i class="fa-solid fa-droplet"></i> Dew Point Calculator</li>
+                                <li onclick="alert('Base64 Encode / Decode will be added soon!')"><i class="fa-solid fa-code"></i> Base64 Encode / Decode</li>
+                                <li onclick="alert('Time Duration Calculator will be added soon!')"><i class="fa-solid fa-stopwatch"></i> Time Duration Calculator</li>
+                                <li onclick="alert('Day of the Week Calculator will be added soon!')"><i class="fa-solid fa-calendar-day"></i> Day of the Week Calculator</li>
+                            </ul>
                         </li>
                     </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="search-overlay" class="search-overlay">
-        <div class="search-overlay-header">
-            <div class="search-logo">
-                <span style="color: #38bdf8; font-weight: bold; font-size: 1.2rem;">Nexus</span>
-                <span style="font-weight: 300; font-size: 1rem;">calculator</span>
-            </div>
-            <div class="search-input-wrapper">
-                <i class="fas fa-times clear-search" id="clear-search" style="display: none;"></i>
-                <input type="text" id="overlay-search-input" placeholder="Search...">
-                <i class="fas fa-search search-icon"></i>
-            </div>
-            <button id="close-search-overlay" class="close-overlay-btn">Cancel</button>
-        </div>
-        <ul id="search-results-list" class="omni-search-list">
-            <!-- Search results injected here -->
-        </ul>
-    </div>
-
-    <div id="categories-modal" class="search-overlay">
-        <div class="search-overlay-header" style="justify-content: space-between;">
-            <div class="search-logo">
-                <span style="color: #38bdf8; font-weight: bold; font-size: 1.2rem;">Nexus Calculator</span>
-            </div>
-            <button id="close-categories-modal" class="close-overlay-btn"><i class="fas fa-times"
-                    style="font-size: 1.2rem;"></i></button>
-        </div>
-        <div class="omni-categories-container" style="margin: 20px auto; max-width: 600px;">
-            <div class="omni-categories-header">
-                <div class="cat-icon-squares">
-                    <span class="sq sq-red"></span><span class="sq sq-yellow"></span>
-                    <span class="sq sq-blue"></span><span class="sq sq-green"></span>
-                </div>
-                <h3>All Categories</h3>
-            </div>
-
-            <div class="omni-category-list">
-                <button class="omni-cat-btn" data-category="financial">
-                    <div class="cat-left">
-                        <i class="fas fa-chart-line" style="color: #3b82f6;"></i>
-                        <span>Financial</span>
-                    </div>
-                    <span class="cat-count">16 calculators</span>
-                </button>
-                <button class="omni-cat-btn" data-category="fitness">
-                    <div class="cat-left">
-                        <i class="fas fa-heartbeat" style="color: #ef4444;"></i>
-                        <span>Fitness & Health</span>
-                    </div>
-                    <span class="cat-count">9 calculators</span>
-                </button>
-                <button class="omni-cat-btn" data-category="math">
-                    <div class="cat-left">
-                        <i class="fas fa-calculator" style="color: #8b5cf6;"></i>
-                        <span>Math</span>
-                    </div>
-                    <span class="cat-count">7 calculators</span>
-                </button>
-                <button class="omni-cat-btn" data-category="other">
-                    <div class="cat-left">
-                        <i class="fas fa-tools" style="color: #f59e0b;"></i>
-                        <span>Other</span>
-                    </div>
-                    <span class="cat-count">10 calculators</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Financial Details -->
-        <div class="omni-category-details" id="cat-details-financial"
-            style="display: none; flex: 1; min-height: 0; flex-direction: column; margin: 20px auto; max-width: 600px; width: 100%; padding: 0 20px;">
-            <div class="omni-categories-header"
-                style="margin-bottom: 15px; flex-shrink: 0; display: flex; align-items: center; gap: 15px;">
-                <button class="back-to-categories"
-                    style="background: transparent; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; padding: 5px;"><i
-                        class="fas fa-arrow-left"></i></button>
-                <h3 style="margin: 0;">Financial Calculators</h3>
-            </div>
-            <ul class="omni-search-list">
-                <li><a href="financial/mortgage-calculator.html">Mortgage Calculator</a></li>
-                <li><a href="financial/loan-calculator.html">Loan Calculator</a></li>
-                <li><a href="financial/auto-loan-calculator.html">Auto Loan Calculator</a></li>
-                <li><a href="financial/interest-calculator.html">Interest Calculator</a></li>
-                <li><a href="financial/payment-calculator.html">Payment Calculator</a></li>
-                <li><a href="financial/retirement-calculator.html">Retirement Calculator</a></li>
-                <li><a href="financial/amortization-calculator.html">Amortization Calculator</a></li>
-                <li><a href="financial/investment-calculator.html">Investment Calculator</a></li>
-                <li><a href="financial/inflation-calculator.html">Inflation Calculator</a></li>
-                <li><a href="financial/finance-calculator.html">Finance Calculator</a></li>
-                <li><a href="financial/income-tax-calculator.html">Income Tax Calculator</a></li>
-                <li><a href="financial/gst-calculator.html">GST Calculator</a></li>
-                <li><a href="financial/compound-interest-calculator.html">Compound Interest Calculator</a></li>
-                <li><a href="financial/salary-calculator.html">Salary Calculator</a></li>
-                <li><a href="financial/interest-rate-calculator.html">Interest Rate Calculator</a></li>
-                <li><a href="financial/sales-tax-calculator.html">Sales Tax Calculator</a></li>
-            </ul>
-        </div>
-
-        <!-- Fitness Details -->
-        <div class="omni-category-details" id="cat-details-fitness"
-            style="display: none; flex: 1; min-height: 0; flex-direction: column; margin: 20px auto; max-width: 600px; width: 100%; padding: 0 20px;">
-            <div class="omni-categories-header"
-                style="margin-bottom: 15px; flex-shrink: 0; display: flex; align-items: center; gap: 15px;">
-                <button class="back-to-categories"
-                    style="background: transparent; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; padding: 5px;"><i
-                        class="fas fa-arrow-left"></i></button>
-                <h3 style="margin: 0;">Fitness & Health Calculators</h3>
-            </div>
-            <ul class="omni-search-list">
-                <li><a href="fitness/bmi.html">BMI Calculator</a></li>
-                <li><a href="fitness/calorie-calculator.html">Calorie Calculator</a></li>
-                <li><a href="fitness/body-fat-calculator.html">Body Fat Calculator</a></li>
-                <li><a href="fitness/bmr-calculator.html">BMR Calculator</a></li>
-                <li><a href="fitness/ideal-weight-calculator.html">Ideal Weight Calculator</a></li>
-                <li><a href="fitness/pace-calculator.html">Pace Calculator</a></li>
-                <li><a href="fitness/pregnancy-calculator.html">Pregnancy Calculator</a></li>
-                <li><a href="fitness/pregnancy-conception.html">Pregnancy Conception</a></li>
-                <li><a href="fitness/due-date-calculator.html">Due Date Calculator</a></li>
-            </ul>
-        </div>
-
-        <!-- Math Details -->
-        <div class="omni-category-details" id="cat-details-math"
-            style="display: none; flex: 1; min-height: 0; flex-direction: column; margin: 20px auto; max-width: 600px; width: 100%; padding: 0 20px;">
-            <div class="omni-categories-header"
-                style="margin-bottom: 15px; flex-shrink: 0; display: flex; align-items: center; gap: 15px;">
-                <button class="back-to-categories"
-                    style="background: transparent; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; padding: 5px;"><i
-                        class="fas fa-arrow-left"></i></button>
-                <h3 style="margin: 0;">Math Calculators</h3>
-            </div>
-            <ul class="omni-search-list">
-                <li><a href="math/math.html">Scientific Calculator</a></li>
-                <li><a href="math/student-calculator.html">Student Calculator</a></li>
-                <li><a href="math/fraction-calculator.html">Fraction Calculator</a></li>
-                <li><a href="math/percentage-calculator.html">Percentage Calculator</a></li>
-                <li><a href="math/random-number-generator.html">Random Number Generator</a></li>
-                <li><a href="math/triangle-calculator.html">Triangle Calculator</a></li>
-                <li><a href="math/standard-deviation.html">Standard Deviation</a></li>
-            </ul>
-        </div>
-
-        <!-- Other Details -->
-        <div class="omni-category-details" id="cat-details-other"
-            style="display: none; flex: 1; min-height: 0; flex-direction: column; margin: 20px auto; max-width: 600px; width: 100%; padding: 0 20px;">
-            <div class="omni-categories-header"
-                style="margin-bottom: 15px; flex-shrink: 0; display: flex; align-items: center; gap: 15px;">
-                <button class="back-to-categories"
-                    style="background: transparent; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; padding: 5px;"><i
-                        class="fas fa-arrow-left"></i></button>
-                <h3 style="margin: 0;">Other Calculators</h3>
-            </div>
-            <ul class="omni-search-list">
-                <li><a href="other/age.html">Age Calculator</a></li>
-                <li><a href="other/date-calculator.html">Date Calculator</a></li>
-                <li><a href="other/time-calculator.html">Time Calculator</a></li>
-                <li><a href="other/hours-calculator.html">Hours Calculator</a></li>
-                <li><a href="other/gpa-calculator.html">GPA Calculator</a></li>
-                <li><a href="other/grade-calculator.html">Grade Calculator</a></li>
-                <li><a href="other/concrete-calculator.html">Concrete Calculator</a></li>
-                <li><a href="other/subnet-calculator.html">Subnet Calculator</a></li>
-                <li><a href="other/password-generator.html">Password Generator</a></li>
-                <li><a href="other/conversion-calculator.html">Conversion Calculator</a></li>
+                </li>
+                <li onclick="window.location.href='privacy-policy.html'"><i class="fa-solid fa-shield-halved"></i> Privacy Policy</li>
+                <li onclick="window.location.href='terms.html'"><i class="fa-solid fa-file-contract"></i> Terms & Conditions</li>
+                <li onclick="window.location.href='about.html'"><i class="fa-solid fa-circle-info"></i> About</li>
             </ul>
         </div>
     </div>
-
-    <!-- We still include script.js to handle the theme toggle -->
+    
     <script src="js/script.js"></script>
+    <script src="js/search.js"></script>
 </body>
-
 </html>

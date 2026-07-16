@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Generator - Nexus</title>
+    <title>Tip Calculator - Nexus</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,13 +21,14 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
+            position: relative;
         }
         .input-group label {
             color: var(--text-secondary);
             font-size: 14px;
             font-weight: 500;
         }
-        .input-group input[type="number"], .input-group input[type="range"] {
+        .input-group input {
             padding: 16px;
             border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -38,26 +39,17 @@
             outline: none;
             transition: border-color 0.3s;
         }
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background-color: var(--btn-bg);
-            padding: 16px;
-            border-radius: 15px;
-            cursor: pointer;
+        .input-group input:focus {
+            border-color: var(--btn-operator-color);
         }
-        .checkbox-group input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            accent-color: var(--btn-operator-color);
-            cursor: pointer;
+        .prefix {
+            position: absolute;
+            left: 16px;
+            top: 40px;
+            color: var(--text-secondary);
         }
-        .checkbox-group label {
-            color: var(--text-primary);
-            font-size: 15px;
-            cursor: pointer;
-            flex-grow: 1;
+        .input-group input.has-prefix {
+            padding-left: 35px;
         }
         .btn-row {
             display: flex;
@@ -95,27 +87,37 @@
             background-color: var(--btn-bg);
             border-radius: 20px;
             padding: 24px;
-            text-align: center;
             margin-top: 20px;
-            position: relative;
+            display: none;
+        }
+        .result-box.active {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 15px;
+        }
+        .result-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .result-label {
+            color: var(--text-secondary);
+            font-size: 14px;
         }
         .result-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--btn-operator-color);
-            margin-bottom: 8px;
-            word-break: break-all;
-        }
-        .copy-btn {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
             font-size: 20px;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        .copy-btn:hover {
+            font-weight: 700;
             color: var(--text-primary);
+        }
+        .result-value.total {
+            color: var(--btn-operator-color);
+            font-size: 24px;
         }
         .back-btn {
             background: none;
@@ -132,49 +134,58 @@
             <button class="back-btn" onclick="window.location.href='../index.html'" style="position: absolute; left: 16px;">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
-            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Password Generator</h2>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Tip Calculator</h2>
             <i class="fa-solid fa-magnifying-glass" title="Search" style="position: absolute; right: 16px; font-size: 20px; color: var(--text-secondary); cursor: pointer;"></i>
         </div>
 
         <div class="tool-content">
-            <div class="result-box">
-                <div class="result-value" id="password-display">Click Generate</div>
-                <button class="copy-btn" id="copy-btn" title="Copy to clipboard"><i class="fa-regular fa-copy"></i></button>
+            <div class="input-group">
+                <label for="bill">Bill Amount</label>
+                <div style="display: flex; gap: 8px;">
+                    <select id="currency" style="padding: 16px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); background-color: var(--btn-bg); color: var(--text-primary); font-size: 16px; outline: none; cursor: pointer;">
+                        <option value="$">$ USD</option>
+                        <option value="৳">৳ BDT</option>
+                        <option value="₹">₹ INR</option>
+                        <option value="€">€ EUR</option>
+                        <option value="£">£ GBP</option>
+                    </select>
+                    <input type="number" id="bill" placeholder="0.00" min="0" step="0.01" style="flex-grow: 1;">
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="tip">Tip Amount</label>
+                <input type="number" id="tip" placeholder="0.00" value="" min="0">
             </div>
 
             <div class="input-group">
-                <label for="length">Password Length</label>
-                <div style="display: flex; gap: 12px; align-items: center;">
-                    <input type="range" id="length-slider" min="4" max="32" value="12" style="flex-grow: 1;">
-                    <input type="number" id="length" min="4" max="32" value="12" style="width: 80px; text-align: center; padding: 12px;">
-                </div>
+                <label for="split">Split (Number of people)</label>
+                <input type="number" id="split" placeholder="1" value="" min="1">
             </div>
-
-            <label class="checkbox-group">
-                <input type="checkbox" id="uppercase" checked>
-                <span>Include Uppercase Letters (A-Z)</span>
-            </label>
-            <label class="checkbox-group">
-                <input type="checkbox" id="lowercase" checked>
-                <span>Include Lowercase Letters (a-z)</span>
-            </label>
-            <label class="checkbox-group">
-                <input type="checkbox" id="numbers" checked>
-                <span>Include Numbers (0-9)</span>
-            </label>
-            <label class="checkbox-group">
-                <input type="checkbox" id="symbols" checked>
-                <span>Include Symbols (!@#$)</span>
-            </label>
 
             <div class="error-msg" id="error-msg"></div>
             <div class="btn-row">
                 <button class="btn-clear" id="clear-btn">Clear Data</button>
-                <button class="btn-primary" id="generate-btn">Generate</button>
+                <button class="btn-primary" id="calc-btn">Calculate</button>
+            </div>
+
+            <div class="result-box" id="result-box">
+                <div class="result-row">
+                    <span class="result-label">Tip Amount</span>
+                    <span class="result-value" id="tip-amount">$0.00</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Total Amount</span>
+                    <span class="result-value total" id="total-amount">$0.00</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Amount Per Person</span>
+                    <span class="result-value" id="per-person">$0.00</span>
+                </div>
             </div>
         </div>
     </div>
-    <script src="../js/password-generator.js"></script>
+    <script src="../js/tip-calculator.js"></script>
     <script src="../js/search.js"></script>
 </body>
 </html>

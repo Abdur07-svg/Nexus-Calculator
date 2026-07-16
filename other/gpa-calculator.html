@@ -1,133 +1,160 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPA Calculator</title>
+    <title>GPA Calculator - Nexus</title>
     <link rel="stylesheet" href="../style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        .tool-content {
+            background-color: var(--calc-bg);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
         .course-row {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 12px;
+            margin-bottom: 16px;
             align-items: center;
         }
         .course-row input, .course-row select {
-            margin: 0;
-            padding: 10px 8px;
-            font-size: 0.85rem;
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background-color: var(--btn-bg);
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
         }
-        .course-name-input { flex: 2; }
-        .course-credits { flex: 1; text-align: center; }
-        .course-grade { flex: 1.2; padding: 10px 4px; }
         .remove-btn {
-            background: #ef4444;
-            color: white;
+            background: none;
             border: none;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            flex-shrink: 0;
+            color: #ff5252;
+            font-size: 20px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
+            padding: 8px;
         }
-        .remove-btn:hover {
-            background: #dc2626;
+        .add-course-btn {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border: 1px dashed rgba(255,255,255,0.2);
+            padding: 12px;
+            border-radius: 10px;
+            width: 100%;
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 24px;
+            transition: background-color 0.2s ease;
+        }
+        .add-course-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .btn-row {
+            display: flex;
+            gap: 16px;
+        }
+        .btn-primary, .btn-clear {
+            flex: 1;
+            padding: 16px;
+            border-radius: 15px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s ease, transform 0.1s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #ff5252 0%, #ff0000 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 82, 82, 0.3);
+        }
+        .btn-clear {
+            background-color: var(--btn-bg);
+            color: var(--text-primary);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-primary:active, .btn-clear:active {
+            transform: scale(0.98);
+        }
+        .result-box {
+            margin-top: 30px;
+            padding: 24px;
+            background-color: var(--btn-bg);
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .result-value {
+            font-size: 40px;
+            font-weight: 600;
+            color: var(--btn-operator-color);
+            margin-bottom: 8px;
+        }
+        .result-details {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+        /* Hide labels visually but keep for screen readers if needed */
+        .headers {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 12px;
+            margin-bottom: 8px;
+            padding-right: 36px; /* space for remove btn */
+            color: var(--text-secondary);
+            font-size: 12px;
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
-    <div class="background-elements">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-    </div>
-
-    <div class="calculator-wrapper">
-
-                <div class="top-nav-bar" style="justify-content: space-between; align-items: center; border-bottom: 1px solid var(--calc-border); padding-bottom: 10px; margin-bottom: 20px; display: flex;">
-            <a href="../index.html" style="text-decoration: none; color: var(--text-primary); font-size: 1.3rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">
-                <i class="fas fa-arrow-left" style="font-size: 1.1rem; margin-right: 5px; color: var(--text-secondary);"></i>
-                Nexus <span style="color: #38bdf8; font-weight: 400; margin-left: 2px;">Calculator</span>
-            </a>
-            <button class="nav-btn circular" onclick="openGlobalSearch()" style="background: transparent; border: none; color: var(--text-primary); font-size: 1.2rem; cursor: pointer; padding: 5px;">
-                <i class="fas fa-search"></i>
+    <div class="calculator-container">
+        <div class="top-bar" style="position: sticky; top: -16px; background-color: var(--calc-bg); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px 0 10px 0;">
+            <button class="back-btn" onclick="window.location.href='../index.html'" style="position: absolute; left: 16px;">
+                <i class="fa-solid fa-arrow-left"></i>
             </button>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">GPA Calculator</h2>
+            <i class="fa-solid fa-magnifying-glass" title="Search" style="position: absolute; right: 16px; font-size: 20px; color: var(--text-secondary); cursor: pointer;" id="search-btn"></i>
         </div>
-        <div class="calculator" style="width: 100%; max-width: 420px;">
 
-            <div id="gpa-view" class="calc-view active">
-                <div class="calc-header">
-                    <h2>GPA Calculator</h2>
-                    <p>Calculate your semester or cumulative GPA</p>
-                </div>
-                
-                <div class="form-box">
-                    <div id="courses-container">
-                        <!-- Rows injected here by JS -->
-                    </div>
-                    <button id="add-course-btn" class="action-btn" style="background: var(--bg-tertiary); color: var(--text-primary); margin-bottom: 15px;"><i class="fas fa-plus"></i> Add Course</button>
-                    <button type="button" class="action-btn clear-btn" onclick="document.querySelectorAll('input').forEach(i => i.value=''); document.querySelectorAll('.result-container').forEach(r => r.style.display='none');" style="background: transparent; border: 1px solid #ef4444; color: #ef4444; margin-top: 10px;">Clear Data</button>
-                    <button id="calc-gpa-btn" class="action-btn">Calculate GPA</button>
-                </div>
-                
-                <div class="result-container" id="gpa-result-container" style="display: none;">
-                    <div class="age-main" id="gpa-main-result" style="font-size: 2.5rem; color: #22c55e;">
-                        0.00
-                    </div>
-                    <div class="age-details" id="gpa-details">
-                    </div>
-                </div>
+        <div class="tool-content">
+            <div class="headers">
+                <div>Course Name</div>
+                <div>Credits</div>
+                <div>Grade</div>
+            </div>
+            <div id="course-list">
+                <!-- Rows injected via JS -->
+            </div>
+            
+            <button class="add-course-btn" id="add-course-btn"><i class="fa-solid fa-plus"></i> Add Course</button>
+
+            <div class="error-msg" id="error-msg"></div>
+            <div class="btn-row">
+                <button class="btn-clear" id="clear-btn">Clear All</button>
+                <button class="btn-primary" id="calc-btn">Calculate GPA</button>
+            </div>
+
+            <div class="result-box" id="result-box">
+                <div class="result-value" id="main-gpa">0.00</div>
+                <div class="result-details" id="detailed-gpa">Total Credits: 0</div>
             </div>
         </div>
     </div>
-    <script src="../js/script.js"></script>
-    <script src="../js/gpa.js"></script>
-
-    <script>
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.matches && e.target.matches('.action-btn:not(.clear-btn)')) {
-                const formBox = e.target.closest('.form-box');
-                if (formBox) {
-                    const inputs = formBox.querySelectorAll('input[type="number"], input[type="text"]');
-                    let isEmpty = false;
-                    inputs.forEach(input => {
-                        if (input.value.trim() === '') isEmpty = true;
-                    });
-                    
-                    if (isEmpty) {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        
-                        let errorMsg = formBox.querySelector('.global-error-msg');
-                        if (!errorMsg) {
-                            errorMsg = document.createElement('div');
-                            errorMsg.className = 'global-error-msg';
-                            errorMsg.style.color = '#ef4444';
-                            errorMsg.style.fontSize = '0.9rem';
-                            errorMsg.style.marginTop = '15px';
-                            errorMsg.style.textAlign = 'center';
-                            errorMsg.style.fontWeight = '500';
-                            errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill out all required fields.';
-                            
-                            // Insert at the end of form-box
-                            formBox.appendChild(errorMsg);
-                        }
-                        
-                        // Hide results if they are shown
-                        const resultContainer = document.querySelector('.result-container');
-                        if (resultContainer) resultContainer.style.display = 'none';
-                    } else {
-                        const errorMsg = formBox.querySelector('.global-error-msg');
-                        if (errorMsg) errorMsg.remove();
-                    }
-                }
-            }
-        }, true); // Use capture phase to intercept before the button's own listener
-    </script>
+    
+    <script src="../js/gpa-calculator.js"></script>
+    <script src="../js/search.js"></script>
 </body>
 </html>

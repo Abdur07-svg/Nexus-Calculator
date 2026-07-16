@@ -1,0 +1,144 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // Inject the search overlay HTML into the body if it doesn't exist
+    if (!document.getElementById('search-overlay')) {
+        const overlayHTML = `
+            <div class="search-overlay" id="search-overlay">
+                <div class="search-container">
+                    <div class="search-header">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-input" placeholder="Search calculators..." autocomplete="off">
+                        <i class="fa-solid fa-xmark" id="close-search"></i>
+                    </div>
+                    <div class="search-results" id="search-results">
+                        <!-- Results injected here -->
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', overlayHTML);
+    }
+
+    const searchOverlay = document.getElementById('search-overlay');
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+    const closeSearchBtn = document.getElementById('close-search');
+
+    // Attach click listeners to all search buttons on the page
+    const searchBtns = document.querySelectorAll('#search-btn, .fa-magnifying-glass[title="Search"]');
+    searchBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            searchOverlay.classList.add('active');
+            searchInput.value = '';
+            renderResults('');
+            setTimeout(() => searchInput.focus(), 100);
+        });
+    });
+
+    closeSearchBtn.addEventListener('click', () => {
+        searchOverlay.classList.remove('active');
+    });
+
+    // Close on overlay click
+    searchOverlay.addEventListener('click', (e) => {
+        if (e.target === searchOverlay) {
+            searchOverlay.classList.remove('active');
+        }
+    });
+
+    // Determine the base path for URLs depending on where we are
+    // If the current path contains /other/, we need to adjust paths
+    const isOtherDir = window.location.pathname.includes('/other/');
+    const basePath = isOtherDir ? '../' : './';
+    const otherPath = isOtherDir ? './' : 'other/';
+
+    const calculators = [
+        { name: 'Standard Calculator', icon: 'fa-calculator', url: basePath + 'index.html', real: true },
+        { name: 'Age Calculator', icon: 'fa-calendar-days', url: otherPath + 'age-calculator.html', real: true },
+        { name: 'Password Generator', icon: 'fa-key', url: otherPath + 'password-generator.html', real: true },
+        { name: 'Tip Calculator', icon: 'fa-coins', url: otherPath + 'tip-calculator.html', real: true },
+        { name: 'Time Calculator', icon: 'fa-clock', url: otherPath + 'time-calculator.html', real: true },
+        { name: 'GPA Calculator', icon: 'fa-graduation-cap', url: otherPath + 'gpa-calculator.html', real: true },
+        { name: 'Height Calculator', icon: 'fa-ruler-vertical', url: otherPath + 'height-calculator.html', real: true },
+        { name: 'IP Subnet Calculator', icon: 'fa-network-wired', url: otherPath + 'ip-subnet-calculator.html', real: true },
+        { name: 'Conversion Calculator', icon: 'fa-right-left', url: otherPath + 'conversion-calculator.html', real: true },
+        { name: 'Voltage Drop Calculator', icon: 'fa-bolt', url: otherPath + 'voltage-drop-calculator.html', real: true },
+        { name: 'Square Footage Calculator', icon: 'fa-vector-square', url: otherPath + 'square-footage-calculator.html', real: true },
+        { name: 'Time Zone Calculator', icon: 'fa-globe', url: otherPath + 'time-zone-calculator.html', real: true },
+        { name: 'GDP Calculator', icon: 'fa-chart-line', url: otherPath + 'gdp-calculator.html', real: true },
+        { name: 'Horsepower Calculator', icon: 'fa-horse-head', url: '#', real: false },
+        { name: 'Stair Calculator', icon: 'fa-stairs', url: '#', real: false },
+        { name: 'Ohms Law Calculator', icon: 'fa-bolt', url: '#', real: false },
+        { name: 'Shoe Size Conversion', icon: 'fa-shoe-prints', url: '#', real: false },
+        { name: 'Mileage Calculator', icon: 'fa-car', url: '#', real: false },
+        { name: 'Mass Calculator', icon: 'fa-weight-hanging', url: '#', real: false },
+        { name: 'Speed Calculator', icon: 'fa-gauge-high', url: '#', real: false },
+        { name: 'Molecular Weight Calculator', icon: 'fa-atom', url: '#', real: false },
+        { name: 'Golf Handicap Calculator', icon: 'fa-golf-ball-tee', url: '#', real: false },
+        { name: 'Tire Size Calculator', icon: 'fa-truck-monster', url: '#', real: false },
+        { name: 'Tile Calculator', icon: 'fa-table-cells', url: '#', real: false },
+        { name: 'Gravel Calculator', icon: 'fa-mound', url: '#', real: false },
+        { name: 'Heat Index Calculator', icon: 'fa-temperature-high', url: '#', real: false },
+        { name: 'Bandwidth Calculator', icon: 'fa-wifi', url: '#', real: false },
+        { name: 'URL Encode / Decode', icon: 'fa-link', url: '#', real: false },
+        { name: 'Day Counter', icon: 'fa-calendar-check', url: '#', real: false },
+        { name: 'Date Calculator', icon: 'fa-calendar-alt', url: '#', real: false },
+        { name: 'Hours Calculator', icon: 'fa-hourglass', url: '#', real: false },
+        { name: 'Grade Calculator', icon: 'fa-check-double', url: '#', real: false },
+        { name: 'Concrete Calculator', icon: 'fa-trowel-bricks', url: '#', real: false },
+        { name: 'Bra Size Calculator', icon: 'fa-person-dress', url: '#', real: false },
+        { name: 'Dice Roller', icon: 'fa-dice', url: '#', real: false },
+        { name: 'Fuel Cost Calculator', icon: 'fa-gas-pump', url: '#', real: false },
+        { name: 'BTU Calculator', icon: 'fa-fire', url: '#', real: false },
+        { name: 'Time Card Calculator', icon: 'fa-id-card', url: '#', real: false },
+        { name: 'Love Calculator', icon: 'fa-heart', url: '#', real: false },
+        { name: 'Gas Mileage Calculator', icon: 'fa-car-side', url: '#', real: false },
+        { name: 'Engine Horsepower Calculator', icon: 'fa-car-battery', url: '#', real: false },
+        { name: 'Resistor Calculator', icon: 'fa-microchip', url: '#', real: false },
+        { name: 'Electricity Calculator', icon: 'fa-plug', url: '#', real: false },
+        { name: 'Density Calculator', icon: 'fa-cube', url: '#', real: false },
+        { name: 'Weight Calculator', icon: 'fa-weight-scale', url: '#', real: false },
+        { name: 'Molarity Calculator', icon: 'fa-vial', url: '#', real: false },
+        { name: 'Roman Numeral Converter', icon: 'fa-font', url: '#', real: false },
+        { name: 'Sleep Calculator', icon: 'fa-bed', url: '#', real: false },
+        { name: 'Roofing Calculator', icon: 'fa-house', url: '#', real: false },
+        { name: 'Mulch Calculator', icon: 'fa-leaf', url: '#', real: false },
+        { name: 'Wind Chill Calculator', icon: 'fa-wind', url: '#', real: false },
+        { name: 'Dew Point Calculator', icon: 'fa-droplet', url: '#', real: false },
+        { name: 'Base64 Encode / Decode', icon: 'fa-code', url: '#', real: false },
+        { name: 'Time Duration Calculator', icon: 'fa-stopwatch', url: '#', real: false },
+        { name: 'Day of the Week Calculator', icon: 'fa-calendar-day', url: '#', real: false }
+    ];
+
+
+
+    function renderResults(query) {
+        searchResults.innerHTML = '';
+        const q = query.toLowerCase().trim();
+        
+        if (q === '') {
+            return; // Show nothing if search is empty
+        }
+        
+        const filtered = calculators.filter(calc => calc.name.toLowerCase().includes(q));
+
+        if (filtered.length === 0) {
+            searchResults.innerHTML = '<div class="search-no-results">No calculators found.</div>';
+            return;
+        }
+
+        filtered.forEach(calc => {
+            const item = document.createElement('a');
+            item.className = 'search-item';
+            item.href = calc.url;
+            item.innerHTML = `
+                <i class="fa-solid ${calc.icon}"></i>
+                <span>${calc.name}</span>
+            `;
+            searchResults.appendChild(item);
+        });
+    }
+
+    searchInput.addEventListener('input', (e) => {
+        renderResults(e.target.value);
+    });
+});

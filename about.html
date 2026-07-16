@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Nexus Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-content {
+            flex-grow: 1;
+            padding: 24px;
+            overflow-y: auto;
+            color: var(--text-primary);
+            text-align: center;
+        }
+        .app-logo {
+            font-size: 64px;
+            color: var(--btn-operator-color);
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        .page-content h1 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        .version {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .page-content p {
+            line-height: 1.6;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+            text-align: left;
+        }
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .developer-card {
+            background-color: var(--btn-bg);
+            padding: 20px;
+            border-radius: 20px;
+            margin-top: 30px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <!-- Top Navigation Bar -->
+        <div class="top-bar" style="position: relative; display: flex; align-items: center; justify-content: center; padding: 24px 0 10px 0;">
+            <button class="back-btn" onclick="window.location.href='index.html'" style="position: absolute; left: 16px;">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">About</h2>
+        </div>
+
+        <div class="page-content">
+            <i class="fa-solid fa-calculator app-logo"></i>
+            <h1>Nexus Calculator</h1>
+            <div class="version">Version 1.0.0</div>
+            
+            <p>Nexus Calculator is a modern, feature-rich calculator designed for speed, accuracy, and aesthetics. Whether you need to do basic math or complex scientific computations, Nexus Calculator is built to handle it effortlessly.</p>
+            
+            <div class="developer-card">
+                <h3 style="margin-bottom: 10px; color: var(--btn-operator-color);">Features</h3>
+                <ul style="color: var(--text-secondary); margin-left: 20px; line-height: 1.8;">
+                    <li>Advanced Scientific Mode</li>
+                    <li>Intuitive History Tracking</li>
+                    <li>Beautiful Glassmorphic Design</li>
+                    <li>Degrees & Radians Support</li>
+                </ul>
+            </div>
+            
+            <p style="margin-top: 40px; text-align: center; font-size: 12px;">© 2026 Nexus Calculator. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

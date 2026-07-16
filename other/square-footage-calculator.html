@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Time Calculator - Nexus</title>
+    <title>Square Footage Calculator - Nexus</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -13,30 +13,6 @@
             padding: 30px;
             box-shadow: var(--shadow);
             margin-top: 20px;
-        }
-        .mode-toggle {
-            display: flex;
-            background-color: var(--btn-bg);
-            border-radius: 15px;
-            padding: 5px;
-            margin-bottom: 24px;
-        }
-        .mode-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 600;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .mode-btn.active {
-            background-color: var(--btn-operator-color);
-            color: white;
-            box-shadow: 0 2px 8px rgba(255, 82, 82, 0.3);
         }
         .input-group {
             margin-bottom: 24px;
@@ -61,9 +37,12 @@
         .input-group input:focus, .input-group select:focus {
             border-color: var(--btn-operator-color);
         }
-        .add-sub-group {
+        .row-group {
             display: flex;
             gap: 16px;
+        }
+        .row-group .input-group {
+            flex: 1;
         }
         .btn-row {
             display: flex;
@@ -95,22 +74,41 @@
         }
         .result-box {
             margin-top: 30px;
-            padding: 24px;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            display: none;
+        }
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .result-item {
             background-color: var(--btn-bg);
-            border-radius: 20px;
+            border: 1px solid rgba(0,0,0,0.04);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            padding: 16px;
+            border-radius: 12px;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .result-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .result-value {
-            font-size: 32px;
-            font-weight: 300;
-            color: var(--btn-operator-color);
-            margin-bottom: 8px;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            word-break: break-word;
         }
-        .result-details {
-            color: var(--text-secondary);
-            font-size: 14px;
-            line-height: 1.6;
+        .result-value.highlight {
+            color: #4caf50;
+            font-size: 24px;
         }
         .back-btn {
             background: none;
@@ -118,6 +116,13 @@
             color: var(--text-primary);
             font-size: 24px;
             cursor: pointer;
+        }
+        .error-msg {
+            color: #ff5252;
+            font-size: 14px;
+            margin-bottom: 16px;
+            text-align: center;
+            display: none;
         }
     </style>
 </head>
@@ -127,69 +132,67 @@
             <button class="back-btn" onclick="window.location.href='../index.html'" style="position: absolute; left: 16px;">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
-            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Time Calculator</h2>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Square Footage</h2>
             <i class="fa-solid fa-magnifying-glass" title="Search" style="position: absolute; right: 16px; font-size: 20px; color: var(--text-secondary); cursor: pointer;" id="search-btn"></i>
         </div>
 
         <div class="tool-content">
-            <div class="mode-toggle">
-                <button class="mode-btn active" id="mode-between">Time Between</button>
-                <button class="mode-btn" id="mode-addsub">Add / Subtract Time</button>
-            </div>
-
-            <!-- Time Between Inputs -->
-            <div id="between-inputs">
+            <div class="row-group">
                 <div class="input-group">
-                    <label for="start-time-1">Start Time (e.g. 14:30 or 2:30 PM)</label>
-                    <input type="text" id="start-time-1" placeholder="HH:MM AM/PM" required>
+                    <label>Length</label>
+                    <input type="number" id="sq-length" placeholder="0">
                 </div>
-                
                 <div class="input-group">
-                    <label for="end-time-1">End Time (e.g. 18:45 or 6:45 PM)</label>
-                    <input type="text" id="end-time-1" placeholder="HH:MM AM/PM" required>
+                    <label>Width</label>
+                    <input type="number" id="sq-width" placeholder="0">
                 </div>
             </div>
-
-            <!-- Add/Subtract Inputs -->
-            <div id="addsub-inputs" style="display: none;">
-                <div class="input-group">
-                    <label for="base-time">Start Time (e.g. 14:30 or 2:30 PM)</label>
-                    <input type="text" id="base-time" placeholder="HH:MM AM/PM" required>
-                </div>
-                
-                <div class="add-sub-group">
-                    <div class="input-group" style="flex: 1.2;">
-                        <label for="operation">Operation</label>
-                        <select id="operation">
-                            <option value="add">Add (+)</option>
-                            <option value="sub">Subtract (-)</option>
-                        </select>
-                    </div>
-                    <div class="input-group" style="flex: 1;">
-                        <label for="add-hours">Hours</label>
-                        <input type="number" id="add-hours" placeholder="0" min="0">
-                    </div>
-                    <div class="input-group" style="flex: 1;">
-                        <label for="add-mins">Minutes</label>
-                        <input type="number" id="add-mins" placeholder="0" min="0" max="59">
-                    </div>
-                </div>
+            
+            <div class="input-group">
+                <label>Unit</label>
+                <select id="sq-unit">
+                    <option value="feet">Feet (ft)</option>
+                    <option value="meters">Meters (m)</option>
+                    <option value="inches">Inches (in)</option>
+                    <option value="cm">Centimeters (cm)</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label>Price per Square Unit (Optional)</label>
+                <input type="number" id="sq-price" placeholder="e.g. 5.50">
             </div>
 
             <div class="error-msg" id="error-msg"></div>
             <div class="btn-row">
-                <button class="btn-clear" id="clear-btn">Clear Data</button>
+                <button class="btn-clear" id="clear-btn">Clear</button>
                 <button class="btn-primary" id="calc-btn">Calculate</button>
             </div>
 
             <div class="result-box" id="result-box">
-                <div class="result-value" id="main-result">-</div>
-                <div class="result-details" id="detailed-result">-</div>
+                <div class="result-grid">
+                    <div class="result-item" style="grid-column: span 2;">
+                        <div class="result-label">Total Area</div>
+                        <div class="result-value highlight" id="res-area">-</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Square Feet (sq ft)</div>
+                        <div class="result-value" id="res-sqft">-</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Square Meters (m²)</div>
+                        <div class="result-value" id="res-sqm">-</div>
+                    </div>
+                    <div class="result-item" style="grid-column: span 2;" id="cost-box">
+                        <div class="result-label">Total Estimated Cost</div>
+                        <div class="result-value" id="res-cost" style="color: #ff9800; font-size: 24px;">-</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     
-    <script src="../js/time-calculator.js"></script>
+    <script src="../js/square-footage-calculator.js"></script>
     <script src="../js/search.js"></script>
 </body>
 </html>
