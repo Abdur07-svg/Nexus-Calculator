@@ -355,6 +355,10 @@ body {
 
 .calculator-container.landscape-mode .keypads-wrapper {
     display: flex;
+    flex: 1;
+    height: 100%;
+    gap: 15px;
+    padding-bottom: 10px;
 }
 
 .scientific-keypad {
@@ -364,26 +368,55 @@ body {
 .calculator-container.landscape-mode .scientific-keypad {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
+    gap: 8px;
     width: 55%;
-    padding-right: 16px;
-    border-right: 1px solid #ddd;
-    margin-right: 16px;
+    height: 100%;
+    align-content: stretch;
+    padding-right: 15px;
+    border-right: 1px solid #444;
+    margin-right: 0;
 }
 
 .calculator-container.landscape-mode .keypad {
     width: 45%;
+    height: 100%;
+    gap: 8px;
+    align-content: stretch;
+    padding-bottom: 0;
 }
 
 .calculator-container.landscape-mode {
-    max-width: 800px; 
-    margin: 0 auto;
+    max-width: none;
+    width: 100vw;
+    height: 100vh;
+    padding: 10px 30px;
 }
 
-/* Ensure icons on landscape are slightly smaller */
+.calculator-container.landscape-mode .top-bar {
+    display: none;
+}
+
+.calculator-container.landscape-mode .history-icon-wrapper {
+    padding-bottom: 5px;
+    margin-top: -10px;
+}
+
+.calculator-container.landscape-mode .display {
+    min-height: 60px;
+    padding-bottom: 5px;
+}
+
+.calculator-container.landscape-mode .result {
+    font-size: 36px;
+}
+
+/* Ensure icons on landscape match iOS pill shape and fit vertically */
 .calculator-container.landscape-mode .btn {
-    max-width: 70px;
-    font-size: 20px;
+    max-width: 100%;
+    aspect-ratio: auto;
+    height: 100%;
+    border-radius: 40px;
+    font-size: 18px;
 }
 
 .btn-sci {

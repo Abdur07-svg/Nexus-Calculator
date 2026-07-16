@@ -227,9 +227,18 @@ class Calculator {
         }
     }
 
+    formatWithCommas(str) {
+        if (!str) return '';
+        return str.replace(/\d+(?:\.\d*)?/g, (match) => {
+            const parts = match.split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return parts.join('.');
+        });
+    }
+
     updateDisplay() {
-        this.expressionElement.innerText = this.expression;
-        this.resultElement.innerText = this.result;
+        this.expressionElement.innerText = this.formatWithCommas(this.expression);
+        this.resultElement.innerText = this.formatWithCommas(this.result);
         
         // Toggle active states
         if (this.isFinished) {
@@ -376,8 +385,44 @@ clearHistoryBtn.addEventListener('click', () => {
 const scientificBtn = document.getElementById('scientific-icon-btn');
 const calcContainer = document.querySelector('.calculator-container');
 
-scientificBtn.addEventListener('click', () => {
-    calcContainer.classList.toggle('landscape-mode');
+function handleOrientationChange() {
+    if (window.innerWidth > window.innerHeight) {
+        calcContainer.classList.add('landscape-mode');
+    } else {
+        calcContainer.classList.remove('landscape-mode');
+    }
+}
+window.addEventListener('resize', handleOrientationChange);
+window.addEventListener('orientationchange', handleOrientationChange);
+// Run once on load
+setTimeout(handleOrientationChange, 100);
+
+scientificBtn.addEventListener('click', async () => {
+    try {
+        if (window.ScreenOrientationPlugin) {
+            const current = await window.ScreenOrientationPlugin.orientation();
+            if (current.type.startsWith('portrait')) {
+                await window.ScreenOrientationPlugin.lock({ orientation: 'landscape' });
+            } else {
+                await window.ScreenOrientationPlugin.unlock();
+                // Alternatively, force to portrait then unlock
+                await window.ScreenOrientationPlugin.lock({ orientation: 'portrait' });
+                setTimeout(() => window.ScreenOrientationPlugin.unlock(), 500);
+            }
+        } else {
+            // Fallback for web
+            if (screen.orientation && screen.orientation.type.startsWith('portrait')) {
+                await screen.orientation.lock('landscape');
+            } else if (screen.orientation && screen.orientation.type.startsWith('landscape')) {
+                await screen.orientation.lock('portrait');
+            } else {
+                calcContainer.classList.toggle('landscape-mode');
+            }
+        }
+    } catch (err) {
+        console.warn("Orientation lock failed:", err);
+        calcContainer.classList.toggle('landscape-mode');
+    }
 });
 
 // Sidebar Menu Toggle

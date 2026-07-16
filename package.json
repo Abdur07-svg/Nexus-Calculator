@@ -1,0 +1,28 @@
+{
+  "name": "calculator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sw.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-apk": "node build_apk.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Abdur07-svg/Omni-Calculator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Abdur07-svg/Omni-Calculator/issues"
+  },
+  "homepage": "https://github.com/Abdur07-svg/Omni-Calculator#readme",
+  "dependencies": {
+    "@capacitor/android": "^6.2.1",
+    "@capacitor/cli": "^6.2.1",
+    "@capacitor/core": "^6.2.1",
+    "@capacitor/screen-orientation": "^6.0.4",
+    "esbuild": "^0.28.1"
+  }
+}
