@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stair Calculator - Nexus</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+                .tool-content {
+            background-color: var(--calc-bg);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+        .input-group {
+            margin-bottom: 24px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a90e2;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .row-group {
+            display: flex;
+            gap: 8px;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 16px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background-color: var(--btn-bg);
+            color: var(--text-primary);
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .input-group input:focus, .input-group select:focus {
+            border-color: var(--btn-operator-color);
+        }
+        .omni-header {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 32px 0 16px 0;
+        }
+        .btn-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 30px;
+        }
+
+        .btn-primary {
+            flex: 2;
+            padding: 16px;
+            border-radius: 15px;
+            border: none;
+            background-color: var(--btn-operator-color);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+        .btn-clear {
+            flex: 1;
+            padding: 16px;
+            border-radius: 15px;
+            border: none;
+            background-color: #ff5252;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+        .btn-primary:active, .btn-clear:active {
+            transform: scale(0.95);
+        }
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="top-bar" style="position: sticky; top: -16px; background-color: var(--calc-bg); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px 0 10px 0;">
+            <button class="back-btn" onclick="window.location.href='../index.html'" style="position: absolute; left: 16px;">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Stair Calculator</h2>
+            <i class="fa-solid fa-magnifying-glass" title="Search" style="position: absolute; right: 16px; font-size: 20px; color: var(--text-secondary); cursor: pointer;" id="search-btn"></i>
+        </div>
+
+        <div class="tool-content">
+            <!-- Diagram placeholder -->
+            <div style="padding: 16px; border-radius: 12px; margin-bottom: 24px; text-align: center;">
+                <svg viewBox="0 0 400 250" style="width: 100%; max-width: 300px;">
+                    <rect x="20" y="40" width="120" height="15" fill="#f5deb3"/>
+                    <rect x="260" y="200" width="120" height="15" fill="#f5deb3"/>
+                    <rect x="140" y="55" width="30" height="145" fill="#8b5a2b"/>
+                    <!-- Draw stairs -->
+                    <path d="M 140 200 L 140 171 L 164 171 L 164 142 L 188 142 L 188 113 L 212 113 L 212 84 L 236 84 L 236 55 L 260 55 L 260 200 Z" fill="#cd853f"/>
+                    <text x="50" y="140" font-family="sans-serif" font-size="12" fill="var(--text-primary)">Total rise</text>
+                    <text x="180" y="235" font-family="sans-serif" font-size="12" fill="var(--text-primary)">Total run</text>
+                    <text x="170" y="110" font-family="sans-serif" font-size="12" fill="var(--text-primary)" transform="rotate(-40 170 110)">Stringer length</text>
+                </svg>
+            </div>
+
+            <div class="omni-header">
+                Your stairs
+            </div>
+
+                        <div class="input-group">
+                <label>Run of one step</label>
+                <div class="row-group">
+                    <input type="number" class="omni-input" id="step-run" data-type="run_step" style="flex: 2;">
+                    <select class="omni-unit" style="flex: 1;" id="unit-run_step">
+                    <option value="cm">cm</option><option value="m">m</option><option value="in">in</option><option value="ft">ft</option>
+                </select>
+                </div>
+            </div>
+
+                        <div class="input-group">
+                <label>Total rise</label>
+                <div class="row-group">
+                    <input type="number" class="omni-input" id="total-rise" data-type="tot_rise" style="flex: 2;">
+                    <select class="omni-unit" style="flex: 1;" id="unit-tot_rise">
+                    <option value="m">m</option><option value="cm">cm</option><option value="in">in</option><option value="ft">ft</option>
+                </select>
+                </div>
+            </div>
+
+                        <div class="input-group">
+                <label>Rise of one step</label>
+                <div class="row-group">
+                    <input type="number" class="omni-input" id="step-rise" data-type="rise_step" style="flex: 2;">
+                    <select class="omni-unit" style="flex: 1;" id="unit-rise_step">
+                    <option value="cm">cm</option><option value="m">m</option><option value="in">in</option><option value="ft">ft</option>
+                </select>
+                </div>
+            </div>
+
+                        <div class="input-group">
+                <label>Number of steps</label>
+                <input type="number" class="omni-input" id="num-steps" data-type="steps">
+            </div>
+
+                        <div class="input-group">
+                <label>Total run</label>
+                <div class="row-group">
+                    <input type="number" class="omni-input" id="total-run" data-type="tot_run" style="flex: 2;">
+                    <select class="omni-unit" style="flex: 1;" id="unit-tot_run">
+                    <option value="m">m</option><option value="cm">cm</option><option value="in">in</option><option value="ft">ft</option>
+                </select>
+                </div>
+            </div>
+
+                        <div class="input-group">
+                <label>Rise of the bottom step</label>
+                <div class="row-group">
+                    <input type="number" class="omni-input" id="bottom-rise" data-type="bot_rise" style="flex: 2;">
+                    <select class="omni-unit" style="flex: 1;" id="unit-bot_rise">
+                    <option value="cm">cm</option><option value="m">m</option><option value="in">in</option><option value="ft">ft</option>
+                </select>
+                </div>
+            </div>
+
+            <div class="omni-header">
+                Stringer
+            </div>
+
+                        <div class="input-group">
+                <label>Stringer height</label>
+                <div class="row-group">
+                    <input type="number" class="omni-input" id="stringer-height" data-type="str_hgt" style="flex: 2;">
+                    <select class="omni-unit" style="flex: 1;" id="unit-str_hgt">
+                    <option value="m">m</option><option value="cm">cm</option><option value="in">in</option><option value="ft">ft</option>
+                </select>
+                </div>
+            </div>
+
+                        <div class="input-group">
+                <label>Stringer length</label>
+                <div class="row-group">
+                    <input type="number" class="omni-input" id="stringer-length" data-type="str_len" style="flex: 2;">
+                    <select class="omni-unit" style="flex: 1;" id="unit-str_len">
+                    <option value="m">m</option><option value="cm">cm</option><option value="in">in</option><option value="ft">ft</option>
+                </select>
+                </div>
+            </div>
+
+                        <div class="input-group">
+                <label>Angle</label>
+                <div class="row-group">
+                    <input type="number" class="omni-input" id="angle" data-type="angle" style="flex: 2;">
+                    <select class="omni-unit" style="flex: 1;" id="unit-angle">
+                    <option value="deg">deg</option><option value="rad">rad</option>
+                </select>
+                </div>
+            </div>
+
+            <div class="error-msg" id="error-msg" style="display: none; color: #ff5252; text-align: center; margin-bottom: 16px; font-size: 14px;"></div>
+            <div class="btn-row">
+                <button class="btn-clear" id="clear-btn" style="flex: 1;">Clear</button>
+                <button class="btn-primary" id="calc-btn">Calculate</button>
+            </div>
+
+        </div>
+    </div>
+    
+    <script src="../js/stair-calculator.js"></script>
+    <script src="../js/search.js"></script>
+</body>
+</html>

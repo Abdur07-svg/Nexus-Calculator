@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Square Footage Calculator - Nexus</title>
+    <title>Horsepower Calculator - Nexus</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -59,33 +59,29 @@
         }
         .result-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 16px;
         }
         .result-item {
             background-color: var(--btn-bg);
             border: 1px solid rgba(0,0,0,0.04);
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-            padding: 16px;
+            padding: 24px;
             border-radius: 12px;
             text-align: center;
         }
         .result-label {
-            font-size: 12px;
+            font-size: 14px;
             color: var(--text-secondary);
-            margin-bottom: 4px;
+            margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
         .result-value {
-            font-size: 20px;
+            font-size: 32px;
             font-weight: 600;
-            color: var(--text-primary);
+            color: #ff9800;
             word-break: break-word;
-        }
-        .result-value.highlight {
-            color: #4caf50;
-            font-size: 24px;
         }
 
         .btn-primary {
@@ -137,67 +133,82 @@
             <button class="back-btn" onclick="window.location.href='../index.html'" style="position: absolute; left: 16px;">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
-            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Square Footage</h2>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Horsepower</h2>
             <i class="fa-solid fa-magnifying-glass" title="Search" style="position: absolute; right: 16px; font-size: 20px; color: var(--text-secondary); cursor: pointer;" id="search-btn"></i>
         </div>
 
         <div class="tool-content">
-            <div class="row-group">
-                <div class="input-group">
-                    <label>Length</label>
-                    <input type="number" id="sq-length" placeholder="0">
-                </div>
-                <div class="input-group">
-                    <label>Width</label>
-                    <input type="number" id="sq-width" placeholder="0">
-                </div>
-            </div>
-            
             <div class="input-group">
-                <label>Unit</label>
-                <select id="sq-unit">
-                    <option value="feet">Feet (ft)</option>
-                    <option value="meters">Meters (m)</option>
-                    <option value="inches">Inches (in)</option>
-                    <option value="cm">Centimeters (cm)</option>
+                <label>Calculation Method</label>
+                <select id="hp-method">
+                    <option value="et">Elapsed Time (ET) Method</option>
+                    <option value="speed">Trap Speed (MPH) Method</option>
                 </select>
             </div>
             
             <div class="input-group">
-                <label>Price per Square Unit (Optional)</label>
-                <input type="number" id="sq-price" placeholder="e.g. 5.50">
+                <label>Vehicle Weight</label>
+                <div class="row-group" style="gap: 8px;">
+                    <input type="number" id="hp-weight" placeholder="e.g. 3500" style="flex: 2;">
+                    <select id="hp-weight-unit" style="flex: 1;">
+                        <option value="lbs">lbs</option>
+                        <option value="kg">kg</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group" id="et-group">
+                <label>Quarter Mile Time</label>
+                <div class="row-group" style="gap: 8px;">
+                    <input type="number" id="hp-et" placeholder="e.g. 13.5" style="flex: 2;">
+                    <select id="hp-et-unit" style="flex: 1;">
+                        <option value="sec">Seconds</option>
+                        <option value="min">Minutes</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="input-group" id="speed-group" style="display: none;">
+                <label>Quarter Mile Trap Speed</label>
+                <div class="row-group" style="gap: 8px;">
+                    <input type="number" id="hp-speed" placeholder="e.g. 105" style="flex: 2;">
+                    <select id="hp-speed-unit" style="flex: 1;">
+                        <option value="mph">MPH</option>
+                        <option value="kmh">km/h</option>
+                    </select>
+                </div>
             </div>
 
             <div class="error-msg" id="error-msg"></div>
             <div class="btn-row">
                 <button class="btn-clear" id="clear-btn">Clear</button>
-                <button class="btn-primary" id="calc-btn">Calculate</button>
+                <button class="btn-primary" id="calc-btn">Calculate HP</button>
             </div>
 
             <div class="result-box" id="result-box">
-                <div class="result-grid">
+                <div class="result-grid" style="grid-template-columns: 1fr 1fr;">
                     <div class="result-item" style="grid-column: span 2;">
-                        <div class="result-label">Total Area</div>
-                        <div class="result-value highlight" id="res-area">-</div>
+                        <div class="result-label">Mechanical Horsepower (US)</div>
+                        <div class="result-value" id="res-mech" style="font-size: 32px; color: #ff9800;">-</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-label">Square Feet (sq ft)</div>
-                        <div class="result-value" id="res-sqft">-</div>
+                        <div class="result-label">Metric Horsepower (PS)</div>
+                        <div class="result-value" id="res-metric" style="font-size: 24px;">-</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-label">Square Meters (m²)</div>
-                        <div class="result-value" id="res-sqm">-</div>
+                        <div class="result-label">Kilowatts (kW)</div>
+                        <div class="result-value" id="res-kw" style="font-size: 24px;">-</div>
                     </div>
-                    <div class="result-item" style="grid-column: span 2;" id="cost-box">
-                        <div class="result-label">Total Estimated Cost</div>
-                        <div class="result-value" id="res-cost" style="color: #ff9800; font-size: 24px;">-</div>
+                    <div class="result-item" style="grid-column: span 2;">
+                        <div class="result-label">Foot-pounds per second</div>
+                        <div class="result-value" id="res-ftlb" style="font-size: 20px;">-</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     
-    <script src="../js/square-footage-calculator.js"></script>
+    <script src="../js/horsepower-calculator.js"></script>
     <script src="../js/search.js"></script>
 </body>
 </html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ohm's Law Calculator - Nexus</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .tool-content {
+            background-color: var(--calc-bg);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+        .input-group {
+            margin-bottom: 24px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        .row-group input, .row-group select {
+            width: 100%;
+            padding: 16px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background-color: var(--btn-bg);
+            color: var(--text-primary);
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .row-group input:focus, .row-group select:focus {
+            border-color: var(--btn-operator-color);
+        }
+        .row-group {
+            display: flex;
+            gap: 16px;
+        }
+        .row-group .input-group {
+            flex: 1;
+        }
+        .btn-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 30px;
+        }
+
+        .btn-primary {
+            flex: 2;
+            padding: 16px;
+            border-radius: 15px;
+            border: none;
+            background-color: var(--btn-operator-color);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+        .btn-clear {
+            flex: 1;
+            padding: 16px;
+            border-radius: 15px;
+            border: none;
+            background-color: #ff5252;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+        .btn-primary:active, .btn-clear:active {
+            transform: scale(0.95);
+        }
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .error-msg {
+            color: #ff5252;
+            font-size: 14px;
+            margin-bottom: 16px;
+            text-align: center;
+            display: none;
+        }
+        .info-text {
+            color: var(--text-secondary);
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="top-bar" style="position: sticky; top: -16px; background-color: var(--calc-bg); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px 0 10px 0;">
+            <button class="back-btn" onclick="window.location.href='../index.html'" style="position: absolute; left: 16px;">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Ohm's Law</h2>
+            <i class="fa-solid fa-magnifying-glass" title="Search" style="position: absolute; right: 16px; font-size: 20px; color: var(--text-secondary); cursor: pointer;" id="search-btn"></i>
+        </div>
+
+        <div class="tool-content">
+            <div class="info-text">
+                Enter exactly <strong>TWO</strong> values to calculate the others.<br>
+                V = I × R &nbsp;&nbsp;|&nbsp;&nbsp; P = V × I
+            </div>
+
+            <div>
+                <div class="input-group">
+                    <label>Voltage (V)</label>
+                    <div class="row-group" style="gap: 8px;">
+                        <input type="number" id="ohm-v" placeholder="0" style="flex: 2;">
+                        <select id="ohm-v-unit" style="flex: 1;">
+                            <option value="V">V</option>
+                            <option value="mV">mV</option>
+                            <option value="kV">kV</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Current (I)</label>
+                    <div class="row-group" style="gap: 8px;">
+                        <input type="number" id="ohm-i" placeholder="0" style="flex: 2;">
+                        <select id="ohm-i-unit" style="flex: 1;">
+                            <option value="A">A</option>
+                            <option value="mA">mA</option>
+                            <option value="kA">kA</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <div class="input-group">
+                    <label>Resistance (R)</label>
+                    <div class="row-group" style="gap: 8px;">
+                        <input type="number" id="ohm-r" placeholder="0" style="flex: 2;">
+                        <select id="ohm-r-unit" style="flex: 1;">
+                            <option value="Ω">Ω</option>
+                            <option value="mΩ">mΩ</option>
+                            <option value="kΩ">kΩ</option>
+                            <option value="MΩ">MΩ</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Power (P)</label>
+                    <div class="row-group" style="gap: 8px;">
+                        <input type="number" id="ohm-p" placeholder="0" style="flex: 2;">
+                        <select id="ohm-p-unit" style="flex: 1;">
+                            <option value="W">W</option>
+                            <option value="mW">mW</option>
+                            <option value="kW">kW</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="error-msg" id="error-msg"></div>
+            <div class="btn-row">
+                <button class="btn-clear" id="clear-btn">Clear</button>
+                <button class="btn-primary" id="calc-btn">Calculate</button>
+            </div>
+
+        </div>
+
+        <div class="tool-content">
+            <h3 style="margin-bottom: 24px; color: var(--text-primary); font-weight: 600; text-align: center; font-size: 18px;">Ohm's Law for Anisotropic<br>Materials</h3>
+            <div class="info-text">
+                Enter exactly <strong>TWO</strong> values to calculate the third.<br>
+                E = ρ × J
+            </div>
+
+            <div>
+                <div class="input-group">
+                    <label>Electric Field (E)</label>
+                    <div class="row-group" style="gap: 8px;">
+                        <input type="number" id="ani-e" placeholder="0" style="flex: 2;">
+                        <select id="ani-e-unit" style="flex: 1;">
+                            <option value="V/m">V/m</option>
+                            <option value="V/cm">V/cm</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Current Density (J)</label>
+                    <div class="row-group" style="gap: 8px;">
+                        <input type="number" id="ani-j" placeholder="0" style="flex: 2;">
+                        <select id="ani-j-unit" style="flex: 1;">
+                            <option value="A/m2">A/m²</option>
+                            <option value="A/cm2">A/cm²</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Specific Resistance (ρ)</label>
+                <div class="row-group" style="gap: 8px;">
+                    <input type="number" id="ani-r" placeholder="0" style="flex: 2;">
+                    <select id="ani-r-unit" style="flex: 1;">
+                        <option value="ohm-m">Ω·m</option>
+                        <option value="ohm-cm">Ω·cm</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="error-msg" id="ani-error-msg"></div>
+            <div class="btn-row">
+                <button class="btn-clear" id="ani-clear-btn">Clear</button>
+                <button class="btn-primary" id="ani-calc-btn">Calculate</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/ohms-law-calculator.js"></script>
+    <script src="../js/search.js"></script>
+</body>
+</html>

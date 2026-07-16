@@ -254,7 +254,7 @@ body {
 
 /* History Modal */
 .history-modal {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -424,7 +424,7 @@ body {
 
 /* Sidebar Menu */
 .sidebar-overlay {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -441,7 +441,7 @@ body {
     visibility: visible;
 }
 .sidebar {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: -100%;
     width: 280px;
