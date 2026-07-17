@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shoe Size Conversion - Nexus</title>
+    <title>Molecular Weight Calculator - Nexus</title>
 
     <link rel="stylesheet" href="../style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,9 +25,9 @@
         .btn-primary { flex: 2; padding: 16px; border-radius: 15px; border: none; background-color: var(--btn-operator-color); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.1s, opacity 0.2s; }
         .btn-clear { flex: 1; padding: 16px; border-radius: 15px; border: none; background-color: #ff5252; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.1s, opacity 0.2s; }
         .btn-primary:active, .btn-clear:active { transform: scale(0.95); }
-        .result-box { background-color: var(--btn-bg); border-radius: 20px; padding: 24px; text-align: center; margin-top: 20px; display: none; }
+        .result-box { background: rgba(33, 150, 243, 0.08); border: 1px solid rgba(33, 150, 243, 0.2); border-radius: 15px; padding: 20px; text-align: center; margin-top: 20px; display: none; }
         .result-box.active { display: block; }
-        .result-value { font-size: 24px; font-weight: 700; color: var(--btn-operator-color); margin-bottom: 8px; }
+        .result-value { font-size: 28px; font-weight: 700; color: var(--btn-operator-color); margin-bottom: 8px; }
         .result-details { color: var(--text-secondary); font-size: 16px; line-height: 1.6; }
         .back-btn { background: none; border: none; color: var(--text-primary); font-size: 24px; cursor: pointer; }
     </style>
@@ -38,55 +38,29 @@
             <button class="back-btn" onclick="window.location.href='../index.html'" style="position: absolute; left: 16px;">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
-            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Shoe Size</h2>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Molecular Weight</h2>
             <i class="fa-solid fa-magnifying-glass" title="Search" style="position: absolute; right: 16px; font-size: 20px; color: var(--text-secondary); cursor: pointer;"></i>
         </div>
 
         <div class="tool-content">
             <div class="input-group">
-                <label for="age-group">Age Group</label>
-                <select id="age-group">
-                    <option value="adult">Adult</option>
-                    <option value="child">Child</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label for="region">From Region</label>
-                <select id="region">
-                    <option value="us">US/Canada</option>
-                    <option value="uk">UK/India</option>
-                    <option value="eu">Europe (EU)</option>
-                </select>
-            </div>
-            
-            <div class="input-group" id="adult-inputs" style="display: flex; flex-direction: row; gap: 10px;">
-                <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
-                    <label for="size-men">Men Size</label>
-                    <input type="number" id="size-men" placeholder="Men's" step="0.5">
-                </div>
-                <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
-                    <label for="size-women">Women Size</label>
-                    <input type="number" id="size-women" placeholder="Women's" step="0.5">
-                </div>
+                <label for="formula">Chemical Formula</label>
+                <input type="text" id="formula" placeholder="e.g. H2O, C6H12O6, NaCl">
             </div>
 
-            <div class="input-group" id="child-inputs" style="display: none;">
-                <label for="size-child">Child Size</label>
-                <input type="number" id="size-child" placeholder="Enter size" step="0.5">
-            </div>
-
-            <div class="error-msg" id="error-msg" style="color: #ff5252; font-size: 14px; display: none; margin-top: 10px;"></div>
+            <div class="error-msg" id="error-msg" style="color: #ff5252; font-size: 14px; display: none; margin-top: 10px; text-align: center;"></div>
             <div class="btn-row">
                 <button class="btn-clear" id="clear-btn">Clear</button>
-                <button class="btn-primary" id="calc-btn">Convert</button>
+                <button class="btn-primary" id="calc-btn">Calculate</button>
             </div>
 
             <div class="result-box" id="result-box">
+                <div class="result-value" id="main-res">-</div>
                 <div class="result-details" id="detailed-res"></div>
             </div>
         </div>
     </div>
-    <script src="../js/shoe-size-conversion.js"></script>
+    <script src="../js/molecular-weight-calculator.js"></script>
     <script src="../js/search.js"></script>
 </body>
 </html>

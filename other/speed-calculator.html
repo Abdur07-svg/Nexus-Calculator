@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed Calculator - Nexus</title>
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tool-content { flex-grow: 1; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        .input-group label { color: var(--text-secondary); font-size: 14px; font-weight: 500; }
+        .input-group input, .input-group select { 
+            width: 100%; box-sizing: border-box; min-width: 0;
+            padding: 16px; border-radius: 15px; border: 1px solid rgba(0, 0, 0, 0.1); 
+            background-color: var(--btn-bg); color: var(--text-primary); font-size: 16px; 
+            font-family: inherit; outline: none; transition: border-color 0.3s; 
+        }
+        .input-group input:focus, .input-group select:focus { border-color: var(--btn-operator-color); }
+        .btn-row { display: flex; gap: 12px; margin-top: 10px; }
+        .btn-primary { flex: 2; padding: 16px; border-radius: 15px; border: none; background-color: var(--btn-operator-color); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.1s, opacity 0.2s; }
+        .btn-clear { flex: 1; padding: 16px; border-radius: 15px; border: none; background-color: #ff5252; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.1s, opacity 0.2s; }
+        .btn-primary:active, .btn-clear:active { transform: scale(0.95); }
+        .result-box { background: rgba(33, 150, 243, 0.08); border: 1px solid rgba(33, 150, 243, 0.2); border-radius: 15px; padding: 20px; text-align: center; margin-top: 20px; display: none; }
+        .result-box.active { display: block; }
+        .result-value { font-size: 28px; font-weight: 700; color: var(--btn-operator-color); margin-bottom: 8px; }
+        .result-details { color: var(--text-secondary); font-size: 16px; line-height: 1.6; }
+        .back-btn { background: none; border: none; color: var(--text-primary); font-size: 24px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="top-bar" style="position: sticky; top: -16px; background-color: var(--calc-bg); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px 0 10px 0;">
+            <button class="back-btn" onclick="window.location.href='../index.html'" style="position: absolute; left: 16px;">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Speed Calculator</h2>
+            <i class="fa-solid fa-magnifying-glass" title="Search" style="position: absolute; right: 16px; font-size: 20px; color: var(--text-secondary); cursor: pointer;"></i>
+        </div>
+
+        <div class="tool-content">
+            <!-- Section 1: Calculate Speed -->
+            <div class="calculator-section" style="margin-bottom: 10px;">
+                <h3 style="color: var(--text-primary); margin-bottom: 20px; margin-top: 0; font-size: 18px;">Calculate Speed</h3>
+                
+                <div class="input-group">
+                    <label>Distance</label>
+                    <div style="display:flex; gap:10px; flex-wrap: wrap;">
+                        <input type="number" id="distance" placeholder="Distance" style="flex:2; min-width: 120px;" step="any">
+                        <select id="dist-unit" style="flex:1; min-width: 100px;">
+                            <option value="km">Kilometers (km)</option>
+                            <option value="mi">Miles (mi)</option>
+                            <option value="m">Meters (m)</option>
+                            <option value="ft">Feet (ft)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="input-group" style="margin-top: 15px;">
+                    <label>Time</label>
+                    <div style="display:flex; gap:10px; flex-wrap: wrap;">
+                        <input type="number" id="time-single" placeholder="Time" style="flex:2; min-width: 120px;" step="any">
+                        <div id="time-multi" style="flex: 2; display: none; gap: 5px; min-width: 180px;">
+                            <input type="number" id="time-h" placeholder="h" style="flex: 1; text-align: center; padding: 16px 5px;" step="1" min="0">
+                            <input type="number" id="time-m" placeholder="m" style="flex: 1; text-align: center; padding: 16px 5px;" step="1" min="0" max="59">
+                            <input type="number" id="time-s" placeholder="s" style="flex: 1; text-align: center; padding: 16px 5px;" step="any" min="0" max="59">
+                        </div>
+                        <select id="time-unit" style="flex:1; min-width: 120px;">
+                            <option value="h">Hours (h)</option>
+                            <option value="min">Minutes (min)</option>
+                            <option value="s">Seconds (s)</option>
+                            <option value="hms">hrs/min/sec</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="error-msg" id="error-msg-1" style="color: #ff5252; font-size: 14px; display: none; margin-top: 10px; text-align: center;"></div>
+                <div class="btn-row" style="margin-top: 20px;">
+                    <button class="btn-clear" id="clear-btn-1">Clear</button>
+                    <button class="btn-primary" id="calc-btn-1">Calculate Speed</button>
+                </div>
+
+                <div class="result-box" id="result-box-1" style="margin-top: 20px; background: rgba(33, 150, 243, 0.08); border: 1px solid rgba(33, 150, 243, 0.2); border-radius: 15px; padding: 20px; text-align: center; display: none;">
+                    <div class="result-value" id="main-res-1" style="font-size: 28px; font-weight: 700; color: var(--btn-operator-color); margin-bottom: 8px;">-</div>
+                    <div class="result-details" id="detailed-res-1" style="color: var(--text-secondary); font-size: 16px; line-height: 1.6;"></div>
+                </div>
+            </div>
+
+            <hr style="border: none; border-top: 1px solid rgba(0,0,0,0.1); margin: 20px 0;">
+
+            <!-- Section 2: Compare Time & Speed -->
+            <div class="calculator-section" style="margin-top: 10px;">
+                <h3 style="color: var(--text-primary); margin-bottom: 20px; margin-top: 0; font-size: 18px;">Compare Time & Speed</h3>
+                
+                <div class="input-group">
+                    <label>Current Speed</label>
+                    <div style="display:flex; gap:10px; flex-wrap: wrap;">
+                        <input type="number" id="comp-speed" placeholder="Speed" style="flex:2; min-width: 120px;" step="any">
+                        <select id="comp-speed-unit" style="flex:1; min-width: 100px;">
+                            <option value="kmh">km/h</option>
+                            <option value="mph">mph</option>
+                            <option value="ms">m/s</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-top: 15px;">
+                    <label>Current Time</label>
+                    <div style="display:flex; gap:10px; flex-wrap: wrap;">
+                        <input type="number" id="comp-time-single" placeholder="Time" style="flex:2; min-width: 120px;" step="any">
+                        <div id="comp-time-multi" style="flex: 2; display: none; gap: 5px; min-width: 180px;">
+                            <input type="number" id="comp-time-h" placeholder="h" style="flex: 1; text-align: center; padding: 16px 5px;" step="1" min="0">
+                            <input type="number" id="comp-time-m" placeholder="m" style="flex: 1; text-align: center; padding: 16px 5px;" step="1" min="0" max="59">
+                            <input type="number" id="comp-time-s" placeholder="s" style="flex: 1; text-align: center; padding: 16px 5px;" step="any" min="0" max="59">
+                        </div>
+                        <select id="comp-time-unit" style="flex:1; min-width: 120px;">
+                            <option value="h">Hours (h)</option>
+                            <option value="min">Minutes (min)</option>
+                            <option value="s">Seconds (s)</option>
+                            <option value="hms">hrs/min/sec</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-top: 15px;">
+                    <label>Time Difference (Early / Late)</label>
+                    <div style="display:flex; gap:10px; flex-wrap: wrap;">
+                        <input type="number" id="diff-val-single" placeholder="e.g. 15" style="flex:2; min-width: 80px;" step="any">
+                        <div id="diff-val-multi" style="flex: 2; display: none; gap: 5px; min-width: 180px;">
+                            <input type="number" id="diff-h" placeholder="h" style="flex: 1; text-align: center; padding: 16px 5px;" step="1" min="0">
+                            <input type="number" id="diff-m" placeholder="m" style="flex: 1; text-align: center; padding: 16px 5px;" step="1" min="0" max="59">
+                            <input type="number" id="diff-s" placeholder="s" style="flex: 1; text-align: center; padding: 16px 5px;" step="any" min="0" max="59">
+                        </div>
+                        <select id="diff-unit" style="flex:1; min-width: 100px;">
+                            <option value="min">Minutes</option>
+                            <option value="h">Hours</option>
+                            <option value="s">Seconds</option>
+                            <option value="hms">hrs/min/sec</option>
+                        </select>
+                        <select id="diff-dir" style="flex:1; min-width: 120px;">
+                            <option value="faster">Earlier (Faster)</option>
+                            <option value="slower">Later (Slower)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="error-msg" id="error-msg-2" style="color: #ff5252; font-size: 14px; display: none; margin-top: 10px; text-align: center;"></div>
+                <div class="btn-row" style="margin-top: 20px;">
+                    <button class="btn-clear" id="clear-btn-2">Clear</button>
+                    <button class="btn-primary" id="calc-btn-2">Compare</button>
+                </div>
+
+                <div class="result-box" id="result-box-2" style="margin-top: 20px; background: rgba(33, 150, 243, 0.08); border: 1px solid rgba(33, 150, 243, 0.2); border-radius: 15px; padding: 20px; text-align: left; display: none;">
+                    <div style="margin-bottom: 15px;">
+                        <span style="color: var(--text-secondary); font-size: 14px; font-weight: 500;">Distance</span><br>
+                        <span id="res-dist" style="font-size: 24px; font-weight: 700; color: var(--text-primary);">-</span>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <span style="color: var(--text-secondary); font-size: 14px; font-weight: 500;">New Time</span><br>
+                        <span id="res-time" style="font-size: 24px; font-weight: 700; color: var(--text-primary);">-</span>
+                    </div>
+                    <div>
+                        <span style="color: var(--text-secondary); font-size: 14px; font-weight: 500;">Required Speed</span><br>
+                        <span id="res-speed" style="font-size: 24px; font-weight: 700; color: var(--btn-operator-color);">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/speed-calculator.js"></script>
+    <script src="../js/search.js"></script>
+</body>
+</html>
