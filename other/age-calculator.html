@@ -117,13 +117,21 @@
 
         <div class="tool-content">
             <div class="input-group">
-                <label for="dob">Date of Birth (DD/MM/YYYY)</label>
-                <input type="text" id="dob" placeholder="DD/MM/YYYY" required>
+                <label for="dob-text">Date of Birth (DD/MM/YYYY)</label>
+                <div style="position: relative; display: flex; align-items: center;">
+                    <input type="text" id="dob-text" placeholder="DD/MM/YYYY" required style="flex:1;">
+                    <input type="date" id="dob-picker" style="position: absolute; right: 0; opacity: 0; width: 40px; height: 100%; cursor: pointer;">
+                    <i class="fa-regular fa-calendar" style="position: absolute; right: 15px; pointer-events: none; color: var(--text-secondary);"></i>
+                </div>
             </div>
             
             <div class="input-group">
-                <label for="target-date">Today's Date (DD/MM/YYYY)</label>
-                <input type="text" id="target-date" placeholder="DD/MM/YYYY" required>
+                <label for="target-date-text">Today's Date (DD/MM/YYYY)</label>
+                <div style="position: relative; display: flex; align-items: center;">
+                    <input type="text" id="target-date-text" placeholder="DD/MM/YYYY" required style="flex:1;">
+                    <input type="date" id="target-date-picker" style="position: absolute; right: 0; opacity: 0; width: 40px; height: 100%; cursor: pointer;">
+                    <i class="fa-regular fa-calendar" style="position: absolute; right: 15px; pointer-events: none; color: var(--text-secondary);"></i>
+                </div>
             </div>
 
             <div class="error-msg" id="error-msg"></div>

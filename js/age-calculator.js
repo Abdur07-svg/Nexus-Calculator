@@ -1,9 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const dobInput = document.getElementById('dob');
-    const targetDateInput = document.getElementById('target-date');
+    const dobText = document.getElementById('dob-text');
+    const dobPicker = document.getElementById('dob-picker');
+    const targetDateText = document.getElementById('target-date-text');
+    const targetDatePicker = document.getElementById('target-date-picker');
+    
     const calcBtn = document.getElementById('calc-btn');
     const clearBtn = document.getElementById('clear-btn');
     const errorMsg = document.getElementById('error-msg');
+    const resultBox = document.getElementById('result-box');
+    const mainAge = document.getElementById('main-age');
+    const detailedAge = document.getElementById('detailed-age');
 
     function showError(msg) {
         if(errorMsg) {
@@ -13,9 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
             alert(msg);
         }
     }
-    const resultBox = document.getElementById('result-box');
-    const mainAge = document.getElementById('main-age');
-    const detailedAge = document.getElementById('detailed-age');
 
     function formatDate(date) {
         const d = String(date.getDate()).padStart(2, '0');
@@ -25,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function parseDate(str) {
+        if (!str) return null;
         const parts = str.split('/');
         if (parts.length === 3) {
             const d = parseInt(parts[0], 10);
@@ -38,28 +42,44 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
     }
 
-    // Set target date to today by default
-    targetDateInput.value = formatDate(new Date());
+    function syncDateInputs(textInput, pickerInput) {
+        textInput.addEventListener('input', (e) => {
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length > 8) v = v.slice(0, 8);
+            if (v.length >= 5) {
+                e.target.value = `${v.slice(0,2)}/${v.slice(2,4)}/${v.slice(4)}`;
+            } else if (v.length >= 3) {
+                e.target.value = `${v.slice(0,2)}/${v.slice(2)}`;
+            } else {
+                e.target.value = v;
+            }
 
-    function autoFormatDate(e) {
-        let v = e.target.value.replace(/\D/g, '');
-        if (v.length > 8) v = v.slice(0, 8);
-        if (v.length >= 5) {
-            e.target.value = `${v.slice(0,2)}/${v.slice(2,4)}/${v.slice(4)}`;
-        } else if (v.length >= 3) {
-            e.target.value = `${v.slice(0,2)}/${v.slice(2)}`;
-        } else {
-            e.target.value = v;
-        }
+            const parts = e.target.value.split('/');
+            if (parts.length === 3 && parts[2].length === 4) {
+                pickerInput.value = `${parts[2]}-${parts[1]}-${parts[0]}`;
+            }
+        });
+
+        pickerInput.addEventListener('change', () => {
+            if (pickerInput.value) {
+                const [y, m, d] = pickerInput.value.split('-');
+                textInput.value = `${d}/${m}/${y}`;
+            }
+        });
     }
 
-    dobInput.addEventListener('input', autoFormatDate);
-    targetDateInput.addEventListener('input', autoFormatDate);
+    syncDateInputs(dobText, dobPicker);
+    syncDateInputs(targetDateText, targetDatePicker);
+
+    // Set default target date
+    const today = new Date();
+    targetDateText.value = formatDate(today);
+    targetDatePicker.value = today.toISOString().split('T')[0];
 
     function calculateAge() {
         if(errorMsg) errorMsg.style.display = 'none';
-        const dob = parseDate(dobInput.value);
-        const target = parseDate(targetDateInput.value);
+        const dob = parseDate(dobText.value);
+        const target = parseDate(targetDateText.value);
 
         if (!dob || !target) {
             showError('Please enter valid dates in (DD/MM/YYYY) format.');
@@ -92,8 +112,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function clearData() {
-        dobInput.value = '';
-        targetDateInput.value = formatDate(new Date());
+        dobText.value = '';
+        dobPicker.value = '';
+        
+        targetDateText.value = formatDate(today);
+        targetDatePicker.value = today.toISOString().split('T')[0];
+        
         resultBox.classList.remove('active');
         mainAge.textContent = '-';
         detailedAge.textContent = '-';
