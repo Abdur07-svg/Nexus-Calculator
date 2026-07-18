@@ -141,4 +141,42 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput.addEventListener('input', (e) => {
         renderResults(e.target.value);
     });
+
+    // --- Global Calculator UI Enhancements ---
+    // 1. Hide error message immediately when the user starts typing/changing inputs
+    document.addEventListener('input', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+            const errorMsg = document.getElementById('error-msg') || document.querySelector('.error-msg');
+            if (errorMsg) {
+                errorMsg.style.display = 'none';
+            }
+        }
+    });
+
+    // 2. Ensure result box and error message are completely hidden when clicking any "Clear" button
+    document.addEventListener('click', (e) => {
+        if (e.target && (e.target.id === 'clear-btn' || e.target.classList.contains('btn-clear'))) {
+            const errorMsg = document.getElementById('error-msg') || document.querySelector('.error-msg');
+            if (errorMsg) {
+                errorMsg.style.display = 'none';
+            }
+            
+            const resultBox = document.getElementById('result-box') || document.querySelector('.result-box');
+            if (resultBox) {
+                resultBox.classList.remove('active');
+                resultBox.style.display = 'none';
+                
+                // Reset display property inline in case it was explicitly set somewhere else
+                setTimeout(() => {
+                    resultBox.style.display = ''; // Fallback to css class behavior
+                }, 10);
+            }
+            
+            // For calculators that use detailed-res to show result
+            const detailedRes = document.getElementById('detailed-res') || document.querySelector('.result-details');
+            if (detailedRes) {
+                detailedRes.innerHTML = '';
+            }
+        }
+    });
 });
