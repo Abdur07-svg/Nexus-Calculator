@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Encode / Decode - Nexus</title>
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tool-content { flex-grow: 1; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        .input-group label { color: var(--text-secondary); font-size: 14px; font-weight: 500; }
+        .input-group textarea { 
+            width: 100%; box-sizing: border-box; 
+            padding: 16px; border-radius: 15px; border: 1px solid rgba(0, 0, 0, 0.1); 
+            background-color: var(--btn-bg); color: var(--text-primary); font-size: 16px; 
+            font-family: inherit; outline: none; transition: border-color 0.3s; 
+            resize: vertical;
+        }
+        .input-group textarea:focus { border-color: var(--btn-operator-color); }
+        .btn-row { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+        .btn-primary { flex: 2; padding: 16px; border-radius: 15px; border: none; background-color: var(--btn-operator-color); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.1s, opacity 0.2s; min-width: 100px; }
+        .btn-clear { flex: 1; padding: 16px; border-radius: 15px; border: none; background-color: #ff5252; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.1s, opacity 0.2s; min-width: 80px; }
+        .btn-encode { background-color: #4CAF50; }
+        .btn-primary:active, .btn-clear:active { transform: scale(0.95); }
+        .back-btn { background: none; border: none; color: var(--text-primary); font-size: 24px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="top-bar" style="position: sticky; top: -16px; background-color: var(--calc-bg); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px 0 10px 0;">
+            <button class="back-btn" onclick="window.location.href='../index.html'" style="position: absolute; left: 16px;">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">URL Encode / Decode</h2>
+            <i class="fa-solid fa-magnifying-glass" title="Search" style="position: absolute; right: 16px; font-size: 20px; color: var(--text-secondary); cursor: pointer;"></i>
+        </div>
+
+        <div class="tool-content">
+            <div class="input-group">
+                <label for="input-text">Input Text / URL</label>
+                <textarea id="input-text" rows="5" placeholder="Enter text or URL here..."></textarea>
+            </div>
+
+            <div class="error-msg" id="error-msg" style="color: #ff5252; font-size: 14px; display: none; margin-top: 5px; text-align: center;"></div>
+            
+            <div class="btn-row">
+                <button class="btn-clear" id="clear-btn">Clear</button>
+                <button class="btn-primary btn-encode" id="encode-btn">Encode</button>
+                <button class="btn-primary" id="decode-btn">Decode</button>
+            </div>
+
+            <div class="input-group" style="margin-top: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label for="output-text">Result</label>
+                    <button id="copy-btn" style="background: none; border: none; color: var(--btn-operator-color); cursor: pointer; font-size: 14px; font-weight: 600;"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+                <textarea id="output-text" rows="5" readonly style="background-color: rgba(0,0,0,0.03);"></textarea>
+            </div>
+        </div>
+    </div>
+    <script src="../js/url-encode-decode.js"></script>
+    <script src="../js/search.js"></script>
+</body>
+</html>
