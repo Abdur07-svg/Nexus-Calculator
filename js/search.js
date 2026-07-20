@@ -101,9 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'Roman Numeral Converter', icon: 'fa-font', url: otherPath + 'roman-numeral-converter.html', real: true },
         { name: 'Sleep Calculator', icon: 'fa-bed', url: otherPath + 'sleep-calculator.html', real: true },
         { name: 'Roofing Calculator', icon: 'fa-house', url: otherPath + 'roofing-calculator.html', real: true },
-        { name: 'Mulch Calculator', icon: 'fa-leaf', url: '#', real: false },
-        { name: 'Wind Chill Calculator', icon: 'fa-wind', url: '#', real: false },
-        { name: 'Dew Point Calculator', icon: 'fa-droplet', url: '#', real: false },
+        { name: 'Mulch Calculator', icon: 'fa-leaf', url: otherPath + 'mulch-calculator.html', real: true },
+        { name: 'Wind Chill Calculator', icon: 'fa-wind', url: otherPath + 'wind-chill-calculator.html', real: true },
+        { name: 'Dew Point Calculator', icon: 'fa-droplet', url: otherPath + 'dew-point-calculator.html', real: true },
         { name: 'Base64 Encode / Decode', icon: 'fa-code', url: '#', real: false },
         { name: 'Time Duration Calculator', icon: 'fa-stopwatch', url: '#', real: false },
         { name: 'Day of the Week Calculator', icon: 'fa-calendar-day', url: '#', real: false }
