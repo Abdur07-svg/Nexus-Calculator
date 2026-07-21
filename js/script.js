@@ -458,3 +458,48 @@ if (otherToggle && otherSubmenu) {
         otherSubmenu.classList.toggle('expanded');
     });
 }
+
+// State preservation for sidebar and submenus
+window.addEventListener('beforeunload', () => {
+    const mathSubmenu = document.getElementById('math-submenu');
+    const state = {
+        sidebarActive: sidebar && sidebar.classList.contains('active'),
+        categoriesExpanded: categoriesSubmenu && categoriesSubmenu.classList.contains('expanded'),
+        otherExpanded: otherSubmenu && otherSubmenu.classList.contains('expanded'),
+        mathExpanded: mathSubmenu && mathSubmenu.classList.contains('expanded')
+    };
+    sessionStorage.setItem('sidebarState', JSON.stringify(state));
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    const savedStateStr = sessionStorage.getItem('sidebarState');
+    if (savedStateStr) {
+        try {
+            const state = JSON.parse(savedStateStr);
+            if (state.sidebarActive && sidebar && sidebarOverlay) {
+                sidebar.classList.add('active');
+                sidebarOverlay.classList.add('active');
+            }
+            if (state.categoriesExpanded && categoriesToggle && categoriesSubmenu) {
+                categoriesToggle.classList.add('expanded');
+                categoriesSubmenu.classList.add('expanded');
+            }
+            if (state.otherExpanded && otherToggle && otherSubmenu) {
+                otherToggle.classList.add('expanded');
+                otherSubmenu.classList.add('expanded');
+            }
+            if (state.mathExpanded) {
+                const mathT = document.getElementById('math-toggle');
+                const mathS = document.getElementById('math-submenu');
+                if (mathT && mathS) {
+                    mathT.classList.add('expanded');
+                    mathS.classList.add('expanded');
+                }
+            }
+        } catch (e) {
+            console.warn('Could not restore sidebar state', e);
+        }
+    }
+});
+
+

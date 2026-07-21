@@ -575,7 +575,7 @@ body {
     transition: max-height 0.3s ease;
 }
 .submenu.expanded {
-    max-height: 4000px;
+    max-height: 12000px;
 }
 .submenu li {
     padding: 12px 24px 12px 48px;
@@ -636,7 +636,7 @@ body {
     transition: max-height 0.3s ease;
 }
 .nested-submenu.expanded {
-    max-height: 3000px;
+    max-height: 8000px;
 }
 .nested-submenu li {
     padding: 12px 24px 12px 64px;

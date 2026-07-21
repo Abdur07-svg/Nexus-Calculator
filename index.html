@@ -14,6 +14,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .submenu.expanded { max-height: 12000px !important; }
+        .nested-submenu.expanded { max-height: 8000px !important; }
+    </style>
 </head>
 <body>
     <div class="calculator-container">
@@ -182,7 +186,59 @@
                     <ul class="submenu" id="categories-submenu">
                         <li><i class="fa-solid fa-coins"></i> Financial</li>
                         <li><i class="fa-solid fa-heart-pulse"></i> Fitness & Health</li>
-                        <li><i class="fa-solid fa-square-root-variable"></i> Math</li>
+                        <li class="has-nested-submenu">
+                            <div class="nested-submenu-toggle" id="math-toggle" onclick="event.stopPropagation(); this.classList.toggle('expanded'); document.getElementById('math-submenu').classList.toggle('expanded');">
+                                <i class="fa-solid fa-square-root-variable"></i>
+                                <span>Math</span>
+                                <i class="fa-solid fa-chevron-down nested-arrow"></i>
+                            </div>
+                            <ul class="nested-submenu" id="math-submenu">
+                                <li onclick="window.location.href='math/scientific-calculator.html'"><i class="fa-solid fa-flask"></i> Scientific Calculator</li>
+                                <li onclick="window.location.href='math/fraction-calculator.html'"><i class="fa-solid fa-divide"></i> Fraction Calculator</li>
+                                <li onclick="window.location.href='math/percentage-calculator.html'"><i class="fa-solid fa-percent"></i> Percentage Calculator</li>
+                                <li onclick="window.location.href='math/triangle-calculator.html'"><i class="fa-solid fa-caret-up"></i> Triangle Calculator</li>
+                                <li onclick="window.location.href='math/volume-calculator.html'"><i class="fa-solid fa-cube"></i> Volume Calculator</li>
+                                <li onclick="window.location.href='math/standard-deviation-calculator.html'"><i class="fa-solid fa-chart-line"></i> Standard Deviation Calculator</li>
+                                <li onclick="window.location.href='math/random-number-generator.html'"><i class="fa-solid fa-shuffle"></i> Random Number Generator</li>
+                                <li onclick="window.location.href='math/number-sequence-calculator.html'"><i class="fa-solid fa-list-ol"></i> Number Sequence Calculator</li>
+                                <li onclick="window.location.href='math/percent-error-calculator.html'"><i class="fa-solid fa-exclamation"></i> Percent Error Calculator</li>
+                                <li onclick="window.location.href='math/exponent-calculator.html'"><i class="fa-solid fa-superscript"></i> Exponent Calculator</li>
+                                <li onclick="window.location.href='math/binary-calculator.html'"><i class="fa-solid fa-0"></i> Binary Calculator</li>
+                                <li onclick="window.location.href='math/hex-calculator.html'"><i class="fa-solid fa-hashtag"></i> Hex Calculator</li>
+                                <li onclick="window.location.href='math/half-life-calculator.html'"><i class="fa-solid fa-circle-half-stroke"></i> Half-Life Calculator</li>
+                                <li onclick="window.location.href='math/quadratic-formula-calculator.html'"><i class="fa-solid fa-square-root-variable"></i> Quadratic Formula Calculator</li>
+                                <li onclick="window.location.href='math/slope-calculator.html'"><i class="fa-solid fa-chart-line"></i> Slope Calculator</li>
+                                <li onclick="window.location.href='math/log-calculator.html'"><i class="fa-solid fa-wave-square"></i> Log Calculator</li>
+                                <li onclick="window.location.href='math/area-calculator.html'"><i class="fa-solid fa-chart-area"></i> Area Calculator</li>
+                                <li onclick="window.location.href='math/sample-size-calculator.html'"><i class="fa-solid fa-users"></i> Sample Size Calculator</li>
+                                <li onclick="window.location.href='math/probability-calculator.html'"><i class="fa-solid fa-dice"></i> Probability Calculator</li>
+                                <li onclick="window.location.href='math/statistics-calculator.html'"><i class="fa-solid fa-chart-pie"></i> Statistics Calculator</li>
+                                <li onclick="window.location.href='math/mean-median-mode-range-calculator.html'"><i class="fa-solid fa-chart-bar"></i> Mean, Median, Mode, Range Calculator</li>
+                                <li onclick="window.location.href='math/permutation-and-combination-calculator.html'"><i class="fa-solid fa-arrows-spin"></i> Permutation & Combination Calculator</li>
+                                <li onclick="window.location.href='math/z-score-calculator.html'"><i class="fa-solid fa-chart-pie"></i> Z-score Calculator</li>
+                                <li onclick="window.location.href='math/confidence-interval-calculator.html'"><i class="fa-solid fa-bars-progress"></i> Confidence Interval Calculator</li>
+                                <li onclick="window.location.href='math/ratio-calculator.html'"><i class="fa-solid fa-divide"></i> Ratio Calculator</li>
+                                <li onclick="window.location.href='math/distance-calculator.html'"><i class="fa-solid fa-route"></i> Distance Calculator</li>
+                                <li onclick="window.location.href='math/circle-calculator.html'"><i class="fa-solid fa-circle"></i> Circle Calculator</li>
+                                <li onclick="window.location.href='math/surface-area-calculator.html'"><i class="fa-solid fa-box"></i> Surface Area Calculator</li>
+                                <li onclick="window.location.href='math/pythagorean-theorem-calculator.html'"><i class="fa-solid fa-caret-up"></i> Pythagorean Theorem Calculator</li>
+                                <li onclick="window.location.href='math/right-triangle-calculator.html'"><i class="fa-solid fa-caret-up"></i> Right Triangle Calculator</li>
+                                <li onclick="window.location.href='math/root-calculator.html'"><i class="fa-solid fa-square-root-variable"></i> Root Calculator</li>
+                                <li onclick="window.location.href='math/least-common-multiple-calculator.html'"><i class="fa-solid fa-layer-group"></i> Least Common Multiple Calculator</li>
+                                <li onclick="window.location.href='math/greatest-common-factor-calculator.html'"><i class="fa-solid fa-object-group"></i> Greatest Common Factor Calculator</li>
+                                <li onclick="window.location.href='math/factor-calculator.html'"><i class="fa-solid fa-sitemap"></i> Factor Calculator</li>
+                                <li onclick="window.location.href='math/rounding-calculator.html'"><i class="fa-solid fa-circle-notch"></i> Rounding Calculator</li>
+                                <li onclick="window.location.href='math/matrix-calculator.html'"><i class="fa-solid fa-table-cells"></i> Matrix Calculator</li>
+                                <li onclick="window.location.href='math/scientific-notation-calculator.html'"><i class="fa-solid fa-superscript"></i> Scientific Notation Calculator</li>
+                                <li onclick="window.location.href='math/big-number-calculator.html'"><i class="fa-solid fa-arrow-up-9-1"></i> Big Number Calculator</li>
+                                <li onclick="window.location.href='math/prime-factorization-calculator.html'"><i class="fa-solid fa-cubes"></i> Prime Factorization Calculator</li>
+                                <li onclick="window.location.href='math/common-factor-calculator.html'"><i class="fa-solid fa-object-group"></i> Common Factor Calculator</li>
+                                <li onclick="window.location.href='math/basic-calculator.html'"><i class="fa-solid fa-calculator"></i> Basic Calculator</li>
+                                <li onclick="window.location.href='math/long-division-calculator.html'"><i class="fa-solid fa-divide"></i> Long Division Calculator</li>
+                                <li onclick="window.location.href='math/average-calculator.html'"><i class="fa-solid fa-chart-simple"></i> Average Calculator</li>
+                                <li onclick="window.location.href='math/p-value-calculator.html'"><i class="fa-solid fa-chart-area"></i> P-value Calculator</li>
+                            </ul>
+                        </li>
                         <li class="has-nested-submenu">
                             <div class="nested-submenu-toggle" id="other-toggle">
                                 <i class="fa-solid fa-ellipsis"></i>

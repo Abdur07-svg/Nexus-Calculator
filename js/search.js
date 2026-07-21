@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const isOtherDir = window.location.pathname.includes('/other/');
     const basePath = isOtherDir ? '../' : './';
     const otherPath = isOtherDir ? './' : 'other/';
+    const mathPath = isOtherDir ? '../math/' : (window.location.pathname.includes('/math/') ? './' : 'math/');
 
     const calculators = [
         { name: 'Standard Calculator', icon: 'fa-calculator', url: basePath + 'index.html', real: true },
@@ -107,6 +108,51 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'Base64 Encode / Decode', icon: 'fa-code', url: otherPath + 'base64-encode-decode.html', real: true },
         { name: 'Time Duration Calculator', icon: 'fa-stopwatch', url: otherPath + 'time-duration-calculator.html', real: true },
         { name: 'Day of the Week Calculator', icon: 'fa-calendar-day', url: otherPath + 'day-of-week-calculator.html', real: true }
+    ,
+        { name: 'Scientific Calculator', icon: 'fa-flask', url: mathPath + 'scientific-calculator.html', real: true },
+        { name: 'Fraction Calculator', icon: 'fa-divide', url: mathPath + 'fraction-calculator.html', real: true },
+        { name: 'Percentage Calculator', icon: 'fa-percent', url: mathPath + 'percentage-calculator.html', real: true },
+        { name: 'Triangle Calculator', icon: 'fa-caret-up', url: mathPath + 'triangle-calculator.html', real: true },
+        { name: 'Volume Calculator', icon: 'fa-cube', url: mathPath + 'volume-calculator.html', real: true },
+        { name: 'Standard Deviation Calculator', icon: 'fa-chart-line', url: mathPath + 'standard-deviation-calculator.html', real: true },
+        { name: 'Random Number Generator', icon: 'fa-shuffle', url: mathPath + 'random-number-generator.html', real: true },
+        { name: 'Number Sequence Calculator', icon: 'fa-list-ol', url: mathPath + 'number-sequence-calculator.html', real: true },
+        { name: 'Percent Error Calculator', icon: 'fa-exclamation', url: mathPath + 'percent-error-calculator.html', real: true },
+        { name: 'Exponent Calculator', icon: 'fa-superscript', url: mathPath + 'exponent-calculator.html', real: true },
+        { name: 'Binary Calculator', icon: 'fa-0', url: mathPath + 'binary-calculator.html', real: true },
+        { name: 'Hex Calculator', icon: 'fa-hashtag', url: mathPath + 'hex-calculator.html', real: true },
+        { name: 'Half-Life Calculator', icon: 'fa-circle-half-stroke', url: mathPath + 'half-life-calculator.html', real: true },
+        { name: 'Quadratic Formula Calculator', icon: 'fa-square-root-variable', url: mathPath + 'quadratic-formula-calculator.html', real: true },
+        { name: 'Slope Calculator', icon: 'fa-chart-line', url: mathPath + 'slope-calculator.html', real: true },
+        { name: 'Log Calculator', icon: 'fa-wave-square', url: mathPath + 'log-calculator.html', real: true },
+        { name: 'Area Calculator', icon: 'fa-chart-area', url: mathPath + 'area-calculator.html', real: true },
+        { name: 'Sample Size Calculator', icon: 'fa-users', url: mathPath + 'sample-size-calculator.html', real: true },
+        { name: 'Probability Calculator', icon: 'fa-dice', url: mathPath + 'probability-calculator.html', real: true },
+        { name: 'Statistics Calculator', icon: 'fa-chart-pie', url: mathPath + 'statistics-calculator.html', real: true },
+        { name: 'Mean, Median, Mode, Range Calculator', icon: 'fa-chart-bar', url: mathPath + 'mean-median-mode-range-calculator.html', real: true },
+        { name: 'Permutation & Combination Calculator', icon: 'fa-arrows-spin', url: mathPath + 'permutation-and-combination-calculator.html', real: true },
+        { name: 'Z-score Calculator', icon: 'fa-chart-pie', url: mathPath + 'z-score-calculator.html', real: true },
+        { name: 'Confidence Interval Calculator', icon: 'fa-bars-progress', url: mathPath + 'confidence-interval-calculator.html', real: true },
+        { name: 'Ratio Calculator', icon: 'fa-divide', url: mathPath + 'ratio-calculator.html', real: true },
+        { name: 'Distance Calculator', icon: 'fa-route', url: mathPath + 'distance-calculator.html', real: true },
+        { name: 'Circle Calculator', icon: 'fa-circle', url: mathPath + 'circle-calculator.html', real: true },
+        { name: 'Surface Area Calculator', icon: 'fa-box', url: mathPath + 'surface-area-calculator.html', real: true },
+        { name: 'Pythagorean Theorem Calculator', icon: 'fa-caret-up', url: mathPath + 'pythagorean-theorem-calculator.html', real: true },
+        { name: 'Right Triangle Calculator', icon: 'fa-caret-up', url: mathPath + 'right-triangle-calculator.html', real: true },
+        { name: 'Root Calculator', icon: 'fa-square-root-variable', url: mathPath + 'root-calculator.html', real: true },
+        { name: 'Least Common Multiple Calculator', icon: 'fa-layer-group', url: mathPath + 'least-common-multiple-calculator.html', real: true },
+        { name: 'Greatest Common Factor Calculator', icon: 'fa-object-group', url: mathPath + 'greatest-common-factor-calculator.html', real: true },
+        { name: 'Factor Calculator', icon: 'fa-sitemap', url: mathPath + 'factor-calculator.html', real: true },
+        { name: 'Rounding Calculator', icon: 'fa-circle-notch', url: mathPath + 'rounding-calculator.html', real: true },
+        { name: 'Matrix Calculator', icon: 'fa-table-cells', url: mathPath + 'matrix-calculator.html', real: true },
+        { name: 'Scientific Notation Calculator', icon: 'fa-superscript', url: mathPath + 'scientific-notation-calculator.html', real: true },
+        { name: 'Big Number Calculator', icon: 'fa-arrow-up-9-1', url: mathPath + 'big-number-calculator.html', real: true },
+        { name: 'Prime Factorization Calculator', icon: 'fa-cubes', url: mathPath + 'prime-factorization-calculator.html', real: true },
+        { name: 'Common Factor Calculator', icon: 'fa-object-group', url: mathPath + 'common-factor-calculator.html', real: true },
+        { name: 'Basic Calculator', icon: 'fa-calculator', url: mathPath + 'basic-calculator.html', real: true },
+        { name: 'Long Division Calculator', icon: 'fa-divide', url: mathPath + 'long-division-calculator.html', real: true },
+        { name: 'Average Calculator', icon: 'fa-chart-simple', url: mathPath + 'average-calculator.html', real: true },
+        { name: 'P-value Calculator', icon: 'fa-chart-area', url: mathPath + 'p-value-calculator.html', real: true }
     ];
 
 
