@@ -35,7 +35,7 @@
 <body>
     <div class="calculator-container">
         <div class="top-bar" style="position: sticky; top: -16px; background-color: var(--calc-bg); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px 0 10px 0;">
-            <button class="back-btn" onclick="window.location.href='../index.html'" style="position: absolute; left: 16px;">
+            <button class="back-btn" onclick="if(history.length > 1) { history.back(); } else { window.location.href='../index.html'; }" style="position: absolute; left: 16px;">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
             <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Grade Calculator</h2>

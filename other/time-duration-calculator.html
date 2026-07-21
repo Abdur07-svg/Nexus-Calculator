@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Duration Calculator - Nexus</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tool-content { flex-grow: 1; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        .input-group label { color: var(--text-secondary); font-size: 14px; font-weight: 500; }
+        .input-group input { 
+            width: 100%; box-sizing: border-box; min-width: 0;
+            padding: 16px; border-radius: 15px; border: 1px solid rgba(0, 0, 0, 0.1); 
+            background-color: var(--btn-bg); color: var(--text-primary); font-size: 16px; 
+            font-family: inherit; outline: none; transition: border-color 0.3s; 
+        }
+        .input-group input:focus { border-color: var(--btn-operator-color); }
+        .btn-row { display: flex; gap: 12px; margin-top: 10px; }
+        .btn-primary { flex: 2; padding: 16px; border-radius: 15px; border: none; background-color: var(--btn-operator-color); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.1s, opacity 0.2s; }
+        .btn-clear { flex: 1; padding: 16px; border-radius: 15px; border: none; background-color: #ff5252; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.1s, opacity 0.2s; }
+        .btn-primary:active, .btn-clear:active { transform: scale(0.95); }
+        .result-box { background: rgba(33, 150, 243, 0.08); border: 1px solid rgba(33, 150, 243, 0.2); border-radius: 15px; padding: 20px; text-align: center; margin-top: 20px; display: none; }
+        .result-box.active { display: block; }
+        
+        .duration-details { margin-top: 15px; text-align: left; background: var(--calc-bg); padding: 15px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.05); }
+        .duration-details p { margin: 5px 0; color: var(--text-primary); font-size: 15px; }
+        
+        .time-inputs { display: flex; gap: 10px; }
+        .time-inputs input { flex: 1; min-width: 0; padding: 12px; font-size: 14px; text-align: center; }
+        .time-inputs span { display: flex; align-items: center; color: var(--text-secondary); font-size: 12px; font-weight: 600; }
+        
+        .segmented-control { display: flex; background: var(--btn-bg); border: 1px solid rgba(0,0,0,0.05); border-radius: 15px; padding: 4px; gap: 4px; }
+        .segmented-control label { flex: 1; text-align: center; padding: 12px; font-size: 14px; font-weight: 600; color: var(--text-secondary); cursor: pointer; border-radius: 11px; transition: all 0.2s ease; margin: 0; }
+        .segmented-control input[type="radio"] { display: none; }
+        .segmented-control input[type="radio"]:checked + label { background: var(--btn-operator-color); color: #fff; box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3); }
+
+        .back-btn { background: none; border: none; color: var(--text-primary); font-size: 24px; cursor: pointer; }
+        .error-msg { color: #ff5252; font-size: 14px; display: none; margin-top: 5px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="top-bar" style="position: sticky; top: -16px; background-color: var(--calc-bg); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px 0 10px 0;">
+            <button class="back-btn" onclick="if(history.length > 1) { history.back(); } else { window.location.href='../index.html'; }" style="position: absolute; left: 16px;">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Time Duration</h2>
+            <i class="fa-solid fa-magnifying-glass" id="search-btn" title="Search" style="position: absolute; right: 16px; font-size: 20px; color: var(--text-secondary); cursor: pointer;"></i>
+        </div>
+
+        <div class="tool-content">
+            <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: -10px;">Calculate elapsed time or clock difference.</div>
+            
+            <div class="input-group">
+                <label>Calculation Type</label>
+                <div class="segmented-control">
+                    <input type="radio" id="type-elapsed" name="calc-type" value="elapsed" checked>
+                    <label for="type-elapsed">Elapsed Time</label>
+                    <input type="radio" id="type-clock" name="calc-type" value="clock">
+                    <label for="type-clock">Clock Format</label>
+                </div>
+            </div>
+
+            <!-- GROUP: Clock Format -->
+            <div id="group-clock" style="display: none; flex-direction: column; gap: 20px;">
+                <div class="input-group">
+                    <label>Time Format</label>
+                    <div class="segmented-control">
+                        <input type="radio" id="fmt-12" name="clock-fmt" value="12" checked>
+                        <label for="fmt-12">12-Hour (AM/PM)</label>
+                        <input type="radio" id="fmt-24" name="clock-fmt" value="24">
+                        <label for="fmt-24">24-Hour</label>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Start Date & Time</label>
+                    <input type="date" id="clk-st-date">
+                    <div class="time-inputs" style="margin-top:5px;">
+                        <input type="number" id="clk-st-hr" placeholder="HH" min="1" max="12">
+                        <span>:</span>
+                        <input type="number" id="clk-st-min" placeholder="MM" min="0" max="59">
+                        <select id="clk-st-ampm" style="padding: 10px; flex: 1;">
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>End Date & Time</label>
+                    <input type="date" id="clk-end-date">
+                    <div class="time-inputs" style="margin-top:5px;">
+                        <input type="number" id="clk-end-hr" placeholder="HH" min="1" max="12">
+                        <span>:</span>
+                        <input type="number" id="clk-end-min" placeholder="MM" min="0" max="59">
+                        <select id="clk-end-ampm" style="padding: 10px; flex: 1;">
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GROUP: Elapsed Format -->
+            <div id="group-elapsed" style="display: flex; flex-direction: column; gap: 20px;">
+                <div class="input-group">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <label>Start Time</label>
+                        <select id="el-st-unit" style="padding: 4px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.1); background: var(--calc-bg); color: var(--text-primary); font-size: 12px; outline: none;">
+                            <option value="sec">seconds(sec)</option>
+                            <option value="min">minutes(min)</option>
+                            <option value="hrs">hours(hrs)</option>
+                            <option value="min_sec">min/sec</option>
+                            <option value="hrs_min">hrs/min</option>
+                            <option value="hrs_min_sec" selected>hrs/min/sec</option>
+                        </select>
+                    </div>
+                    <div class="time-inputs" id="el-st-inputs">
+                        <input type="number" id="el-st-hr" placeholder="Hrs" min="0">
+                        <span class="sep-hr">:</span>
+                        <input type="number" id="el-st-min" placeholder="Min" min="0">
+                        <span class="sep-min">:</span>
+                        <input type="number" id="el-st-sec" placeholder="Sec" min="0">
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <label>End Time</label>
+                        <select id="el-end-unit" style="padding: 4px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.1); background: var(--calc-bg); color: var(--text-primary); font-size: 12px; outline: none;">
+                            <option value="sec">seconds(sec)</option>
+                            <option value="min">minutes(min)</option>
+                            <option value="hrs">hours(hrs)</option>
+                            <option value="min_sec">min/sec</option>
+                            <option value="hrs_min">hrs/min</option>
+                            <option value="hrs_min_sec" selected>hrs/min/sec</option>
+                        </select>
+                    </div>
+                    <div class="time-inputs" id="el-end-inputs">
+                        <input type="number" id="el-end-hr" placeholder="Hrs" min="0">
+                        <span class="sep-hr">:</span>
+                        <input type="number" id="el-end-min" placeholder="Min" min="0">
+                        <span class="sep-min">:</span>
+                        <input type="number" id="el-end-sec" placeholder="Sec" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="error-msg" id="error-msg">Please enter valid times. End time must be greater than Start time.</div>
+
+            <div class="btn-row">
+                <button class="btn-clear" id="clear-btn">Clear</button>
+                <button class="btn-primary" id="calc-btn">Calculate</button>
+            </div>
+
+            <div class="result-box" id="result-box">
+                <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 5px;">Total Duration</div>
+                <div style="font-size: 28px; font-weight: 700; color: var(--btn-operator-color); margin-bottom: 5px;" id="result-main">0 Days</div>
+                
+                <div class="duration-details" id="result-breakdown">
+                    <p id="res-hours">0 total hours</p>
+                    <p id="res-mins">0 total minutes</p>
+                    <p id="res-secs">0 total seconds</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/search.js"></script>
+    <script src="../js/time-duration-calculator.js"></script>
+</body>
+</html>

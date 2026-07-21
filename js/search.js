@@ -104,9 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'Mulch Calculator', icon: 'fa-leaf', url: otherPath + 'mulch-calculator.html', real: true },
         { name: 'Wind Chill Calculator', icon: 'fa-wind', url: otherPath + 'wind-chill-calculator.html', real: true },
         { name: 'Dew Point Calculator', icon: 'fa-droplet', url: otherPath + 'dew-point-calculator.html', real: true },
-        { name: 'Base64 Encode / Decode', icon: 'fa-code', url: '#', real: false },
-        { name: 'Time Duration Calculator', icon: 'fa-stopwatch', url: '#', real: false },
-        { name: 'Day of the Week Calculator', icon: 'fa-calendar-day', url: '#', real: false }
+        { name: 'Base64 Encode / Decode', icon: 'fa-code', url: otherPath + 'base64-encode-decode.html', real: true },
+        { name: 'Time Duration Calculator', icon: 'fa-stopwatch', url: otherPath + 'time-duration-calculator.html', real: true },
+        { name: 'Day of the Week Calculator', icon: 'fa-calendar-day', url: otherPath + 'day-of-week-calculator.html', real: true }
     ];
 
 
