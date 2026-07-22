@@ -46,11 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Determine the base path for URLs depending on where we are
-    // If the current path contains /other/, we need to adjust paths
     const isOtherDir = window.location.pathname.includes('/other/');
-    const basePath = isOtherDir ? '../' : './';
-    const otherPath = isOtherDir ? './' : 'other/';
-    const mathPath = isOtherDir ? '../math/' : (window.location.pathname.includes('/math/') ? './' : 'math/');
+    const isMathDir = window.location.pathname.includes('/math/');
+    
+    const basePath = (isOtherDir || isMathDir) ? '../' : './';
+    const otherPath = isOtherDir ? './' : (basePath + 'other/');
+    const mathPath = isMathDir ? './' : (basePath + 'math/');
 
     const calculators = [
         { name: 'Standard Calculator', icon: 'fa-calculator', url: basePath + 'index.html', real: true },

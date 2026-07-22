@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fraction Calculator</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --calc-bg: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #2196f3;
+            --btn-bg: #f4f6f8;
+            --btn-hover: #e8ecf1;
+            --btn-operator-bg: #2196f3;
+            --btn-operator-color: #2196f3;
+        }
+
+
+
+        .tool-content {
+            padding: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 16px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: var(--btn-bg);
+            color: var(--text-primary);
+            font-size: 16px;
+            outline: none;
+            text-align: center;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            flex: 2;
+            padding: 16px;
+            background-color: var(--btn-operator-color);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-clear {
+            flex: 1;
+            padding: 16px;
+            background-color: #ff5252;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .result-box {
+            background: rgba(33, 150, 243, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result-box.active {
+            display: block;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .error-msg {
+            color: #ff5252;
+            font-size: 14px;
+            display: none;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .fraction-input-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .fraction-block {
+            width: 120px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .fraction-divider {
+            border: 0;
+            border-top: 2px solid var(--text-primary);
+            margin: 0;
+        }
+
+        .operator-select {
+            font-size: 20px;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: var(--btn-bg);
+            color: var(--text-primary);
+            outline: none;
+        }
+
+        .fraction-result {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--btn-operator-color);
+        }
+
+        .fraction-result-line {
+            border: 0;
+            border-top: 2px solid var(--btn-operator-color);
+            width: 100%;
+            max-width: 60px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator-container">
+        <div class="top-bar" style="position: sticky; top: -16px; background-color: var(--calc-bg); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px 0 10px 0;">
+            <button class="back-btn" onclick="if(history.length > 1) { history.back(); } else { window.location.href='../index.html'; }" style="position: absolute; left: 16px;">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Fraction Calculator</h2>
+            <i class="fa-solid fa-magnifying-glass" id="search-btn" title="Search" style="position: absolute; right: 16px; font-size: 20px; color: var(--text-secondary); cursor: pointer;"></i>
+        </div>
+
+        <div class="tool-content">
+            <div class="input-group">
+                <label>Enter Fractions</label>
+                <div class="fraction-input-container">
+                    <div class="fraction-block" id="block1">
+                        <input type="number" id="num1" placeholder="a" inputmode="numeric">
+                        <hr class="fraction-divider">
+                        <input type="number" id="den1" placeholder="b" inputmode="numeric">
+                    </div>
+                    <div id="block-dec" style="display: none; width: 100%; max-width: 250px;">
+                        <input type="number" id="dec-in" placeholder="Enter decimal (e.g. 0.75)" step="any"
+                            style="width: 100%; text-align: center; padding: 16px; border-radius: 15px; border: 1px solid rgba(0,0,0,0.1); background-color: var(--btn-bg); color: var(--text-primary); font-size: 16px; outline: none; box-sizing: border-box;">
+                    </div>
+                    <select id="operator" class="operator-select"
+                        style="width: 100%; max-width: 250px; text-align: center; margin: 10px 0;">
+                        <option value="+">+</option>
+                        <option value="-">-</option>
+                        <option value="*">×</option>
+                        <option value="/">÷</option>
+                        <option value="simplify">Simplify Fraction</option>
+                        <option value="dec2frac">Convert Decimal to Fraction</option>
+                        <option value="frac2dec">Convert Fraction to Decimal</option>
+                    </select>
+                    <div class="fraction-block" id="block2">
+                        <input type="number" id="num2" placeholder="c" inputmode="numeric">
+                        <hr class="fraction-divider">
+                        <input type="number" id="den2" placeholder="d" inputmode="numeric">
+                    </div>
+                </div>
+            </div>
+
+            <div class="error-msg" id="error-msg">Please enter valid values. Denominators cannot be 0.</div>
+
+            <div class="btn-row">
+                <button class="btn-clear" id="clear-btn">Clear</button>
+                <button class="btn-primary" id="calc-btn">Calculate</button>
+            </div>
+
+            <div class="result-box" id="result-box">
+                <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 10px;">Result</div>
+
+                <div id="result-simple-container" style="margin-bottom: 15px;">
+                    <div style="font-size: 14px; color: var(--text-secondary);">Simple Fraction Form</div>
+                    <div id="result-main"></div>
+                </div>
+
+                <div id="result-mixed-container" style="margin-bottom: 15px; display: none;">
+                    <div style="font-size: 14px; color: var(--text-secondary);">Mixed Number Form</div>
+                    <div id="result-mixed"
+                        style="font-size: 24px; font-weight: 700; color: var(--btn-operator-color); display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    </div>
+                </div>
+
+                <div id="result-decimal-container" style="margin-bottom: 5px; display: none;">
+                    <div style="font-size: 14px; color: var(--text-secondary);">Decimal Form</div>
+                    <div id="result-decimal" style="font-size: 24px; font-weight: 700; color: var(--text-primary);">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/capacitor_plugins.js"></script>
+    <script src="../js/title.js"></script>
+    <script src="../js/fraction-calculator.js"></script>
+    <script src="../js/search.js"></script>
+</body>
+
+</html>
