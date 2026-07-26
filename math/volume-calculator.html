@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volume Calculator</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --calc-bg: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #2196f3;
+            --btn-bg: #f4f6f8;
+            --btn-hover: #e8ecf1;
+            --btn-operator-bg: #2196f3;
+            --btn-operator-color: #2196f3;
+        }
+
+        .tool-content {
+            padding: 24px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 16px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: var(--btn-bg);
+            color: var(--text-primary);
+            font-size: 16px;
+            outline: none;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            flex: 2;
+            padding: 16px;
+            background-color: var(--btn-operator-color);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-clear {
+            flex: 1;
+            padding: 16px;
+            background-color: #ff5252;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .result-box {
+            background: rgba(33, 150, 243, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result-box.active {
+            display: block;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .error-msg {
+            color: #ff5252;
+            font-size: 14px;
+            display: none;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .dynamic-inputs {
+            display: none;
+        }
+
+        .dynamic-inputs.active {
+            display: block;
+        }
+        
+        .flex-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .flex-row .input-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator-container">
+        <div class="top-bar" style="position: sticky; top: -16px; background-color: var(--calc-bg); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px 0 10px 0;">
+            <button class="back-btn" onclick="if(history.length > 1) { history.back(); } else { window.location.href='../index.html'; }" style="position: absolute; left: 16px;">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Volume Calculator</h2>
+            <i class="fa-solid fa-magnifying-glass" id="search-btn" title="Search" style="position: absolute; right: 16px; font-size: 20px; color: var(--text-secondary); cursor: pointer;"></i>
+        </div>
+
+        <div class="tool-content">
+            <div class="flex-row">
+                <div class="input-group">
+                    <label>Select Shape</label>
+                    <select id="shape-selector">
+                        <option value="cube">Cube</option>
+                        <option value="sphere">Sphere</option>
+                        <option value="cylinder">Cylinder</option>
+                        <option value="cone">Cone</option>
+                        <option value="rectangular-tank">Rectangular Tank</option>
+                        <option value="tube">Tube</option>
+                        <option value="capsule">Capsule</option>
+                        <option value="spherical-cap">Spherical Cap</option>
+                        <option value="conical-frustum">Conical Frustum</option>
+                        <option value="ellipsoid">Ellipsoid</option>
+                        <option value="square-pyramid">Square Pyramid</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Unit (for all inputs)</label>
+                    <select id="unit-selector">
+                        <option value="mm">Millimeters (mm)</option>
+                        <option value="cm" selected>Centimeters (cm)</option>
+                        <option value="m">Meters (m)</option>
+                        <option value="in">Inches (in)</option>
+                        <option value="ft">Feet (ft)</option>
+                        <option value="yd">Yards (yd)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Cube Inputs -->
+            <div id="inputs-cube" class="dynamic-inputs active">
+                <div class="input-group">
+                    <label>Edge Length (a)</label>
+                    <input type="number" id="cube-edge" placeholder="Enter edge length" step="any">
+                </div>
+            </div>
+
+            <!-- Sphere Inputs -->
+            <div id="inputs-sphere" class="dynamic-inputs">
+                <div class="input-group">
+                    <label>Radius (r)</label>
+                    <input type="number" id="sphere-radius" placeholder="Enter radius" step="any">
+                </div>
+            </div>
+
+            <!-- Cylinder Inputs -->
+            <div id="inputs-cylinder" class="dynamic-inputs">
+                <div class="input-group">
+                    <label>Radius (r)</label>
+                    <input type="number" id="cylinder-radius" placeholder="Enter radius" step="any">
+                </div>
+                <div class="input-group">
+                    <label>Height (h)</label>
+                    <input type="number" id="cylinder-height" placeholder="Enter height" step="any">
+                </div>
+            </div>
+
+            <!-- Cone Inputs -->
+            <div id="inputs-cone" class="dynamic-inputs">
+                <div class="input-group">
+                    <label>Radius (r)</label>
+                    <input type="number" id="cone-radius" placeholder="Enter radius" step="any">
+                </div>
+                <div class="input-group">
+                    <label>Height (h)</label>
+                    <input type="number" id="cone-height" placeholder="Enter height" step="any">
+                </div>
+            </div>
+
+            <!-- Rectangular Tank Inputs -->
+            <div id="inputs-rectangular-tank" class="dynamic-inputs">
+                <div class="input-group">
+                    <label>Length (l)</label>
+                    <input type="number" id="tank-length" placeholder="Enter length" step="any">
+                </div>
+                <div class="input-group">
+                    <label>Width (w)</label>
+                    <input type="number" id="tank-width" placeholder="Enter width" step="any">
+                </div>
+                <div class="input-group">
+                    <label>Height/Depth (h)</label>
+                    <input type="number" id="tank-height" placeholder="Enter height" step="any">
+                </div>
+            </div>
+
+            <!-- Tube Inputs -->
+            <div id="inputs-tube" class="dynamic-inputs">
+                <div class="input-group">
+                    <label>Outer Radius (R)</label>
+                    <input type="number" id="tube-outer" placeholder="Enter outer radius" step="any">
+                </div>
+                <div class="input-group">
+                    <label>Inner Radius (r)</label>
+                    <input type="number" id="tube-inner" placeholder="Enter inner radius" step="any">
+                </div>
+                <div class="input-group">
+                    <label>Length (h)</label>
+                    <input type="number" id="tube-length" placeholder="Enter length" step="any">
+                </div>
+            </div>
+
+            <!-- Capsule Inputs -->
+            <div id="inputs-capsule" class="dynamic-inputs">
+                <div class="input-group">
+                    <label>Radius (r)</label>
+                    <input type="number" id="capsule-radius" placeholder="Enter radius" step="any">
+                </div>
+                <div class="input-group">
+                    <label>Cylinder Length (a)</label>
+                    <input type="number" id="capsule-length" placeholder="Enter cylinder length" step="any">
+                </div>
+            </div>
+
+            <!-- Spherical Cap Inputs -->
+            <div id="inputs-spherical-cap" class="dynamic-inputs">
+                <div class="input-group">
+                    <label>Base Radius (a)</label>
+                    <input type="number" id="cap-base" placeholder="Enter base radius" step="any">
+                </div>
+                <div class="input-group">
+                    <label>Height of Cap (h)</label>
+                    <input type="number" id="cap-height" placeholder="Enter height of cap" step="any">
+                </div>
+            </div>
+
+            <!-- Conical Frustum Inputs -->
+            <div id="inputs-conical-frustum" class="dynamic-inputs">
+                <div class="input-group">
+                    <label>Bottom Radius (R)</label>
+                    <input type="number" id="frustum-bottom" placeholder="Enter bottom radius" step="any">
+                </div>
+                <div class="input-group">
+                    <label>Top Radius (r)</label>
+                    <input type="number" id="frustum-top" placeholder="Enter top radius" step="any">
+                </div>
+                <div class="input-group">
+                    <label>Height (h)</label>
+                    <input type="number" id="frustum-height" placeholder="Enter height" step="any">
+                </div>
+            </div>
+
+            <!-- Ellipsoid Inputs -->
+            <div id="inputs-ellipsoid" class="dynamic-inputs">
+                <div class="input-group">
+                    <label>Axis a</label>
+                    <input type="number" id="ellipsoid-a" placeholder="Enter axis a" step="any">
+                </div>
+                <div class="input-group">
+                    <label>Axis b</label>
+                    <input type="number" id="ellipsoid-b" placeholder="Enter axis b" step="any">
+                </div>
+                <div class="input-group">
+                    <label>Axis c</label>
+                    <input type="number" id="ellipsoid-c" placeholder="Enter axis c" step="any">
+                </div>
+            </div>
+
+            <!-- Square Pyramid Inputs -->
+            <div id="inputs-square-pyramid" class="dynamic-inputs">
+                <div class="input-group">
+                    <label>Base Edge (a)</label>
+                    <input type="number" id="pyramid-edge" placeholder="Enter base edge" step="any">
+                </div>
+                <div class="input-group">
+                    <label>Height (h)</label>
+                    <input type="number" id="pyramid-height" placeholder="Enter height" step="any">
+                </div>
+            </div>
+
+            <div class="error-msg" id="error-msg">Please enter valid positive values.</div>
+
+            <div class="btn-row">
+                <button class="btn-clear" id="clear-btn">Clear</button>
+                <button class="btn-primary" id="calc-btn">Calculate</button>
+            </div>
+
+            <div class="result-box" id="result-box">
+                <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 5px;">Volume</div>
+                <div style="font-size: 28px; font-weight: 700; color: var(--btn-operator-color);">
+                    <span id="result-volume">0</span> <span id="result-unit" style="font-size: 18px; color: var(--text-primary);">cm³</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/capacitor_plugins.js"></script>
+    <script src="../js/volume-calculator.js"></script>
+    <script src="../js/search.js"></script>
+</body>
+
+</html>

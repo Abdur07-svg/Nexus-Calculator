@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standard Deviation Calculator</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --calc-bg: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #2196f3;
+            --btn-bg: #f4f6f8;
+            --btn-hover: #e8ecf1;
+            --btn-operator-bg: #2196f3;
+            --btn-operator-color: #2196f3;
+        }
+
+        .tool-content {
+            padding: 24px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .input-group select,
+        .input-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 16px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: var(--btn-bg);
+            color: var(--text-primary);
+            font-size: 16px;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .input-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            flex: 2;
+            padding: 16px;
+            background-color: var(--btn-operator-color);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-clear {
+            flex: 1;
+            padding: 16px;
+            background-color: #ff5252;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .result-box {
+            background: rgba(33, 150, 243, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result-box.active {
+            display: block;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .result-item {
+            background: white;
+            padding: 12px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .result-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .result-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .error-msg {
+            color: #ff5252;
+            font-size: 14px;
+            display: none;
+            margin-top: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator-container">
+        <div class="top-bar" style="position: sticky; top: -16px; background-color: var(--calc-bg); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px 0 10px 0;">
+            <button class="back-btn" onclick="if(history.length > 1) { history.back(); } else { window.location.href='../index.html'; }" style="position: absolute; left: 16px;">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Standard Deviation</h2>
+            <i class="fa-solid fa-magnifying-glass" id="search-btn" title="Search" style="position: absolute; right: 16px; font-size: 20px; color: var(--text-secondary); cursor: pointer;"></i>
+        </div>
+
+        <div class="tool-content">
+            <div class="input-group">
+                <label>Data Type</label>
+                <select id="calc-mode">
+                    <option value="sample">Sample</option>
+                    <option value="population">Population</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Data Set (comma or space separated)</label>
+                <textarea id="data-input" placeholder="e.g. 10, 12, 23, 23, 16, 23, 21, 16"></textarea>
+            </div>
+
+            <div class="error-msg" id="error-msg">Please enter at least two valid numbers.</div>
+
+            <div class="btn-row">
+                <button class="btn-clear" id="clear-btn">Clear</button>
+                <button class="btn-primary" id="calc-btn">Calculate</button>
+            </div>
+
+            <div class="result-box" id="result-box">
+                <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 5px;" id="main-result-label">Sample Standard Deviation (s)</div>
+                <div style="font-size: 28px; font-weight: 700; color: var(--btn-operator-color);" id="result-main-sd">0</div>
+                
+                <div class="result-grid">
+                    <div class="result-item" id="alt-sd-container">
+                        <div class="result-label" id="alt-result-label">Population SD (σ)</div>
+                        <div class="result-value" id="result-alt-sd">0</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Mean (μ)</div>
+                        <div class="result-value" id="result-mean">0</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Variance (s²)</div>
+                        <div class="result-value" id="result-variance">0</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Count (n)</div>
+                        <div class="result-value" id="result-count">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/capacitor_plugins.js"></script>
+    <script src="../js/standard-deviation-calculator.js"></script>
+    <script src="../js/search.js"></script>
+</body>
+
+</html>
