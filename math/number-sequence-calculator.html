@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Sequence Calculator</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --calc-bg: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #2196f3;
+            --btn-bg: #f4f6f8;
+            --btn-hover: #e8ecf1;
+            --btn-operator-bg: #2196f3;
+            --btn-operator-color: #2196f3;
+        }
+
+        .tool-content {
+            padding: 24px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 16px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: var(--btn-bg);
+            color: var(--text-primary);
+            font-size: 16px;
+            outline: none;
+        }
+
+        .dynamic-inputs {
+            display: none;
+        }
+
+        .dynamic-inputs.active {
+            display: block;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            flex: 2;
+            padding: 16px;
+            background-color: var(--btn-operator-color);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-clear {
+            flex: 1;
+            padding: 16px;
+            background-color: #ff5252;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .result-box {
+            background: rgba(33, 150, 243, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result-box.active {
+            display: block;
+        }
+
+        .result-sequence {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--btn-operator-color);
+            word-wrap: break-word;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            text-align: left;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .result-sum {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .error-msg {
+            color: #ff5252;
+            font-size: 14px;
+            display: none;
+            margin-top: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator-container">
+        <div class="top-bar" style="position: sticky; top: -16px; background-color: var(--calc-bg); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px 0 10px 0;">
+            <button class="back-btn" onclick="if(history.length > 1) { history.back(); } else { window.location.href='../index.html'; }" style="position: absolute; left: 16px;">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h2 style="color: var(--text-primary); margin: 0; font-size: 20px;">Number Sequence</h2>
+            <i class="fa-solid fa-magnifying-glass" id="search-btn" title="Search" style="position: absolute; right: 16px; font-size: 20px; color: var(--text-secondary); cursor: pointer;"></i>
+        </div>
+
+        <div class="tool-content">
+            <div class="input-group">
+                <label>Sequence Type</label>
+                <select id="seq-type">
+                    <option value="arithmetic">Arithmetic</option>
+                    <option value="geometric">Geometric</option>
+                    <option value="fibonacci">Fibonacci</option>
+                </select>
+            </div>
+
+            <!-- Arithmetic / Geometric Inputs -->
+            <div id="inputs-standard" class="dynamic-inputs active">
+                <div class="input-group">
+                    <label>Start Value (a)</label>
+                    <input type="number" id="val-a" placeholder="e.g. 1" step="any">
+                </div>
+                <div class="input-group">
+                    <label id="label-d">Common Difference (d)</label>
+                    <input type="number" id="val-d" placeholder="e.g. 2" step="any">
+                </div>
+            </div>
+
+            <!-- Fibonacci Input is just N, which is shared -->
+            <div class="input-group">
+                <label>Number of Terms (n)</label>
+                <input type="number" id="val-n" placeholder="e.g. 10" min="1">
+            </div>
+
+            <div class="error-msg" id="error-msg">Please enter valid values.</div>
+
+            <div class="btn-row">
+                <button class="btn-clear" id="clear-btn">Clear</button>
+                <button class="btn-primary" id="calc-btn">Calculate</button>
+            </div>
+
+            <div class="result-box" id="result-box">
+                <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 10px;">Sequence</div>
+                <div class="result-sequence" id="result-sequence"></div>
+                
+                <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 5px;">Sum of Sequence</div>
+                <div class="result-sum" id="result-sum">0</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/capacitor_plugins.js"></script>
+    <script src="../js/number-sequence-calculator.js"></script>
+    <script src="../js/search.js"></script>
+</body>
+
+</html>
